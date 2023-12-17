@@ -1,5 +1,4 @@
 <?php require APPPATH."Views/template/header.php"; ?>
-<?php require APPPATH."Views/template/nav.php"; ?>
 
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -356,4 +355,4 @@
 </div>
 <!--end::App-->
 
-<?php  require APPPATH.'Views/template/footer.php'; ?>
+<?php require APPPATH.'Views/template/footer.php'; ?>

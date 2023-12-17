@@ -126,6 +126,8 @@ private function admin($page,&$data)
     $canView = $this->adminData->getCanViewPages($role);
     cache()->save('canView',$canView, 900); // cache for 15mins
   }
+
+  // print_r($canView);exit;
   $data['canView'] = $canView;
 }
 

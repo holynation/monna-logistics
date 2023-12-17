@@ -5,7 +5,7 @@ $tableExclude = ($configData && array_key_exists('table_exclude', $configData))?
 $tableQueryString = ($configData && array_key_exists('query_string', $configData))?$configData['query_string']: array();
 $tableTitle = ($configData && array_key_exists('table_title', $configData))?$configData['table_title']:ucfirst(removeUnderscore($model) .' '. "Page");
 $icon = ($configData && array_key_exists('table_icon', $configData))?$configData['table_icon']:"";
-$tableAttr = ($configData && array_key_exists('table_attr', $configData))?$configData['table_attr']:array('class'=>'datatable-init nowrap nk-tb-list is-separate table table-bordered',"data-auto-responsive"=>'false');
+$tableAttr = ($configData && array_key_exists('table_attr', $configData))?$configData['table_attr']:array('class'=>'table align-middle table-row-dashed fs-6 gy-5',);
 
 // this are the config for data filtering
 $query = ($configData && array_key_exists('query', $configData))?$configData['query']:"";

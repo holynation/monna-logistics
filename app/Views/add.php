@@ -4,8 +4,8 @@ require_once APPPATH.'Views/modelconfig/table.php';
 require_once APPPATH.'Views/modelconfig/form.php';
 
 if (isset($_GET['export'])) {
-  $queryHtmlTableObjModel->export=true;
-  $tableWithHeaderModel->export=true;
+  $queryHtmlTableObjModel->export = true;
+  $tableWithHeaderModel->export = true;
 }
 
 $tableData = null;
@@ -33,9 +33,9 @@ else{
   $tableData = $tableWithHeaderModel->openTableHeader($model,$tableAttr,$tableExclude,true)
   ->excludeSerialNumber(false)
   ->appendTableAction($tableAction)
-  ->appendEmptyIcon('<i class="icon-stack-empty mr-2 mb-2 icon-2x"></i>')
+  ->appendEmptyIcon('<i class=las la-dumpster mr-2 mb-2 fs-2x"></i>')
   ->appendQueryString($tableQueryString)
-  ->generateTableBody(null,true,0,100,' order by ID desc ',$where)
+  ->generateTableBody(null,true,0,100,' order by id desc ',$where)
   // ->pagedTable(true,20)
   ->generate();
 }
@@ -57,84 +57,106 @@ $formContent = $modelFormBuilder->start($model.'_table')
 
 
 <!-- main header @s -->
-<?php include_once ROOTPATH.'template/header.php'; ?>
+<?php require APPPATH."Views/template/header.php"; ?>
 <!-- main header @e -->
 
-    <!-- content @s -->
-    <div class="nk-content ">
-      <div class="container-fluid">
-        <div class="nk-content-inner">
-          <div class="nk-content-body">
-            <div class="components-preview wide-lg mx-auto">
-                <div class="nk-block-head nk-block-head-sm">
-                    <div class="nk-block-between">
-                        <div class="nk-block-head-content">
-                            <h3 class="nk-block-title page-title"><?php echo $tableTitle; ?></h3>
-                            <div class="nk-block-des text-soft">
-                                <!-- <p>You have total 2,595 users.</p> -->
-                            </div>
-                        </div>
-                        <!-- .nk-block-head-content -->
-                        <div class="nk-block-head-content">
-                            <div class="toggle-wrap nk-block-tools-toggle">
-                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="more-options"><em class="icon ni ni-more-v"></em></a>
-                                <div class="toggle-expand-content" data-content="more-options">
-                                    <ul class="nk-block-tools g-3">
-                                        <li class="nk-block-tools-opt">
-                                            <?php if($show_add): ?>
-                                                <a href="#" class="btn btn-icon btn-primary d-md-none mx-2 px-2" data-toggle='modal' data-target='#myModal'><em class="icon ni ni-plus"></em> Add</a>
-                                                <a href="#" class="btn btn-primary d-none d-md-inline-flex" data-toggle='modal' data-target='#myModal'><em class="icon ni ni-plus"></em><span>Add</span>
-                                                </a>
-
-                                                <?php if($has_upload): ?>
-                                                <a href="#" class="btn btn-icon btn-primary d-md-none mx-2 px-2" data-toggle='modal' data-target='#modal-upload'><em class="icon ni ni-plus"></em> Batch Upload</a>
-                                                <a href="#" class="btn btn-primary d-none d-md-inline-flex ml-1" data-toggle='modal' data-target='#modal-upload'><em class="icon ni ni-upload-cloud"></em><span>Batch Upload</span>
-                                                </a>
-                                                <?php endif; ?> <!-- end batch upload -->
-                                            <?php endif; ?> <!-- end the show add -->
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div><!-- .nk-block-head-content -->
-                    </div><!-- .nk-block-between -->
-                </div><!-- .nk-block-head -->
-
-                <div class="nk-block nk-block-lg">
-                    <!-- here is the section for table filter option on the server level -->
-                    <?php include_once APPPATH."Views/modelconfig/filter.php"; ?>
-                    <!-- here is the end for table filter -->
-
-                    <div class="card card-preview">
-                      <div class="card-inner">
-                        <!-- <table class="datatable-init nowrap nk-tb-list is-separate" data-auto-responsive="false"> -->
-                          <?php echo $tableData; ?>
-                      </div>
-                    </div>
-                </div> <!-- nk-block -->
-            </div>
+<!--begin::Main-->
+<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+<!--begin::Content wrapper-->
+<div class="d-flex flex-column flex-column-fluid">
+<!--begin::Toolbar-->
+<div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+</div>
+<!--end::Toolbar-->
+<!--begin::Content-->
+<div id="kt_app_content" class="app-content flex-column-fluid">
+  <!--begin::Content container-->
+  <div id="kt_app_content_container" class="app-container container-xxl">
+    
+    <!--begin::Card-->
+    <div class="card">
+      <!--begin::Card header-->
+      <div class="card-header border-0 pt-6">
+        <!--begin::Card title-->
+        <div class="card-title">
+          <!--begin::Search-->
+          <div class="d-flex align-items-center position-relative my-1">
+            <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+            <span class="svg-icon svg-icon-1 position-absolute ms-6">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="currentColor" />
+                <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="currentColor" />
+              </svg>
+            </span>
+            <!--end::Svg Icon-->
+            <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search user" />
           </div>
+          <!--end::Search-->
         </div>
+        <!--begin::Card title-->
+        <!--begin::Card toolbar-->
+        <div class="card-toolbar">
+          <!--begin::Toolbar-->
+          <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+            <!--begin::Add user-->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_model">
+            <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+            <span class="svg-icon svg-icon-2">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+              </svg>
+            </span>
+            <!--end::Svg Icon-->Add <?= removeUnderscore($model); ?></button>
+            <!--end::Add user-->
+          </div>
+          <!--end::Toolbar-->
+        </div>
+        <!--end::Card toolbar-->
       </div>
+      <!--end::Card header-->
+      <!--begin::Card body-->
+      <div class="card-body py-4">
+        <?php echo $tableData; ?>
+      </div>
+      <!--end::Card body-->
     </div>
-    <!-- content @e -->
+    <!--end::Card-->
+
 
     <!-- modal for batch uploading -->
     <?php if ($configData==false || array_key_exists('has_upload', $configData)==false || $configData['has_upload']): ?>
-      <div class="modal modal-default fade" id="modal-upload">
-        <div class="modal-dialog">
+      <div class="modal fade" id="kt_modal_upload_model" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+          <!--begin::Modal content-->
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title"><?php echo removeUnderscore($model) ?> Batch Upload</h5>
-                  <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                      <em class="icon ni ni-cross"></em>
-                  </a>
+            <!--begin::Modal header-->
+            <div class="modal-header" id="kt_modal_upload_model_header">
+              <!--begin::Modal title-->
+              <h2 class="fw-bold"><?php echo removeUnderscore($model);  ?> Batch Upload</h2>
+              <!--end::Modal title-->
+              <!--begin::Close-->
+              <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                <span class="svg-icon svg-icon-1">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+                    <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+                  </svg>
+                </span>
+                <!--end::Svg Icon-->
+              </div>
+              <!--end::Close-->
             </div>
-            <div class="modal-body">
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
               <?php
                 $batchUrl = "mc/template/$model?exec=name";
                 $batchActionUrl = "mc/sFile/$model";
               ?>
+
               <div>
                 <a  class='btn btn-info' href="<?=base_url($batchUrl)?>">Download Template</a>
               </div>
@@ -150,66 +172,117 @@ $formContent = $modelFormBuilder->start($model.'_table')
                 </div>
               </form>
             </div>
+            <!--end::Modal body-->
           </div>
-          <!-- /.modal-content -->
+          <!--end::Modal content-->
         </div>
-        <!-- /.modal-dialog -->
+        <!--end::Modal dialog-->
       </div>
-      <!-- /.modal -->
     <?php endif; ?>
     <!-- batch uploading end -->
 
-    <!-- add modal -->
-    <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
-      <div class="modal-dialog modal-dialog-top" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title"><?php echo removeUnderscore($model);  ?> Record Form</h5>
-                  <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                      <em class="icon ni ni-cross"></em>
-                  </a>
-              </div>
-              <div class="modal-body">
-                <?php if($showAddCaption): ?>
-                  <div class="alert alert-danger" style="background-color: #ea2825;color:#fff;">
-                      <b><?= $showAddCaption; ?></b>
-                  </div>
-                <?php endif; ?>
-                <?php echo $formContent; ?>
-              </div>
+    <!-- modal add form end -->
+    <div class="modal fade" id="kt_modal_add_model" tabindex="-1" aria-hidden="true">
+      <!--begin::Modal dialog-->
+      <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+          <!--begin::Modal header-->
+          <div class="modal-header" id="kt_modal_add_model_header">
+            <!--begin::Modal title-->
+            <h2 class="fw-bold"><?php echo removeUnderscore($model);  ?></h2>
+            <!--end::Modal title-->
+            <!--begin::Close-->
+            <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+              <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+              <span class="svg-icon svg-icon-1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+                  <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+                </svg>
+              </span>
+              <!--end::Svg Icon-->
+            </div>
+            <!--end::Close-->
           </div>
+          <!--end::Modal header-->
+          <!--begin::Modal body-->
+          <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+            <?php if($showAddCaption): ?>
+              <div class="alert alert-danger" style="background-color: #ea2825;color:#fff;">
+                  <b><?= $showAddCaption; ?></b>
+              </div>
+            <?php endif; ?>
+
+            <?php echo $formContent; ?>
+          </div>
+          <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
       </div>
+      <!--end::Modal dialog-->
     </div>
+    <!-- modal add form end -->
 
     <!-- modal for editing form -->
-    <div id="modal-edit" class="modal fade animated" role="dialog">
-      <div class="modal-dialog">
+    <div class="modal fade" id="kt_modal_edit_model" tabindex="-1" aria-hidden="true">
+      <!--begin::Modal dialog-->
+      <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title"><?php echo removeUnderscore($model);  ?> Update</h5>
-                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                    <em class="icon ni ni-cross"></em>
-                </a>
+          <!--begin::Modal header-->
+          <div class="modal-header" id="kt_modal_edit_model_header">
+            <!--begin::Modal title-->
+            <h2 class="fw-bold"><?php echo removeUnderscore($model);  ?> Update</h2>
+            <!--end::Modal title-->
+            <!--begin::Close-->
+            <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+              <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+              <span class="svg-icon svg-icon-1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+                  <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+                </svg>
+              </span>
+              <!--end::Svg Icon-->
             </div>
-            <div class="modal-body">
-              <?php if(@$editMessageInfo != ""): ?>
-                <div class="alert alert-danger" style="background-color: #ea2825;color:#fff;">
-                    <b><?php echo @$editMessageInfo; ?></b>
-                </div>
-                <?php endif; ?>
-                <p id="edit-container"> </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-dark" id="close" data-dismiss="modal">Close
-                </button>
-            </div>
+            <!--end::Close-->
+          </div>
+          <!--end::Modal header-->
+          <!--begin::Modal body-->
+          <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+            <?php if(@$editMessageInfo != ""): ?>
+              <div class="alert alert-danger" style="background-color: #ea2825;color:#fff;">
+                  <b><?php echo @$editMessageInfo; ?></b>
+              </div>
+              <?php endif; ?>
+              <p id="edit-container"> </p>
+          </div>
+          <!--end::Modal body-->
         </div>
+        <!--end::Modal content-->
       </div>
+      <!--end::Modal dialog-->
     </div>
     <!-- modal edit form end -->
+  </div>
+  <!--end::Content container-->
+</div>
+<!--end::Content-->
+</div>
+<!--end::Content wrapper-->
+</div>
+<!--end:::Main-->
+</div>
+<!--end::Wrapper-->
+</div>
+<!--end::Page-->
+</div>
+<!--end::App-->
 
-    <!-- footer & JavaScript -->
-<?php include_once ROOTPATH.'template/footer.php'; ?>
+<!-- footer & JavaScript -->
+<?php require APPPATH.'Views/template/footer.php'; ?>
+
 <script>
     var inserted=false;
       $(document).ready(function($) {
@@ -263,24 +336,33 @@ $formContent = $modelFormBuilder->start($model.'_table')
       }
     }
 </script>
+
 <script type="text/javascript">
-  (function (NioApp, $) { 
-    function showNotify(data){
-      $('#notification').on("click", function (e) {
-          e.preventDefault();
-          toastr.clear();
-          let status = data.status;
-          if(status){
-              NioApp.Toast(data.message, 'success',{
-                  position: 'bottom-left'
-              });
-          }else{
-              NioApp.Toast(data.message, 'error',{
-                  position: 'bottom-left'
-              });
+  var KTUsersAddUser = function () {
+      // Shared variables
+      const element = document.getElementById('kt_modal_add_model');
+      const modal = new bootstrap.Modal(element);
+
+      // Init add schedule modal
+      var initAddUser = () => {
+          // Close button handler
+          const closeButton = element.querySelector('[data-kt-users-modal-action="close"]');
+          closeButton.addEventListener('click', e => {
+              e.preventDefault();  
+              modal.hide(); 
+          });
+      }
+
+      return {
+          // Public functions
+          init: function () {
+              initAddUser();
           }
-          
-      });
-    }
-  })(NioApp, jQuery);
+      };
+  }();
+
+  // On document ready
+  KTUtil.onDOMContentLoaded(function () {
+      KTUsersAddUser.init();
+  });
 </script>

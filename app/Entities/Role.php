@@ -180,7 +180,7 @@ protected function getPermission(){
 public function getPermissionArray()
 {
 	$query = "select * from permission where role_id=?";
-	$result = $this->query($query,array($this->ID));
+	$result = $this->query($query,array($this->id));
 	$toReturn = array();
 	if (!$result) {
 		return array();
@@ -323,27 +323,33 @@ public function createSuperUser()
 
 public function getModules(){
 	$result = array(
+		'Dashboard' => array(
+			'class' => 'las la-hamburger',
+			'children' => array(
+				'Home' => 'vc/admin/dashboard',
+				'Profile' => 'vc/admin/profile',
+			)
+		),
 		'Invoice Management' => array(
-			'class' => 'ni ni-wallet',
+			'class' => 'las la-file-invoice',
 			'children' => array(
 				'Invoice' => 'vc/admin/invoices',
 			),
 		),
 		'Finance Management' => array(
-			'class' => 'ni ni-wallet',
+			'class' => 'las la-wallet',
 			'children' => array(
 				'Invoice Transaction' => 'vc/create/invoice_transaction',
 			),
 		),
 		'Customer Management'=>array(
-			'class'=>'ni ni-users-fill',
+			'class'=>'las la-user',
 			'children'=>array(
-				'All Customers'=>'vc/create/customers',
-				'Customer Report' => 'vc/admin/customer_report' 
+				'All Customers'=>'vc/create/customers', 
 			)
 		),
 		'Admin Management'=>array(
-			'class'=>'ni ni-user-list',
+			'class'=>'las la-user-lock',
 			'children'=>array(
 				'Manage Admin'=>'vc/create/admin',
 				'Role'=>'vc/create/role',
@@ -357,7 +363,7 @@ public function getModules(){
 public function getExtraModules(){
 	$result = array(
 		'Extra Section' => array(
-			'class' => 'bx-layout',
+			'class' => 'las la-archway',
 			'children' => array(
 				'Customer Profile' => 'vc/admin/view_more/customer/detail',
 			)

@@ -79,15 +79,15 @@ class AdminData
 	private function hasModule($permission,$module,&$res)
 	{
 		if(is_array(array_values($module['children']))){
-			$res =array_intersect(array_keys($permission), array_values_recursive($module['children']));
+			$res = array_intersect(array_keys($permission), array_values_recursive($module['children']));
 		}else{
-			$res =array_intersect(array_keys($permission), array_values($module['children']));
+			$res = array_intersect(array_keys($permission), array_values($module['children']));
 		}
 		
-		if (count($res)==count($module['children'])) {
+		if (count($res) == count($module['children'])) {
 			return 2;
 		}
-		if (count($res)==0) {
+		if (count($res) == 0) {
 			return 0;
 		}
 		else{

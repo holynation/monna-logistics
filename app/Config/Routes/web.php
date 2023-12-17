@@ -59,7 +59,7 @@ $routes->get('forget_password', 'Auth::forget');
 
 $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::web');
-$routes->post('logout', 'Auth::logout');
+$routes->get('logout', 'Auth::logout');
 
 $routes->get('admin/dashboard', 'Viewcontroller::view/admin/dashboard');
 

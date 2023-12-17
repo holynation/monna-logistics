@@ -80,7 +80,7 @@ class TableWithHeaderModel extends Model
 		if(empty($this->_header)){
 			throw new \Exception("The model header can't be empty.");
 		}
-		$this->_actionArray = $action===null?$this->_model::$tableAction:$action;
+		$this->_actionArray = $action === null ? $this->_model::$tableAction : $action;
 		$this->_result.=$this->generateheader($this->_header,$this->_actionArray);
 		return $this;
 	}
@@ -170,15 +170,16 @@ class TableWithHeaderModel extends Model
 
 	//the action array will contain the 
 	private function generateActionHtml($data,$actionArray){//the id will be extracted from
-		$result="<div class='dropdown-menu dropdown-menu-right'>
-			<ul class='link-list-opt no-bdr'>
+		$result="
+			<div class='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4' data-kt-menu='true'>
 		";
-		$result.=$this->buildHtmlAction($data,$actionArray);
-		$result.="</ul></div>";
+		$result.= $this->buildHtmlAction($data,$actionArray);
+		$result.="</div>";
 		return $result;
 	}
 
-	private function buildHtmlAction($data,$actionArray){//the link must be specified for the action that is to be performed
+	//the link must be specified for the action that is to be performed
+	private function buildHtmlAction($data,$actionArray){
 		$result = '';
 		$queryString = null;
 		foreach ($actionArray as $key => $value){
@@ -255,7 +256,7 @@ class TableWithHeaderModel extends Model
 			}else{
 				$editClass ='';
 			}
-			$result.="<li data-item-id='$currentid' data-default='$default' data-critical='$critical' $editClass><a href='$link' class='dropdown-item text-center text-capitalize'>$label</a></li>";
+			$result.="<div class='menu-item px-3' data-item-id='$currentid' data-default='$default' data-critical='$critical' $editClass><a href='$link' class='menu-link px-3 text-capitalize'>$label</a></div>";
 		}
 		return $result;
 	}
@@ -290,7 +291,7 @@ class TableWithHeaderModel extends Model
 	}
 
 	private function generateBody($data,$exclusionArray=array(),$actionArray=array(),$icon=''){
-		$result ='<tbody>';
+		$result ='<tbody class="text-gray-600 fw-semibold">';
 		if (empty($data) || $data==false) {
 			$countHeader = count($this->_header);
 			return "<tbody><tr><td colspan='$countHeader'><div class='alert alert-info text-dark text-center'>
@@ -307,11 +308,6 @@ class TableWithHeaderModel extends Model
 			$result.=$this->generateTableRow($row,$exclusionArray,$actionArray,@$_GET['p_start']+$i);
 			$i++;
 		}
-
-		// for ($i = 0; $i < $countData; $i++) { 
-		// 	$current = $data[$i];
-		// 	$result.=$this->generateTableRow($current,$exclusionArray,$actionArray,@$_GET['p_start']+$i);
-		// }
 		$result.='</tbody>';
 		return $result;
 	}
@@ -417,9 +413,15 @@ class TableWithHeaderModel extends Model
 	}
 
 	private function htmlDropDownAction(){
-		$result = "<a href='#' class='dropdown-toggle btn btn-icon btn-trigger' data-toggle='dropdown'>
-		        <em class='icon ni ni-more-h'></em>
-		    </a> ";
+		$result = "
+			<a href='#' class='btn btn-light btn-active-light-primary btn-sm' data-kt-menu-trigger='click' data-kt-menu-placement='bottom-end'>Actions
+			<span class='svg-icon svg-icon-5 m-0'>
+			  <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+			    <path d='M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z' fill='currentColor' />
+			  </svg>
+			</span>
+			</a>
+		";
 		return $result;
 	}
 
@@ -429,10 +431,9 @@ class TableWithHeaderModel extends Model
 	 * @return string 
 	 */
 	private function actionIcon($actionString){
-		$result="<td class='action-column'><div class='dropdown dropup'>
+		$result="<td class='text-end'>
 					". $this->htmlDropDownAction() ."
 				$actionString
-			</div>
 		</td>";
 		return $result;
 	}
@@ -450,11 +451,11 @@ class TableWithHeaderModel extends Model
 			<tr> $sn";
 		for ($i=0; $i < count($header); $i++) {
 			$item = $header[$i]; 
-			$result.="<th>$item</th>";
+			$result.="<th class='min-w-125px'>$item</th>";
 		}
 		$actionText = '';
 		if ($action!==false && !empty($action)) {
-			$actionText = "<th>Action</th>";
+			$actionText = "<th class='text-end min-w-100px'>Action</th>";
 		}
 		$result.="	$actionText
 				</tr>
