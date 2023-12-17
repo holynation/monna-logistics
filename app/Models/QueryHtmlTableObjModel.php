@@ -207,7 +207,7 @@ class QueryHtmlTableObjModel extends Model
 
 		// check that the query is a select query and that there is id or * field
 		// specified in the query statement
-		if ((strpos($query, "ID") ===false || strpos($query, " * ")===false)  && strpos(strtolower($query), "select") ===false) {
+		if ((strpos($query, "id") ===false || strpos($query, " * ")===false)  && strpos(strtolower($query), "select") ===false) {
 			throw new \Exception("The query must be a select query and the an id field must be set");
 		}
 
@@ -388,7 +388,7 @@ class QueryHtmlTableObjModel extends Model
 		<tr> $emptyHeader $sn";
 
 		for ($i=0; $i < count($keys); $i++) { 
-			if ($keys[$i]=='ID' ||$keys[$i]=='id' ) {
+			if ($keys[$i]=='id' ||$keys[$i]=='id' ) {
 				continue;
 			}
 			$header = removeUnderscore($keys[$i]);
@@ -448,7 +448,7 @@ class QueryHtmlTableObjModel extends Model
 		if($this->_checkBox){
 			extract($this->_checkBoxAttr);
 			// when extracted name,class are the default variable gotten
-			$id = $data['ID'] ?? '';
+			$id = $data['id'] ?? '';
 			$name = $name ?? $this->classname;
 			$name .= '-checkbox';
 			$inputForm = "<input type='checkbox' class='$class' name='".$name."[]' id='".$name."[]' value='$id' />";
@@ -461,7 +461,7 @@ class QueryHtmlTableObjModel extends Model
 		}
 		$keys = array_keys($data);
 		for ($i=0; $i < count($keys); $i++) { 
-			if ($keys[$i] == 'ID' || $keys[$i] == 'id') {
+			if ($keys[$i] == 'id' || $keys[$i] == 'id') {
 				continue;
 			}
 			$current = $data[$keys[$i]];
@@ -590,7 +590,7 @@ class QueryHtmlTableObjModel extends Model
 				$label = $key;
 			}
 
-			$id = $data['ID'] ?? '';
+			$id = $data['id'] ?? '';
 
 			// appending query string to generated link
 			if(!empty($this->queryString)){
@@ -685,7 +685,7 @@ class QueryHtmlTableObjModel extends Model
 						}
 						$foreignTable[]=$tablename;
 						$temp = $parentModel.'.'.$tablename.self::FOREIGN_KEY_END;
-						$usse = isset($tablename::$joinField)?$tablename.'.'.$tablename::$joinField :"$tablename.ID";
+						$usse = isset($tablename::$joinField)?$tablename.'.'.$tablename::$joinField :"$tablename.id";
 						$onclause.=" left join $tablename on $temp =$usse ";
 					}else{
 						$display = $parentModel.'.'.$val;
@@ -828,7 +828,7 @@ class QueryHtmlTableObjModel extends Model
 	* @return model/table name from the query
 	*/
 	private function extractClassnameFromQuery($query){
-		$pos = strpos($query, ".ID");
+		$pos = strpos($query, ".id");
 		if ($pos!==false && strlen($pos) >= 2) {
 			$len = strlen($query);
 			$div = $pos - $len;
@@ -837,7 +837,7 @@ class QueryHtmlTableObjModel extends Model
 			return true;
 		}
 		//if .id is not present then validate the id is present and get the first string after the from keywork
-		$pos = strpos($query, "ID");
+		$pos = strpos($query, "id");
 		if ($pos!==false) {
 			//get the index of from and then get the index of space 
 			$from = stripos($query, 'from');

@@ -1,19 +1,13 @@
 <?php
 namespace App\Controllers;
 
-use App\Entities\Customer;
-use App\Entities\Cashback;
-use App\Entities\Agent;
-use App\Entities\Superagent;
+use App\Entities\Customers;
 use App\Models\WebSessionManager;
 use App\Models\ModelFormBuilder;
 use App\Models\TableWithHeaderModel;
 use App\Models\QueryHtmlTableObjModel;
 use App\Models\FormConfig;
 use App\Models\Custom\AdminData;
-use App\Models\Custom\SuperagentData;
-use App\Models\Custom\NlrcData;
-use App\Models\Custom\InfluencerData;
 use CodeIgniter\I18n\Time;
 
 class Viewcontroller extends BaseController{
@@ -26,9 +20,6 @@ class Viewcontroller extends BaseController{
   private $tableWithHeaderModel;
   private $queryHtmlTableObjModel;
   private $adminData;
-  private $superagentData;
-  private $nlrcData;
-  private $influencerData;
   private $crudNameSpace = 'App\Models\Crud';
 
   public function __construct(){
@@ -82,7 +73,6 @@ public function view($model,$page='index',$third='',$fourth=''){
 
   $data['message'] = $this->webSessionManager->getFlashMessage('message');
   $data['webSessionManager'] = $this->webSessionManager;
-  // sendPageCookie($model,$page);
 
   echo view("$model/$page", $data);
 }
@@ -97,7 +87,7 @@ private function admin($page,&$data)
   $role = false;
   if ($this->webSessionManager->getCurrentUserProp('user_type')=='admin') {
     $admin = loadClass('admin');
-    $admin->ID = $this->webSessionManager->getCurrentUserProp('user_table_id');
+    $admin->id = $this->webSessionManager->getCurrentUserProp('user_table_id');
     $admin->load();
     $data['admin'] = $admin;
     $role = $admin->role;
@@ -121,8 +111,6 @@ private function admin($page,&$data)
   if($this->request->getGet('type')){
     $path .= "?type=".$this->request->getGet('type');
   }
-  
-  // echo $path;exit;
 
   // this approach is use so as to allow this page pass through using a path
   // that is already permitted
@@ -146,19 +134,6 @@ private function adminDashboard(&$data)
   $data = array_merge($data,$this->adminData->loadDashboardData());
 }
 
-private function adminGraph(&$data)
-{
-  $whereClause = null;
-  $startDate = $this->request->getGet('startDate');
-  $endDate = $this->request->getGet('endDate');
-  $paymentStatus = $this->request->getGet('paymentStatus');
-
-  if($startDate && $endDate){
-    $whereClause = " where cast(date_created as date) >= '{$startDate}' and cast(date_created as date) <= '{$endDate}' ";
-  }
-  $data = array_merge($data,$this->adminData->loadGraphData($whereClause));
-}
-
 private function adminPermission(&$data)
 {
   $data['id'] = urldecode($data['id']);
@@ -171,7 +146,6 @@ private function adminPermission(&$data)
   $data['role'] = $newRole;
   $data['allPages'] = $this->adminData->getAdminSidebar(true);
   $sidebarContent = $this->adminData->getCanViewPages($data['role'],true);
-  // print_r($sidebarContent);exit;
   $data['permitPages'] = $sidebarContent;
   $data['allStates'] = $data['role']->getPermissionArray();
   $data['pageTitle'] = 'permission';
@@ -182,7 +156,7 @@ private function adminProfile(&$data)
 {
   $admin = loadClass('admin');
   $admin = new $admin();
-  $admin->ID = $this->webSessionManager->getCurrentUserProp('user_table_id');
+  $admin->id = $this->webSessionManager->getCurrentUserProp('user_table_id');
   $admin->load();
   $data['admin'] = $admin;
 }
@@ -197,64 +171,11 @@ private function adminView_model(&$data){
   $id = (is_numeric($data['id'])) ? $data['id'] : null;
   $model  = ($data['entityName']) ? $data['entityName'] : $data['id'];
   
-  if($model == 'mono_transaction'){
-    $model = 'wallet_payment_history';
-  }
   $newModel = loadClass($model);
   $modelType = '';
-  $modelType = $_GET['type'] ?? "";
-  if($this->request->getGet('super_code')){
-    $modelType = 'all_agent';
-  }
-  
-  $data['customerCount'] = 0;
-  $data['modelStatToolTip'] = null;
-  $data['modelStatTitle'] = null;
-  $data['showViewCount'] = false;
+  $modelType = @$_GET['type'] ?? "";
+
   $pageTitle = $this->getTitlePage($model) ?? ucfirst($modelType).' '.removeUnderscore($model);
-  if($model == 'customer' && $modelType == ''){
-    $data['modelStatTitle'] = "Total User Count";
-    $data['modelStatToolTip'] = "Total User";
-    $data['customerCount'] = Customer::totalCount();
-    $data['showViewCount'] = true;
-    $pageTitle = "All Registered Users";
-  }
-
-  if($model == 'customer' && $modelType == 'verified'){
-    $data['showViewCount'] = true;
-    $data['modelStatTitle'] = "Total User Count";
-    $data['modelStatToolTip'] = "Total Verified User";
-    $data['customerCount'] = Customer::totalCount(" join user on user.user_table_id = customer.id left join user_kyc_details on user_kyc_details.user_id = user.id where user.user_type = 'customer' and user_kyc_details.bvn_status = '1' ");
-    $pageTitle = "All Verified Users";
-  }
-
-  if($model == 'customer' && $modelType == 'unverified'){
-    $data['showViewCount'] = true;
-    $data['modelStatTitle'] = "Total User Count";
-    $data['modelStatToolTip'] = "Total Unverified User";
-    $data['customerCount'] = Customer::totalCount(" join user on user.user_table_id = customer.id left join user_kyc_details on user_kyc_details.user_id = user.id where user.user_type = 'customer' and user_kyc_details.bvn_status is null ");
-    $pageTitle = "All Unverified Users";
-  }
-
-  if($model == 'cashback' && $modelType == 'customer'){
-    $data['showViewCount'] = true;
-    $data['modelStatTitle'] = "Total Users Gameplay Count";
-    $data['modelStatToolTip'] = "Users Gameplay";
-    $data['customerCount'] = Cashback::totalCount("where cashback_type = 'customer'") ?? 0;
-    $pageTitle = "All Registered Users";
-  }
-
-  if($model == 'cashback' && $modelType == 'agent'){
-    $data['showViewCount'] = true;
-    $data['modelStatTitle'] = "Total Agents Gameplay Count";
-    $data['modelStatToolTip'] = "Agents Gameplay";
-    $data['customerCount'] = Cashback::totalCount("where cashback_type = 'agent'") ?? 0;
-    $pageTitle = "All Registered Agent";
-  }
-
-  if($model == 'cashback' && $modelType == 'checkin'){
-    $pageTitle = "All checkin data";
-  }
 
   $result = $newModel->viewList($id,$modelType,200,false,$this->request);
   $data['modelName'] = $model;
@@ -268,13 +189,12 @@ private function adminView_model(&$data){
   $data['model'] = $model;
   $data['modelObj'] = $newModel;
   $data['db'] = $this->db;
-
 }
 
 private function adminView_more(&$data){
-  if($this->webSessionManager->getCurrentUserProp('user_type') == 'superagent' && isset($data['superagentID'])){
-    $modelName = 'superagent';
-    $id = $data['superagentID'];
+  if($this->webSessionManager->getCurrentUserProp('user_type') == 'customer' && isset($data['customerID'])){
+    $modelName = 'customer';
+    $id = $data['customerID'];
     $modelType = 'profile';
   }
   else{
@@ -291,37 +211,8 @@ private function adminView_more(&$data){
   $result = $newModel->viewList($id,$modelType,1,true);
   if($modelName == 'customer'){
     $customer = new Customer($result);
-    $wallet = loadClass('wallet');
-    $bonusWallet = loadClass('bonus_wallet');
     $userID = $customer->user->ID;
-
     $data['user_id'] = $userID;
-    $data['user_kyc'] = $customer->user->user_kyc_details;
-    $data['walletBalance'] = $wallet->getWalletBalance($userID);
-    $data['bonusWalletBalance'] = $bonusWallet->getWalletBalance($userID);
-  }
-  else if($modelName == 'agent'){
-    $agent = new Agent($result);
-    $wallet = loadClass('wallet');
-    $bonusWallet = loadClass('bonus_wallet');
-    $userID = $agent->user->ID;
-
-    $data['user_id'] = $userID;
-    $data['user_kyc'] = $agent->user->user_kyc_details;
-    $data['walletBalance'] = $wallet->getWalletBalance($userID);
-    $data['bonusWalletBalance'] = $bonusWallet->getWalletBalance($userID);
-  }
-  else if($modelName == 'superagent'){
-    $superagent = new Superagent($result);
-    $wallet = loadClass('wallet');
-    $bonusWallet = loadClass('bonus_wallet');
-    $userID = $superagent->user->ID;
-
-    $data['user_id'] = $userID;
-    $data['modelEntityID'] = $result['ID'];
-    $data['user_kyc'] = $superagent->user->user_kyc_details;
-    $data['walletBalance'] = $wallet->getWalletBalance($userID);
-    $data['bonusWalletBalance'] = $bonusWallet->getWalletBalance($userID);
   }
 
   $data['modelStatus'] = (!$result) ? false : true;
@@ -338,190 +229,12 @@ private function getTitlePage(string $modelName){
   return array_key_exists($modelName, $result) ? $result[$modelName] : null;
 }
 
-private function adminVerify_payment(&$data){
-  $wallet_history = loadClass('wallet_payment_history');
-  $user = loadClass('user');
-
-  $whereClause = "where (payment_status = 'pending' or payment_status = 'success') and payment_channel = 'interswitch'";
-  $startDate = $this->request->getGet('startDate');
-  $endDate = $this->request->getGet('endDate');
-  $paymentStatus = $this->request->getGet('paymentStatus');
-  if($paymentStatus){
-    $whereClause = "where payment_status = '{$paymentStatus}' and payment_channel = 'interswitch'";
-  }
-
-  if($startDate && $endDate){
-    $whereClause .= " and cast(date_created as date) >= '{$startDate}' and cast(date_created as date) <= '{$endDate}' ";
-  }
-
-  $result = $wallet_history->allNonObject($count,false,0,null,'order by date_created desc,payment_status asc',$whereClause);
-  $data['modelStatus'] = empty($result) ? false : true;
-  $data['modelPayload'] = $result;
-  $data['userObject'] = $user;
-}
-
-private function adminUpload_timestamp(&$data){
-  $data['queryHtmlTableObjModel'] = $this->queryHtmlTableObjModel;
-}
-
-private function adminUpload_numbers(&$data){
-  $data['queryHtmlTableObjModel'] = $this->queryHtmlTableObjModel;
-}
-
-private function adminSettings(&$data){
-  $settings = $this->getAllSettings();
-  $data['setting'] = $settings;
-}
-
-private function getAllSettings(){
-  $query = $this->db->table('settings')->get();
-  
-  $settingsResult = array();
-  
-  foreach ($query->getResultArray() as $settingsName => $settingsValue)
-  {
-      $settingsResult[$settingsValue['settings_name']] =  $settingsValue['settings_value'];
-  }
-  
-  return $settingsResult;
-}
-
-private function superagent($page,&$data){
-  $this->superagentData = new SuperagentData;
-  $superagent = loadClass('superagent');
-  $superagent->ID = $this->webSessionManager->getCurrentUserProp('user_type')=='admin'?$data['id']:$this->webSessionManager->getCurrentUserProp('user_table_id');
-  $superagent->load();
-  $this->superagentData->setSuperagent($superagent);
-
-  if($this->webSessionManager->getCurrentUserProp('has_change_password') == 0){
-    $data['hasChangePassword'] = $this->webSessionManager->getCurrentUserProp('has_change_password');
-  }
-  $data['superagent'] = $superagent;
-}
-
-private function superagentDashboard(&$data){
-  $data = array_merge($data,$this->superagentData->loadDashboardInfo());
-}
-
-private function superagentAgent_network(&$data){
-  $data = array_merge($data,$this->superagentData->getAgents());
-}
-
-private function superagentRequest_report(&$data){
-  $data['db'] = $this->db;
-  $startDate = isset($_GET['startDate']) && !empty($_GET['startDate']) ? $_GET['startDate'] : null;
-  $endDate = isset($_GET['endDate']) && !empty($_GET['endDate']) ? $_GET['endDate'] : null;
-  $id = !empty($data['id']) ? $data['id'] : (isset($_GET['agent']) && !empty($_GET['agent']) ? $_GET['agent'] : false);
-
-  if(!$id){
-    redirect()->back()->with('error','Kindly choose an agent');
-    return;
-  }
-  $data = array_merge($data,$this->superagentData->getReport($startDate,$endDate,$id));
-}
-
-private function superagentWallet(&$data){
-  $id = $this->webSessionManager->getCurrentUserProp('ID');
-  $commission = loadClass('commission');
-  $wallet = loadClass('wallet');
-  $userKyc = loadClass('user_kyc_details');
-  $wallet = $wallet->getWhere(['user_id'=>$id],$count,0,1,false);
-  $commission = $commission->getWhere(['user_id'=>$id],$count,0,20,false,'order by date_created desc');
-  //using the three where parameter so that user must have had account setup already
-  $userKyc = $userKyc->getwhere(['user_id'=>$id,'bvn_status'=>'1','status'=>'1'],$count,0,1,false);
-  $userKyc = $userKyc ? true : false;
-
-  $data['db'] = $this->db;
-  $data['wallet'] = 0;
-  $data['commissionData'] = [];
-  if($wallet){
-    $data['wallet'] = $wallet[0]->amount;
-  }
-  if($commission){
-    $data['commission'] = $commission;
-  }
-  $data['userKycStatus'] = $userKyc;
-}
-
-private function superagentNotices(&$data){
-  $notices = loadClass('notices');
-  $notices = $notices->getWhere(['status'=>'1'],$count,0,20,false,'order by date_created desc');
-
-  $data['noticesData'] = [];
-
-  if($notices){
-    $data['noticesData'] = $notices;
-  }
-}
-
-private function superagentProfile(&$data){
-
-}
-
-private function nlrc($page, &$data){
-  $this->nlrcData = new NlrcData;
-  $user = loadClass('user');
-  $user->ID = $data['id'];
-  $user->load();
-
-  if($this->webSessionManager->getCurrentUserProp('has_change_password') == 0){
-    $data['hasChangePassword'] = $this->webSessionManager->getCurrentUserProp('has_change_password');
-  }
-  $data['user'] = $user;
-}
-
-private function nlrcDashboard(&$data)
-{
-  $data = array_merge($data, $this->nlrcData->loadDashboardData());
-}
-
-private function influencer($page, &$data){
-  $this->influencerData = new InfluencerData;
-  $influencer = loadClass('influencer');
-  $influencer->ID = $this->webSessionManager->getCurrentUserProp('user_type')=='admin'?$data['id']:$this->webSessionManager->getCurrentUserProp('user_table_id');
-  $influencer->load();
-
-  if($this->webSessionManager->getCurrentUserProp('has_change_password') == 0){
-    $data['hasChangePassword'] = $this->webSessionManager->getCurrentUserProp('has_change_password');
-  }
-
-  $this->influencerData->setInfluencer($influencer);
-
-  if($this->webSessionManager->getCurrentUserProp('has_change_password') == 0){
-    $data['hasChangePassword'] = $this->webSessionManager->getCurrentUserProp('has_change_password');
-  }
-
-  $data['influencer'] = $influencer;
-}
-
-private function influencerDashboard(&$data)
-{
-  $data = array_merge($data, $this->influencerData->loadDashboardData());
-}
-
-private function influencerProfile(&$data){
-  $wallet = loadClass('wallet');
-  $userID = $this->webSessionManager->getCurrentUserProp('ID');
-  $balance = $wallet->getWalletBalance($userID);
-  $data = array_merge($data, ['balance' => $balance]);
-}
-
-private function influencerWallet(&$data){
-  $id = $this->webSessionManager->getCurrentUserProp('ID');
-  $wallet = loadClass('wallet');
-  $wallet = $wallet->getWalletBalance($id);
-
-  $data['db'] = $this->db;
-  $data['wallet'] = $wallet ?? 0;
-  $data['commission'] = [];
-}
-
 //function for loading edit page for general application
 public function edit($model,$id){
   $userType = $this->webSessionManager->getCurrentUserProp('user_type');
   if($userType == 'admin'){
     $admin = loadClass('admin');
-    $admin->ID = $this->webSessionManager->getCurrentUserProp('user_table_id');
+    $admin->id = $this->webSessionManager->getCurrentUserProp('user_table_id');
     $admin->load();
     $role = $admin->role;
     $role->checkWritePermission();
@@ -585,7 +298,7 @@ private function add($model,$type,$param=null)
   $role =false;
   if($userType == 'admin'){
     $admin = loadClass('admin');
-    $admin->ID = $this->webSessionManager->getCurrentUserProp('user_table_id');
+    $admin->id = $this->webSessionManager->getCurrentUserProp('user_table_id');
     $admin->load();
     $role = $admin->role;
     $data['admin'] = $admin;
@@ -600,13 +313,6 @@ private function add($model,$type,$param=null)
     $sidebarContent = $this->adminData->getCanViewPages($role);
     $data['canView'] = $sidebarContent;
     $role = true;
-  }
-  else if($userType == 'staff'){
-    $staff = loadClass('staff');
-    $staff->ID = $this->webSessionManager->getCurrentUserProp('user_table_id');
-    $staff->load();
-    $role = true;
-    $data['staff'] = $staff;
   }
 
   if ($model == false) {

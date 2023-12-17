@@ -122,22 +122,37 @@ public function getStatusFormField($value = ''){
 
 public function delete($id=null,&$db=null)
 {
-	if ($id==null) {
-		$id=$this->id;
+	$db = db_connect();
+	$db->transBegin();
+	
+	if ($id == null) {
+		$id = $this->id;
 	}
-	if ($id==1) {
+	if ($id == 1) {
 		return false;
 	}
-	return parent::delete($id,$db);
+	if(parent::delete($id,$db)){
+		$query = "delete from permission where role_id = ?";
+		if($this->query($query,array($id))){
+			$db->transCommit();
+			return true;
+		}
+		else{
+			$db->transRollback();
+			return false;
+		}
+	}
+	else{
+		$db->transRollback();
+		return false;
+	}
 }
 
 protected function getAdmin(){
 	$query ='SELECT * FROM admin WHERE role_id=?';
 	$id = $this->array['id'];
-	$db = $this->db;
-	$result = $db->query($query,array($id));
-	$result =$result->getResultArray();
-	if (empty($result)) {
+	$result = $this->query($query,array($id));
+	if (!$result) {
 		return false;
 	}
 	$resultobjects = array();
@@ -151,10 +166,8 @@ protected function getAdmin(){
 protected function getPermission(){
 	$query ='SELECT * FROM permission WHERE role_id=?';
 	$id = $this->array['id'];
-	$db = $this->db;
-	$result = $db->query($query,array($id));
-	$result =$result->getResultArray();
-	if (empty($result)) {
+	$result = $this->query($query,array($id));
+	if ($result){
 		return false;
 	}
 	$resultobjects = array();
@@ -167,7 +180,7 @@ protected function getPermission(){
 public function getPermissionArray()
 {
 	$query = "select * from permission where role_id=?";
-	$result = $this->query($query,array($this->id));
+	$result = $this->query($query,array($this->ID));
 	$toReturn = array();
 	if (!$result) {
 		return array();
@@ -180,7 +193,7 @@ public function getPermissionArray()
 
 public function processPermission($update,$remove)
 {
-	$db = $this->db;
+	$db = db_connect();
 	$id = $db->escape($this->id);
 	$removeQuery=$this->buildRemoveQuery($remove,$id);
 	$updateQuery = $this->buildUpdateQuery($update,$id);
@@ -205,7 +218,7 @@ private function buildUpdateQuery($update,$id)
 {
 	$query = "insert into permission(role_id,path,permission) values ";
 	$additional = '';
-	$db = $this->db;
+	$db = db_connect();
 	foreach ($update as $value) {
 		$path = $db->escape($value['path']);
 		$permission = $db->escape($value['permission']);
@@ -230,7 +243,7 @@ private function buildRemoveQuery($remove,$id)
 
 public function canView($path)
 {
-	$db = $this->db;
+	$db = db_connect();
 	$path = $db->escape($path);
 	$query = "select * from permission where role_id=? and $path like concat('%',path,'%')";
 	$result = $this->query($query,[$this->id]);
@@ -239,7 +252,7 @@ public function canView($path)
 
 public function canWrite($path)
 {
-	$db = $this->db;
+	$db = db_connect();
 	$path = $db->escape($path);
 	$query = "select * from permission where role_id=? and $path like concat('%',path,'%') and permission='w'";
 	$result = $this->query($query,[$this->id]);
@@ -275,9 +288,9 @@ private function extractBase($path)
 
 public function createSuperUser()
 {
-	$db = $this->db;
+	$db = db_connect();
 	$db->transBegin();
-	$query="insert into role(ID,role_title) values(1,'superadmin') on duplicate key update role_title=values(role_title)";
+	$query="insert into role(id,role_title) values(1,'superadmin') on duplicate key update role_title=values(role_title)";
 	if ($this->query($query)) {
 		$modules = array_merge($this->getModules(),$this->getExtraModules());
 		$q = "insert into permission(role_id,path,permission) values(?,?,?) on duplicate key update permission=values(permission)";
@@ -310,83 +323,30 @@ public function createSuperUser()
 
 public function getModules(){
 	$result = array(
-		'Manage Wallet' => array(
+		'Invoice Management' => array(
 			'class' => 'ni ni-wallet',
 			'children' => array(
-				'Interswitch Payments' => 'vc/admin/verify_payment',
-				'Bloc Payments' => 'vc/admin/view_model/mono_transaction',
-				'Wallet Transaction' => 'vc/create/transaction_history'
-			)
+				'Invoice' => 'vc/admin/invoices',
+			),
 		),
-		'Manage Payouts' => array(
-			'class' => 'ni ni-wallet-out',
+		'Finance Management' => array(
+			'class' => 'ni ni-wallet',
 			'children' => array(
-				'Pending Withdrawals' => 'vc/admin/view_model/withdrawal_request?type=pending',
-				'Cancelled Withdrawals' => 'vc/admin/view_model/withdrawal_request?type=failed',
-				'Approved Withdrawals' => 'vc/admin/view_model/withdrawal_request?type=approved'
-			)
+				'Invoice Transaction' => 'vc/create/invoice_transaction',
+			),
 		),
-		'Manage Gameplays' => array(
-			'class' => 'ni ni-ticket-plus',
-			'children' => array(
-				'Gameplay (Users)' => 'vc/admin/view_model/cashback?type=customer',
-				'Gameplay (Agent)' => 'vc/admin/view_model/cashback?type=agent',
-				'Check-in Data' => 'vc/admin/view_model/cashback?type=checkin'
-			)
-		),
-		'Manage Winner(s)' => array(
-			'class' => 'ni ni-ticket-plus',
-			'children' => array(
-				'Daily Winner' => 'vc/admin/view_model/daily_winner?type=daily',
-				'Daily Winner Archives' => 'vc/admin/view_model/daily_winner?type=archive',
-				'Daily Timestamp' => 'vc/create/daily_timestamp',
-				'Trench Burster' => 'vc/admin/view_model/trench_burster',
-				'Boom code Winner' => 'vc/create/boom_points',
-			)
-		),
-		'Users Management'=>array(
+		'Customer Management'=>array(
 			'class'=>'ni ni-users-fill',
 			'children'=>array(
-				'All Users'=>'vc/admin/view_model/customer',
-				'Verified Users'=>'vc/admin/view_model/customer?type=verified',
-				'Unverified Users'=>'vc/admin/view_model/customer?type=unverified',
-				'Agents'=>'vc/create/agent',
-				// 'Users Kyc' => 'vc/create/user_kyc_details'
+				'All Customers'=>'vc/create/customers',
+				'Customer Report' => 'vc/admin/customer_report' 
 			)
 		),
 		'Admin Management'=>array(
 			'class'=>'ni ni-user-list',
 			'children'=>array(
 				'Manage Admin'=>'vc/create/admin',
-				'Manage Super Agent'=>'vc/admin/view_model/superagent',
-				'Manage NLRC' => 'vc/create/user',
-				'Manage Influencer' => 'vc/create/influencer',
 				'Role'=>'vc/create/role',
-			)
-		),
-		'Support' => array(
-			'class' => 'ni ni-shield',
-			'children' => array(
-				'Notification' => 'vc/create/notification',
-				'Notices' => 'vc/create/notices',
-				'Disputes' => 'vc/create/disputes',
-				'Statistics' => 'vc/admin/graph',
-				// 'Audit Logs' => 'vc/create/audit_log',
-				// 'Webhook Logs' => 'vc/create/webhook_logs',
-			)
-		),
-		'App Setting' => array(
-			'class' => 'ni ni-grid-alt-fill',
-			'children' => array(
-				'Share Ads' => 'vc/create/share_ads',
-				'General' => 'vc/admin/settings',
-				'Spinwheel' => 'vc/create/spinwheel_setting',
-				'BoomCode' => 'vc/create/boomcode_setting',
-				'Crossover' => 'vc/create/giveaway_setting',
-				'Bank Lists' => 'vc/create/bank_lists',
-				// 'Time Percentage' => 'vc/create/time_percentage',
-				// 'Boom Numbers' => 'vc/admin/upload_timestamp',
-				// 'Generated Numbers' => 'vc/admin/upload_numbers',
 			)
 		),
 
@@ -399,17 +359,7 @@ public function getExtraModules(){
 		'Extra Section' => array(
 			'class' => 'bx-layout',
 			'children' => array(
-				'Customer Details' => 'vc/admin/view_more/customer/verified',
 				'Customer Profile' => 'vc/admin/view_more/customer/detail',
-				'Customer Wallet' => 'vc/admin/view_more/customer/wallet',
-				'View Profile' => 'vc/admin/view_more/profile',
-				'View Agent' => 'vc/admin/view_more/agent',
-				'View Superagent Agent' => 'vc/admin/view_model/agent',
-				'View Transaction History' => 'vc/admin/view_model/transaction_history',
-				'View Superagent' => 'vc/admin/view_more/superagent',
-				'View Cashbacks' => 'vc/create/cashback',
-				'Cashback Users' => 'vc/admin/view_more/cashback/customer',
-				'Cashback Detail' => 'vc/admin/view_more/cashback/detail'
 			)
 		)
 	);

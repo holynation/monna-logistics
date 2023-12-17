@@ -180,7 +180,7 @@ protected function getUser()
 		return null;
 	}
 	$id = $this->array['id'];
-	$db = $this->db;
+	$db = db_connect();
 	$result = $db->query($query,[$id]);
 	$result = $result->getResultArray();
 	if (empty($result)) {
@@ -198,14 +198,14 @@ public function enable($id=null,&$db=null)
 	if ($id == NULL) {
 		$id = $this->array["id"];
 	}
-	$db = $this->db;
+	$db = db_connect();
 	$db->transBegin();
 	return $this->setEnabled($id,1,$db);
 }
 
 public function delete($id=null,&$db=null)
 {  
-    $db = $db ?? $this->db;
+    $db = $db ?? db_connect();
     $db->transBegin();
     $customer = new Customer(['id'=>$id]);
     $customer->load();

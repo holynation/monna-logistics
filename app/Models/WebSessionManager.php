@@ -7,7 +7,7 @@ use App\Models\Crud;
 
 class WebSessionManager
 {
-   private $defaultType = array("admin","customer");
+   private $defaultType = array("admin","customers");
    private $session;
 
 	public function __construct()
@@ -110,7 +110,7 @@ class WebSessionManager
 	 * @return boolean [true if the session is active or false otherwise]
 	 */
 	public function isSessionActive(){
-		$userid = $this->session->get('ID');
+		$userid = $this->session->get('id');
 		if (!empty($userid)) {
 			return true;
 		}
@@ -178,7 +178,7 @@ class WebSessionManager
       }
       
       $userType = loadClass($userType);
-      $result = new $userType(array('ID'=>$st));
+      $result = new $userType(array('id'=>$st));
       $result->load();
       return $result;
 	}

@@ -9,9 +9,9 @@ class Crud
 	use CrudInfo;
 
 	protected $array = []; // array containing the field  and value of the object inform of an associateive array
-	protected $foreignKeyEnd = '_id';
+	protected $foreignKeyEnd ='_id';
 	static $baseurl;
-	protected $db;
+	private $db;
 	private $entitiesNameSpace = 'App\Entities\\';
 	private $modelPaging = false;
 

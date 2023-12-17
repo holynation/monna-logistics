@@ -20,7 +20,7 @@ protected static $tablename = "User";
 * This array contains the field that can be null
 * @var array
 */
-public static $nullArray = ['token','last_logout','referral_code','username_2','user_table_id','last_login','status'];
+public static $nullArray = ['last_logout','user_table_id','last_login','status'];
 
 /** 
 * This are fields that must be unique across a row in a table.
@@ -57,14 +57,14 @@ public static $uniqueArray = [];
 * of the field
 * @var array
 */
-public static $typeArray = ['username' => 'varchar','username_2' => 'varchar','password' => 'varchar','user_type' => 'enum','user_table_id' => 'int','token' => 'text','last_login' => 'timestamp','last_logout' => 'timestamp','date_created' => 'timestamp','status' => 'tinyint', 'referral_code' => 'varchar'];
+public static $typeArray = ['username' => 'varchar','password' => 'varchar','user_type' => 'enum','user_table_id' => 'int','token' => 'text','last_login' => 'timestamp','last_logout' => 'timestamp','date_created' => 'timestamp','status' => 'tinyint'];
 
 /** 
 * This is a dictionary that map a field name with the label name that
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['ID' => '','username' => '','username_2' => '','password' => '','user_type' => '','user_table_id' => '','token' => '','last_login' => '','last_logout' => '','date_created' => '','status' => '','referral_code'=>''];
+public static $labelArray = ['ID' => '','username' => '','password' => '','user_type' => '','user_table_id' => '','token' => '','last_login' => '','last_logout' => '','date_created' => '','status' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -193,10 +193,8 @@ protected function getUser_table(){
 		return null;
 	}
 	$id = $this->array['id'];
-	$db = $this->db;
-	$result = $db->query($query,[$id]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
+	$result = $this->query($query,[$id]);
+	if (!$result) {
 		return false;
 	}
 	$resultObject = new \App\Entities\User_table($result[0]);
@@ -208,10 +206,8 @@ protected function getCustomer(){
 	if (!isset($this->array['user_table_id'])) {
 		return null;
 	}
-	$db = $this->db;
-	$result = $db->query($query,[$this->array['user_table_id']]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
+	$result = $this->query($query,[$this->array['user_table_id']]);
+	if (!$result) {
 		return null;
 	}
 	return new \App\Entities\Customer($result[0]);
@@ -219,7 +215,7 @@ protected function getCustomer(){
 
 //this function will return the last auto generated id of the last insert statement
 public function getLastInsertId(){
-	return getLastInsertId($this->db);
+	return getLastInsertId(db_connect());
 }
 
 public function updatePassword($dataID,$password,$type=null)
@@ -229,7 +225,7 @@ public function updatePassword($dataID,$password,$type=null)
 		$field = (is_numeric($dataID)) ? 'user_table_id' : 'username';
 		$dateChange = date('Y-m-d H:i:s');
 		$query = "update user set password = ?,last_change_password='$dateChange' where $field=? and user_type=?";
-		$db = $this->db;
+		$db = db_connect();
 		$db->transBegin();
 		
 		$param = array($password,$dataID,$type);
@@ -245,8 +241,8 @@ public function updatePassword($dataID,$password,$type=null)
 
 public function updateStatus(int $id,string $userType){
 	if(isset($id,$userType)){
-		$query = "update user,$userType set user.status = '1',$userType.status='1' where user.user_table_id = $userType.id and user.id = ? and user.user_type=?";
-		$db = $this->db;
+		$query = "update user,$userType set user.status = '1',$userType.status='1' where user.user_table_id = $userType.id and user.ID = ? and user.user_type=?";
+		$db = db_connect();
 		$db->transBegin();
 		if($this->query($query,[$id,$userType])){
 			$db->transCommit();
@@ -267,7 +263,7 @@ public function disableAllPasswordOTPs(string $userType, int $user_id)
 public function find($user = null){
 	if($user){
 		$field = (is_numeric($user)) ? 'username' : 'username';
-		$db = $this->db;
+		$db = db_connect();
 		$builder = $db->table('user');
 	   $data = $builder->getWhere(array($field => $user));
 	 
@@ -282,8 +278,9 @@ public function find($user = null){
 
 public function findBothOld($user, string $userType){
 	if($user){
+		$db = db_connect();
 		$query = "SELECT * from user where (username = :username: or username_2 = :username:) and user_type = :user_type:";
-	   $data = $this->db->query($query,['username'=>$user, 'user_type'=>$userType]);
+	   $data = $db->query($query,['username'=>$user, 'user_type'=>$userType]);
 	   if($data->getNumRows() > 0){
 	   	$this->_data = new User($data->getResultArray()[0]); // setting the data value of a user to making it public
 	   	return true;
@@ -295,23 +292,24 @@ public function findBothOld($user, string $userType){
 public function findBoth($user = null){
 	if($user){
 		$query = "SELECT * from user where (username = :username:) and (user_type = :admin:)";
-	   $data = $this->db->query($query,
+		$db = db_connect();
+	   $data = $db->query($query,
 	   	[
-	   		'username'=> $user,
-	   		'admin'=>'admin',
-		   ]
-		);
+	   		'username' => $user,
+	   		'admin' => 'admin'
+	   	]
+	   );
 	   if($data->getNumRows() > 0){
-	   	$this->_data = new User($data->getResultArray()[0]); // setting the data value of a user to making it public
+	   	$this->_data = new User($data->getResultArray()[0]); // set value of a user to making it public
 	   	return true;
-	   }	
+	   }
 	}
  	return false;
 }
 
 public function findByUserTypeID(int $userID,string $userType){
 	if($userID){
-		$db = $this->db;
+		$db = db_connect();;
 		$builder = $db->table('user');
 	   $data = $builder->getWhere(array('user_type'=>$userType,'user_table_id'=>$userID));
 	 
@@ -326,7 +324,7 @@ public function findByUserTypeID(int $userID,string $userType){
 public function findUserProp($user = null){
 	if($user){
 		$field = (is_numeric($user)) ? 'ID' : 'username';
-		$db = $this->db;
+		$db = db_connect();
 		$builder = $db->table('user');
 	   $data = $builder->getWhere(array($field => $user));
 	 
@@ -337,17 +335,6 @@ public function findUserProp($user = null){
 	}
 
  	return false;		
-}
-
-public function memberLogin(){
-	// this handles the remember me function
-	if($this->dataExists()){
-		$userID = $this->data()->id;
-		$newUser = new User();
-		$userRes = $newUser->getWhere(array('ID'=>$userID,'status'=>'1'),$count,0,1,false);
-		$userRes = $userRes[0];
-		$this->webSessionManager->saveCurrentUser($userRes);
-	}
 }
 
 public function dataExists(){

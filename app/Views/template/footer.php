@@ -23,7 +23,6 @@
     <script src="<?= base_url('assets/plugins/custom/datatables/datatables.bundle.js'); ?>"></script>
     <script src="<?= base_url('assets/plugins/custom/vis-timeline/vis-timeline.bundle.js'); ?>"></script>
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
@@ -36,10 +35,7 @@
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="<?= base_url('assets/js/widgets.bundle.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/custom/apps/chat/chat.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/custom/utilities/modals/upgrade-plan.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/custom/utilities/modals/bidding.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/custom/utilities/modals/users-search.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/custom.js'); ?>"></script>
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
   </body>

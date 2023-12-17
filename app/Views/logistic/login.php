@@ -87,6 +87,9 @@
                                 </div>
                                 <!--end::Input group=-->
 
+                                <input type="hidden" name="isajax" value="true">
+                                <input type="hidden" id='base_path' value="<?php echo base_url(); ?>">
+
                                 <!--begin::Submit button-->
                                 <div class="d-grid mb-10">
                                     <button type="submit" id="btnLogin" class="btn btn-primary">
@@ -135,12 +138,11 @@
                 $("#notify").text('').show();
                 if (data.status) {
                     var path = data.message;
-                    console.log('got here');
-                    // location.assign(path);
+                    location.assign(path);
                 }
                 else{
                   $("#btnLogin").removeClass("disabled").removeAttr('disabled').html("Sign in");
-                  $("#notify").text(data.message).addClass("alert alert-danger alert-dismissible show text-center").css({"font-size":"12.368px"}).append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>');
+                  $("#notify").text(data.message).addClass("alert alert-danger alert-dismissible show text-center").css({"font-size":"12.368px"});
                 }
             }
         </script>

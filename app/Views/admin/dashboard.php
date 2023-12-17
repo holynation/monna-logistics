@@ -16,7 +16,7 @@
                 <!--begin::Row-->
                 <div class="row gy-5 g-xl-10">
                     <!--begin::Col-->
-                    <div class="col-xl-4 mb-xl-10">
+                    <div class="col-4 mb-xl-10">
                         <div class="card overflow-hidden h-md-50 mb-5 mb-xl-10">
                             <!--begin::Card body-->
                             <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
@@ -47,7 +47,7 @@
                     <!--end::Col-->
 
                     <!--begin::Col-->
-                    <div class="col-xl-4 mb-xl-10">
+                    <div class="col-4 mb-xl-10">
                         <div class="card overflow-hidden h-md-50 mb-5 mb-xl-10">
                             <!--begin::Card body-->
                             <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
@@ -78,7 +78,7 @@
                     <!--end::Col-->
 
                     <!--begin::Col-->
-                    <div class="col-xl-4 mb-xl-10">
+                    <div class="col-4 mb-xl-10">
                         <div class="card overflow-hidden h-md-50 mb-5 mb-xl-10">
                             <!--begin::Card body-->
                             <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">

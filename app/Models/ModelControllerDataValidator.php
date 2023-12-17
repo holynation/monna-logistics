@@ -2,7 +2,7 @@
 
 /**
 * The controller that validate forms that should be inserted into a table based on the request url.
-each method wil have the structure validate[modelname]Data
+* each method wil have the structure validate[modelname]Data
 */
 namespace App\Models;
 
@@ -13,186 +13,85 @@ class ModelControllerDataValidator
 		helper('string');
 	}
 
-	public function validateSuper_agentData(&$data,$type,&$db,&$message)
-	{
-		if($type == 'insert'){
-			
-		}
-		return true;
-	}
-
-	public function validateInfluencerData(&$data,$type,&$db,&$message)
-	{
-		if($type == 'insert'){
-			
-		}
-		return true;
-	}
-
-	public function validateUserData(&$data,$type,&$db,&$message)
-	{
-		if($type == 'insert'){
-			$data['user_type'] = 'nlrc';
-			$data['user_table_id'] = 0;
-			$data['password'] = encode_password($data['password']);
-		}
-
-		return true;
-	}
-
-	public function validateCashbackData(&$data,$type,&$db,&$message)
-	{
-		if($type == 'insert'){
-			$validation = \Config\Services::validation();
-			$customer = getCustomer();
-			$wallet = loadClass('wallet');
-			$bonusWallet = loadClass('bonus_wallet');
-			$cashback = loadClass('cashback');
-			$cashbackType = 'customer';
-			if($customer->user_type == 'agent'){
-				$validationData = $data;
-				$validation->setRule('cust_fullname', 'customer fullname', 'required');
-				$validation->setRule('cust_phone_number', 'customer phone number', 'required');
-				$validation->setRule('bank_code', 'customer bank code', 'required');
-
-				if (!$validation->run($validationData)) {
-					$errors = $validation->getErrors();
-					foreach($errors as $error){
-						$message = $error;
-						return false;
-					}
-				}
-
-				$currrentBalance = $wallet->getWalletBalance($customer->user_id);
-				if(!$agent->first_wallet_pay && $currrentBalance < 5000){
-					$message = "Please fund your account with more than 5000 as your first wallet funding";
-					return false;
-				}
-
-				unset($data['customer_id']);
-				$cashbackType = 'agent';
-			}
-
-			$validationData = $data;
-			// checks for first wallet funding minimum using cashback since you won't be able to play
-			// without funding your wallet
-			$cashbackFirst = $cashback->getWhere(['user_id' => $customer->user_id],$cashbackCount,0,null,false);
-			if(!$cashbackFirst ){
-				$currentWalletBalance = $wallet->getWalletBalance($customer->user_id);
-				$validationData = array_merge($validationData, ['first_wallet_pay' => $currentWalletBalance]);
-			}
-
-			$customer->user_type == 'customer' ? $validation->setRule('game_type', 'game type', 'required|in_list[normal,check_in,cashout]') : null;
-			$data['game_type'] != 'cashout' ? $validation->setRule('alert_type', 'alert type', 'required|in_list[credit,debit]') : null;
-			$validation->setRule('amount', 'amount', 'required|is_natural_no_zero');
-			(!$cashbackFirst) ? $validation->setRule('first_wallet_pay', 'first wallet funding', 'required|greater_than_equal_to[500]', [
-				'greater_than_equal_to' => 'First wallet funding minimum is 500 Naira. Kindly top up your wallet.'
-			]) : null;
-
-			if (!$validation->run($validationData)) {
-				$errors = $validation->getErrors();
-				foreach($errors as $error){
-					$message = $error;
-					return false;
-				}
-			}
-
-			$dateReceiveAlert = (isset($data['date_received_alert']) && $data['date_received_alert']) ? formatToUTC($data['date_received_alert']) : date('Y-m-d H:i:s');
-			if($data['game_type'] == 'normal'){
-				$data['amount'] = str_replace(',', '', $data['amount']);
-				$currentWalletBalance = $wallet->getWalletBalance($customer->user_id);
-				$deductAmount = $wallet->calculateStakeAmount($data['amount']);
-				if($currentWalletBalance <= 0 || $deductAmount > $currentWalletBalance){
-					$message = "Oops, you don't have enough amount in your wallet. Please fund your wallet";
-					return false;
-				}
-
-				$data['stake_amount'] = str_replace(',', '', $data['stake_amount']);
-				if($deductAmount != round($data['stake_amount'], 2)){
-					$message = "Oops, stake amount is not accurate";
-					return false;
-				}
-			}
-
-			if($data['game_type'] == 'check_in'){
-				$currentWalletBalance = $wallet->getWalletBalance($customer->user_id);
-				if($currentWalletBalance > 200){
-					$message = "You have more than enough to stake your game, kindly go back and play";
-					return false;
-				}
-				$deductAmount = getBoomWalletAmount('checkin_deduct_amount');
-			}
-
-			if($data['game_type'] == 'cashout'){
-				$currentBonusWalletBalance = $bonusWallet->getWalletBalance($customer->user_id);
-				if($data['amount'] != $currentBonusWalletBalance){
-					$message = "Oops, boom wallet in amount field is not accurate";
-					return false;
-				}
-				$deductAmount = round((0.02 * $currentBonusWalletBalance), 2);
-				$data['stake_amount'] = str_replace(',', '', $data['stake_amount']);
-				if($deductAmount != round($data['stake_amount'], 2)){
-					$message = "Oops, stake amount is not accurate";
-					return false;
-				}
-				$data['alert_type'] = 'credit';
-				$data['bank_lists_id'] = 00;
-			}
-			
-			$data['date_received_alert'] = $dateReceiveAlert;
-			$data['deducted_amount'] = $deductAmount;
-			$data['cashback_type'] = $cashbackType;
-			$data['date_created'] = formatToUTC();
-			$data['reference_hash'] = generateNumericRef($db,'cashback','reference_hash','BA');
-			
-			// print_r($data);exit;
-		}
-		return true;
-	}
-
-	public function validateWithdrawal_requestData(&$data,$type,&$db,&$message)
-	{
-		if($type == 'insert'){
-			if($data){
-				$customer = getCustomer();
-				$wallet = loadClass('wallet');
-				$data['amount'] = str_replace(',','',$data['amount']);
-				// validate the amount in the user wallet
-				$currentWalletBalance = $wallet->getWalletBalance($customer->user_id);
-				$serviceCharge = 150;
-				$deductAmount = $data['amount'] + $serviceCharge;
-
-				if($currentWalletBalance <= 0 || $deductAmount > $currentWalletBalance){
-					$message = "Oops, you don't have enough amount in your wallet";
-					return false;
-				}
-				$data['reference'] = generateNumericRef($db,'withdrawal_request','reference','WAD');
-				$data['amount'] = $deductAmount;
-			}
-		}
-		return true;
-	}
-
-	public function validateSpinwheel_settingData(&$data,$type,&$db,&$message)
-	{
-		if($type == 'update'){
-			$spinsetting = $db->query("SELECT * from spinwheel_setting where spin_type = 'jackpot' limit 1");
-			$spinsetting = $spinsetting->getRow();
-
-			if($spinsetting->ticket_cycle != $data['ticket_cycle']){
-				$data['updateSetting'] = true;
-			}
-		}
-		return true;
-	}
-
-	public function validateBoomcode_settingData(&$data,$type,&$db,&$message)
+	public function validateQuestionsData(&$data,$type,&$db,&$message)
 	{
 		$validation = \Config\Services::validation();
-		$validationData = $data;
-		$validation->setRule('code', 'code', 'required|regex_match[/(\d\d)::(\d\d)::(\d\d)::(\d\d)/]', [
-			'regex_match' => 'boom code is not in the correct format'
+		$otherData = [
+			'option_a' => request()->getPost('option_a'),
+			'option_b' => request()->getPost('option_b'),
+			'option_c' => request()->getPost('option_c'),
+			'option_d' => request()->getPost('option_d'),
+			'temperament_id' => request()->getPost('temperament_id'),
+		];
+		$validationData = array_merge($data, $otherData);
+		$testType = $db->table('test_type');
+		$slug = $testType->getWhere(['id' => $data['test_type_id']]);
+		if($slug->getNumRows() <= 0){
+			$message = "Please ensure Psychometric type has been populated with data";
+			return false;
+		}
+
+		$validation->setRule('question', 'Question', 'trim|required');
+		$validation->setRule('test_type_id', 'Psychometric type', 'trim|required');
+		$validation->setRule('option_a', 'Option A', 'trim|required');
+		$validation->setRule('option_b', 'Option B', 'trim|required');
+		$validation->setRule('option_d', 'Option d', 'trim');
+		$validation->setRule('option_e', 'Option e', 'trim');
+		$validation->setRule('option_f', 'Option f', 'trim');
+		$validation->setRule('option_g', 'Option g', 'trim');
+		($slug->getRow()->slug === 'PSY-PER') ? $validation->setRule('temperament_id', 'Temperament', 'trim|required') : null;
+		($slug->getRow()->slug === 'PSY-PER') ? $validation->setRule('option_c', 'Option C', 'trim|required') : $validation->setRule('option_c', 'Option C', 'trim');
+		$validation->setRule('model_update_id', '', 'if_exist|is_natural_no_zero');
+		$validation->setRule('question_order', 'Question Order', 'trim|required|numeric|is_unique[questions.question_order,ID,{model_update_id}]');
+
+		if (! $validation->run($validationData)) {
+			$errors = $validation->getErrors();
+			foreach($errors as $error){
+				$message = $error;
+				return false;
+			}
+		}
+
+		$data['question'] = ucfirst($data['question']);
+		$data['option_a'] = ucfirst(request()->getPost('option_a'));
+		$data['option_b'] = ucfirst(request()->getPost('option_b'));
+		$data['option_c'] = ucfirst(request()->getPost('option_c'));
+		$data['option_d'] = ucfirst(request()->getPost('option_d'));
+		$data['temperament_id'] = ucfirst(request()->getPost('temperament_id'));
+		$data['test_slug'] = $slug->getRow()->slug;
+		if($data['test_slug'] == 'PSY-COM'){
+			$data['option_e'] = ucfirst(request()->getPost('option_e'));
+			$data['option_f'] = ucfirst(request()->getPost('option_f'));
+			$data['option_g'] = ucfirst(request()->getPost('option_g'));
+		}
+		return true;
+	}
+
+	public function validateCustomer_transactionData(&$data,$type,&$db,&$message)
+	{
+		if($type == 'insert'){
+			$desc = $this->getPaymentDescription($db, $data['payment_description_id']);
+			$data['transaction_ref'] = generateHashRef('receipt');
+			$data['description'] = $desc->description;
+			$data['fee_description_id'] = $desc->fee_description_id;
+		}
+
+		return true;
+	}
+
+	public function validateTemperament_detailsData(&$data,$type,&$db,&$message)
+	{
+		$validation = \Config\Services::validation();
+		$otherData = [
+			'temparament_count' => count($data['temparament'])
+		];
+		$validationData = array_merge($data, $otherData);
+		$validation->setRule('temparament.*', 'temparament', 'required');
+		$validation->setRule('temparament_count', 'temparament', 'less_than_equal_to[2]|greater_than[1]', [
+			'less_than_equal_to' => 'You are to choose only two option for temperament field',
+			'greater_than' => 'You are to choose only two option for temperament field'
 		]);
+		$validation->setRule('detail', 'detail', 'required');
 
 		if (!$validation->run($validationData)) {
 			$errors = $validation->getErrors();
@@ -201,8 +100,17 @@ class ModelControllerDataValidator
 				return false;
 			}
 		}
-
+		$temperament = implode('-', $data['temparament']);
+		$data['temparament'] = $temperament;
+		
 		return true;
+	}
+
+	private function getPaymentDescription($db, $paymentDescriptionID){
+		$query = "SELECT fee_description_id,description from payment_description join fee_description on fee_description.id = payment_description.fee_description_id where payment_description.id = ?";
+		$result = $db->query($query, [$paymentDescriptionID]);
+		$result = $result->getRow();
+		return $result;
 	}
 
 }

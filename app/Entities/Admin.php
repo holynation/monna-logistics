@@ -175,14 +175,33 @@ protected function getRole(){
 		return null;
 	}
 	$id = $this->array['role_id'];
-	$db = $this->db;
-	$result = $db->query($query,[$id]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
+	$result = $this->query($query,[$id]);
+	if (!$result) {
 		return false;
 	}
 	$resultObject = new \App\Entities\Role($result[0]);
 	return $resultObject;
+}
+
+public function delete($id=null,&$db=null)
+{
+	$db = db_connect();
+	$db->transBegin();
+	if(parent::delete($id,$db)){
+		$query="delete from user where user_table_id=? and user_type='admin'";
+		if($this->query($query,array($id))){
+			$db->transCommit();
+			return true;
+		}
+		else{
+			$db->transRollback();
+			return false;
+		}
+	}
+	else{
+		$db->transRollback();
+		return false;
+	}
 }
 
 

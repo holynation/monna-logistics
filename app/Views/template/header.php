@@ -12,7 +12,14 @@
         <meta property="og:title" content="" />
         <meta property="og:url" content="" />
         <meta property="og:site_name" content="" />
-        <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+
+        <link rel="apple-touch-icon" sizes="72x72" href="<?= base_url('assets/media/favicon/apple-icon-72x72.png'); ?>">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?= base_url('assets/media/favicon/apple-icon-114x114.png'); ?>">
+        <link rel="icon" type="image/png" sizes="192x192"  href="<?= base_url('assets/media/favicon/android-icon-192x192.png'); ?>">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/media/favicon/favicon-32x32.png'); ?>">
+        <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('assets/media/favicon/favicon-96x96.png'); ?>">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/media/favicon/favicon-16x16.png'); ?>">
+
         <!--begin::Fonts(mandatory for all pages)-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
         <!--end::Fonts-->
@@ -33,6 +40,7 @@
                 z-index: 4000;
             }
         </style>
+        <script type="text/javascript" src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
     </head>
     <!--end::Head-->
     <!--begin::Body-->

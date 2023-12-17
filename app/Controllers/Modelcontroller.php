@@ -50,17 +50,17 @@ class Modelcontroller extends BaseController
 		}
 	}
 
-	public function add($model, $filter = false, $parent = '', $noArrSkip = false)
+	public function add($model, $filter = false, $parent = '')
 	{
-		//the parent field is optional
+		// the parent field is optional
 		try {
 			if (empty($model)) { //make sure empty value for model is not allowed.
-				echo createJsonMessage('status', false, 'message', 'an error occured while processing information', 'description', 'the model parameter is null so it must not be null');
+				echo createJsonMessage('status', false, 'message', 'An error occured while processing information', 'description', 'The model parameter is null so it must not be null');
 				return;
 			}
 
 			unset($_POST['MAX_FILE_SIZE']);
-			$this->insertSingle($model, $filter, $noArrSkip);
+			$this->insertSingle($model, $filter);
 		} catch (\Exception $ex) {
 			echo $ex->getMessage();
 			$this->db->transRollback();
@@ -68,7 +68,7 @@ class Modelcontroller extends BaseController
 	}
 
 	//this function is used to  document
-	private function processFormUpload(string $model, $parameter, $insertType = false)
+	private function processFormUpload(string $model, $parameter, $insertType = false,&$message=null)
 	{
 		$modelName = $model;
 		$newModel = loadClass($model);
@@ -79,11 +79,7 @@ class Modelcontroller extends BaseController
 		}
 		$fields = array_keys($_FILES);
 		foreach ($paramFile as $name => $value) {
-			// $this->log($model,"uploading file $name");
-			//if the field name is present in the fields the upload the document
 			if (in_array($name, $fields)) {
-
-				// list($type,$size,$directory,$preserve,@$max_width,@$max_height) = $value;
 				// this is a precaution if no keys of this name are not set in the array
 				$preserve = false;
 				$max_width = 0;
@@ -91,7 +87,7 @@ class Modelcontroller extends BaseController
 				$directory = "";
 				extract($value);
 
-				$method = "get" . ucfirst($modelName) . "Directory";
+				$method = "get".ucfirst($modelName)."Directory";
 				$uploadDirectoryManager = new \App\Models\UploadDirectoryManager;
 				if (method_exists($uploadDirectoryManager, $method)) {
 					$dir  = $uploadDirectoryManager->$method($parameter);
@@ -103,7 +99,7 @@ class Modelcontroller extends BaseController
 
 				$currentUpload = $this->uploadFile($modelName, $name, $type, $size, $directory, $message, $insertType, $preserve, $max_width, $max_height);
 				if ($currentUpload == false) {
-					return $parameter;
+					return false;
 				}
 				$parameter[$name] = $message;
 			} else {
@@ -124,10 +120,10 @@ class Modelcontroller extends BaseController
 		$typeValid = is_array($type) ? in_array(strtolower($ext), $type) : strtolower($ext) == strtolower($type);
 		if (!empty($filename) &&  $typeValid  && !empty($destination)) {
 			if (!is_null($maxSize) && $fileSize > $maxSize) {
-				// $message='file too large to be saved';return false;
 				$calcsize = calc_size($maxSize);
-				exit(createJsonMessage('status', false, 'message', "The file you are attempting to upload is larger than the permitted size ($calcsize)"));
+				$message = "The file you are attempting to upload is larger than the permitted size ($calcsize)";return false;
 			}
+
 			$publicDestination = $this->_publicDirectory . $destination;
 			if(!is_dir($publicDestination)){
 				mkdir($publicDestination, 0777, true);
@@ -145,8 +141,7 @@ class Modelcontroller extends BaseController
 				$temp_name = $_FILES[$name]['tmp_name'];
 
 				if (!$this->isAllowedDimensions($temp_name, $max_width, $max_height)) {
-					// $message = 'The image you are attempting to upload doesn\'t fit into the allowed dimensions.';return false;
-					exit(createJsonMessage('status', false, 'message', "The image you are attempting to upload doesn't fit into the allowed dimensions (max_width:$max_width x max_height:$max_height)."));
+					$message = "The image you are attempting to upload doesn't fit into the allowed dimensions (max_width:$max_width x max_height:$max_height).";return false;
 				}
 			}
 
@@ -158,29 +153,26 @@ class Modelcontroller extends BaseController
 					// this means inserting
 					$naming = ($preserve) ? $filename : $new_name;
 				} else {
-					$naming = basename($getUpload); # this means updating
+					$naming = basename($getUpload); // this means updating
 				}
 			} else {
 				// this means inserting
 				$naming = ($preserve) ? $filename : $new_name;
 			}
-			$destination .= $naming; # the test should be replaced by the name of the current user.
+			$destination .= $naming;
 			$publicDestination .= $naming;
 			if (move_uploaded_file($_FILES[$name]['tmp_name'], $destination)) {
 				$destination = $this->createFileSymlink($publicDestination, $destination);
 				$message = base_url($destination);
 				return true;
 			} else {
-				$message = "error while uploading file. please try again";
+				$message = "Error while uploading file. please try again";
 				return false;
-				// exit(createJsonMessage('status',false,'message','error while uploading file. please try again'));
 			}
 		} else {
-			// $message = "error while uploading file. please try again";return false;
-			exit(createJsonMessage('status', false, 'message', 'error while uploading file. please try again condition not satisfy'));
+			$message = "Error while uploading file. please try again";return false;
 		}
-		// $message='error while uploading file. please try again';return false;
-		exit(createJsonMessage('status', false, 'message', 'error while uploading file. please try again'));
+		$message = 'Error while uploading file. please try again';return false;
 	}
 
 	private function isAllowedDimensions($temp, $max_width = 0, $max_height = 0)
@@ -235,15 +227,16 @@ class Modelcontroller extends BaseController
 		$error = !$_FILES[$name]['name'] || $_FILES[$name]['error'];
 		if ($error) {
 			if ((int)$error === 2) {
-				$message = 'file larger than expected';
+				$message = 'File larger than expected';
 				return false;
 			}
+			$message = "Please do check the file [{$_FILES[$name]['name']}] complies with requirement";
 			return false;
 		}
 
 		if (!is_uploaded_file($_FILES[$name]['tmp_name'])) {
 			$this->db->transRollback();
-			$message = 'uploaded file not found';
+			$message = 'Uploaded file not found';
 			return false;
 		}
 		return true;
@@ -276,38 +269,27 @@ class Modelcontroller extends BaseController
 	}
 
 	//this method is called when a single insertion is to be made.
-	private function insertSingle($model, $filter, $noArrSkip)
+	private function insertSingle($model, $filter)
 	{
 		$this->modelCheck($model, 'c');
 		$message = '';
 		$filter = (bool)$filter;
-		$noArrSkip = (bool)$noArrSkip; // this is use to allow extra param array if needed later in the code
 		$data = $this->request->getPost(null);
-		$data = $this->processFormUpload($model, $data, false);
+		$newModel = loadClass($model);
 		unset($data["edu-submit"]);
-		$newModel = loadClass("$model");
 		$parameter = $data;
-		// this is allow param not stated in the entity typeArray property to pass through without being removed from the array
-		if (!$noArrSkip) {
-			$parameter = $this->extractSubset($parameter, $newModel);
-		}
 		$parameter = removeEmptyAssoc($parameter);
 		if ($this->validateModelData($model, 'insert', $parameter, $this->db, $message) == false) {
 			echo createJsonMessage('status', false, 'message', $message);
 			return;
 		}
 
-		// using this to skip a param from the other param for insertion and later use in modelcallback function further processing in the code
-
-		if (property_exists($newModel, 'skipParam')) {
-			$skip = $newModel::$skipParam;
-			if ($skip) {
-				foreach ($skip as $sk) {
-					if (array_key_exists($sk, $parameter)) {
-						unset($parameter[$sk]);
-					}
-				}
-			} // ended here
+		// this is to ensure data being passed from validateModelData is merged
+		// with the rest of the data if available
+		if($tempData = $this->getHiddenParameter($newModel, $parameter)){
+			if(!empty($tempData)){
+				$parameter = array_merge($parameter,$tempData);
+			}
 		}
 
 		// ensuring to populate model timestamp
@@ -317,6 +299,15 @@ class Modelcontroller extends BaseController
 			}
 		}
 
+		if(!empty($_FILES)){
+			$parameter = $this->processFormUpload($model,$parameter,false,$message);
+			if(!$parameter && $message != ''){
+				echo createJsonMessage('status', false, 'message', $message);return;
+			}
+		}
+
+		$data = $parameter;
+		$parameter = $this->extractSubset($parameter, $newModel);
 		$newModel->setArray($parameter);
 		if (!$this->validateModel($newModel, $message)) {
 			echo createJsonMessage('status', false, 'message', $message);
@@ -340,19 +331,17 @@ class Modelcontroller extends BaseController
 					$message = empty($message) ? 'Operation Successful ' : $message;
 				}
 				echo createJsonMessage('status', true, 'message', $message, 'data', $inserted);
-				// $this->log($model,"inserted new $model information");//log the activity
 				return;
 			}
 		}
 		$this->db->transRollback();
-		$message = empty($message) ? "an error occured while saving information" : $message;
+		$message = empty($message) ? "Error occured while saving information" : $message;
 		echo createJsonMessage('status', false, 'message', $message);
-		// $this->log($model,"unable to insert $model information");
 	}
 
-	// private function log($model,$description){
-	// 	$this->application_log->log($model,$description);
-	// }
+	private function log($model,$description){
+		// $this->application_log->log($model,$description);
+	}
 
 	public function update($model, $id = '', $filter = false, $flagAction = false)
 	{
@@ -366,18 +355,20 @@ class Modelcontroller extends BaseController
 	private function updateSingle($model, $id, $filter, $flagAction = false)
 	{
 		$this->modelCheck($model, 'u');
-		$newModel = loadClass("$model");
+		$newModel = loadClass($model);
 		$data = $this->request->getPost(null);
 		unset($data["edu-submit"], $data["edu-reset"]);
+		$parameter = $data;
 		if(!empty($_FILES)){
-			$res = $this->processFormUpload($model,$data,$id);
-			if(!$res){
-				return false;
+			$res = $this->processFormUpload($model,$data,$id,$message);
+			if(!$res && $message != ''){
+				$arr['status'] = false;
+				$arr['message'] = $message;
+				echo json_encode($arr);return;
 			}
 			$data = $res;
 		}
-		//pass in the value needed by the model itself and discard the rest.
-		$parameter = $this->extractSubset($data, $newModel);
+
 		// ensuring to populate model timestamp
 		if ($tempParameter = $this->createModelTimestamp($newModel,$model,'update')){
 			if(!empty($tempParameter)){
@@ -386,22 +377,24 @@ class Modelcontroller extends BaseController
 		}
 
 		$this->db->transBegin();
-		if ($this->validateModelData($model, 'update', $data, $this->db, $message)) {
-
+		$parameter['model_update_id'] = $id;
+		if ($this->validateModelData($model, 'update', $parameter, $this->db, $message)) {
 			// this is to ensure data being passed from validateModelData is merged
 			// with the rest of the data if available
-			if($tempData = $this->getHiddenParameter($newModel, $data)){
+			if($tempData = $this->getHiddenParameter($newModel, $parameter)){
 				if(!empty($tempData)){
 					$parameter = array_merge($parameter,$tempData);
 				}
 			}
 
+			$data = $parameter;
+			// pass in the value needed by the model itself and discard the rest.
+			$parameter = $this->extractSubset($parameter, $newModel);
 			$newModel->setArray($parameter);
 			if (!$newModel->update($id, $this->db)) {
 				$this->db->transRollback();
-				// $message="cannot perform update";
 				$arr['status'] = false;
-				$arr['message'] = 'cannot perform update';
+				$arr['message'] = 'Unable to update, please try again later';
 				if ($flagAction) {
 					$arr['flagAction'] = $flagAction;
 				}
@@ -466,11 +459,11 @@ class Modelcontroller extends BaseController
 		$dateParam = $this->modelTimestamp[$dateLabel];
 		$dateString = 'now';
 		if (in_array($dateParam[0], $labelArray) && $type == 'insert') { // date_created
-			$date = new Time($dateString, 'UTC');
+			$date = new Time($dateString);
 			$parameter[$dateParam[0]] = $date->format('Y-m-d H:i:s');
 		}
 		if (in_array($dateParam[1], $labelArray)) { // date_modified
-			$date = new Time($dateString, 'UTC');
+			$date = new Time($dateString);
 			$parameter[$dateParam[1]] = $date->format('Y-m-d H:i:s');
 		}
 		return $parameter;
@@ -548,9 +541,6 @@ class Modelcontroller extends BaseController
 			foreach ($temp as $value) {
 				$result[$value] = $array[$value];
 			}
-		}
-		if ($model == 'user') {
-			$result = $this->processUser($array, $result);
 		}
 		return $result;
 	}
@@ -716,75 +706,5 @@ class Modelcontroller extends BaseController
 		return $adminData->getCanViewPages($role);
 	}
 
-	public function upload_timestamp(){
-		if(empty($_FILES)){
-			$param = array('status'=>false,'message'=>'Please choose a file to upload','backLink'=>$_SERVER['HTTP_REFERER'],'model'=>'timestamp');
-			$param['webSessionManager'] = $this->webSessionManager;
-			return view('uploadreport',$param);return;
-		}
-		$uploadType = $this->request->getPost('upload_type');
-		$modelName = 'timestamp_perm';
-		$uploadPath = 'time-upload';
-		if($uploadType == 'upload_numbers'){
-			$modelName = "generated_numbers";
-			$uploadPath = "numbers-upload";
-		}
-		$filePath = ROOTPATH.'writable/uploads/timestamp/';
-		if (!is_dir($filePath)) {
-			mkdir($filePath,0777,true);
-		}
-
-		$filePath.= $modelName.'_'.date('Y-m-d h-i-s').'.csv';
-		$content = $this->loadUploadedFileContent($filePath, $uploadPath);
-		$content = trim($content);
-		$array = stringToCsv($content);
-		$insertString = null;
-
-		$countOrder = 1;
-		foreach ($array as $key => $value) {
-			$field1 = trim($value[0]);
-			$field2 = trim($value[1]);
-			$field3 = trim($value[2]);
-			if ($insertString) {
-				$insertString .= ',';
-			}
-			$currentRow = "{$field1}:{$field2}:{$field3}";
-			if($uploadType == 'upload_numbers'){
-				$insertString .= " ('$currentRow')";
-			}else{
-				$insertString .= " ('$currentRow','$countOrder')";
-				$countOrder++;
-			}
-		}
-
-		if ($insertString == false) {
-			$param = array('status'=>false,'message'=>"no data available for insertion",'backLink'=>$_SERVER['HTTP_REFERER'],'model'=>'timestamp');
-			$param['webSessionManager'] = $this->webSessionManager;
-			return view('uploadreport',$param);return;
-		}
-
-		$this->db->transBegin();
-		if($uploadType == 'upload_timestamp'){
-			$query = "insert ignore into timestamp_perm(time_stamp_perm,time_order) values $insertString on duplicate key update time_stamp_perm = values(time_stamp_perm)";
-		}
-		else if($uploadType == 'upload_numbers'){
-			$query = "insert ignore into generated_numbers(timestamp_numbers) values $insertString on duplicate key update timestamp_numbers = values(timestamp_numbers)";
-		}
-
-		$result = $this->db->query($query);
-		if (!$result) {
-			$this->db->transRollback();
-			$param = array('status'=>false,'message'=>"no data available for insertion",'backLink'=>$_SERVER['HTTP_REFERER'],'model'=>'timestamp');
-			$param['webSessionManager'] = $this->webSessionManager;
-			return view('uploadreport',$param);return;
-		}
-
-		$param = array('status'=>true,'message'=>'You have successfully uploaded the timestamp','backLink'=>$_SERVER['HTTP_REFERER'],'model'=>'timestamp');
-		if ($this->webSessionManager->getCurrentuserProp('user_type')=='admin') {
-			$param['canView']=$this->getAdminSidebar();
-		}
-		$param['webSessionManager'] = $this->webSessionManager;
-		$this->db->transCommit();
-		return view('uploadreport',$param);
-	}
+	
 }

@@ -50,7 +50,7 @@ class TableWithHeaderModel extends Model
 	*/
 	public function loadExportTable(string $model,$data)
 	{
-		$res =array2csv($data);
+		$res = array2csv($data);
 	  	sendDownload($res,'text/csv',$model.'.csv');exit;
 	}
 	/**
@@ -85,7 +85,7 @@ class TableWithHeaderModel extends Model
 		return $this;
 	}
 
-	public function generateTableBody($message=null,$resolve=true,$start=0,$length=100,$sort=' order by ID desc ',$where=''){
+	public function generateTableBody($message=null,$resolve=true,$start=0,$length=100,$sort=' order by id desc ',$where=''){
 		//use get function for the len and the start index for the sorting
 		$this->_start = (isset($_GET['p_start'])&& is_numeric($_GET['p_start']) )?(int)$_GET['p_start']:$start;
 		$this->_length = (isset($_GET['p_len'])&& is_numeric($_GET['p_len']) )?(int)$_GET['p_len']:$length;
@@ -147,7 +147,7 @@ class TableWithHeaderModel extends Model
 	}
 
 	// the multipleAction arg is for performing multiple action using checkbox
-	public function getTableHtml(&$message='',$start=0,$length=NULL,$resolve=true,$sort=' order by ID desc ',$where=''){
+	public function getTableHtml(&$message='',$start=0,$length=NULL,$resolve=true,$sort=' order by id desc ',$where=''){
 		
 		$model = $this->_model;
 		$newModel = $this->_modelObj;
@@ -208,7 +208,7 @@ class TableWithHeaderModel extends Model
 				}
 				$value = $temp[0].$otherParam;
 			}
-			$currentid = $data->ID;
+			$currentid = $data->id;
 			// appending query string to generated link
 			if(!empty($this->queryString)){
 				$tempData = $data->toArray();
@@ -330,7 +330,7 @@ class TableWithHeaderModel extends Model
 		$labels = array_keys($model::$labelArray);
 		for ($i=0; $i <count($labels) ; $i++) { 
 			$key = $labels[$i];
-			if ($key=='ID' || in_array($key, $exclusionArray)) {
+			if ($key=='id' || in_array($key, $exclusionArray)) {
 				continue;
 			}
 			$value = $rowData->$key;
@@ -583,7 +583,7 @@ class TableWithHeaderModel extends Model
 		$model = $this->entitiesNameSpace.ucfirst($this->_model);
 		$labels = $model::$labelArray;
 		foreach ($labels as $key => $value) {
-			if ($key=='ID' || in_array($key, $exclusionArray)) {//dont include the header if its an id field or
+			if ($key=='id' || in_array($key, $exclusionArray)) {//dont include the header if its an id field or
 				continue;
 			}
 			if (empty($value)) {

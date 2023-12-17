@@ -42,6 +42,7 @@ class Auth extends BaseController
 				displayJson(false, $error);return;
 			}
 		}
+
 		$validData = $this->validator->getValidated();
 		$username = $validData['email'];
 		$password = $validData['password'];
@@ -98,7 +99,7 @@ class Auth extends BaseController
 	private function getUserPage($user)
 	{
 		$link = array(
-			'admin' => 'vc/admin/dashboard',
+			'admin' => 'admin/dashboard',
 		);
 		$roleName = $user->user_type;
 		return $link[$roleName];

@@ -11,7 +11,6 @@ class Actioncontroller extends BaseController
 {
 		private $uploadedFolderName = 'public/uploads';
 		private $crudNameSpace = 'App\Models\Crud';
-		protected $db;
 		private $webSessionManager;
 
 		/**
