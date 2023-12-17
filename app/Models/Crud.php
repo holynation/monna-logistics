@@ -9,7 +9,7 @@ class Crud
 	use CrudInfo;
 
 	protected $array = []; // array containing the field  and value of the object inform of an associateive array
-	protected $foreignKeyEnd='_id';
+	protected $foreignKeyEnd = '_id';
 	static $baseurl;
 	protected $db;
 	private $entitiesNameSpace = 'App\Entities\\';
@@ -192,7 +192,7 @@ class Crud
 		$arr = $this->array;
 		$temp = $this->getWhere($arr,$totalRow,0,NULL,FALSE,$dbObject);
 		if ($temp) {
-			$this->ID = $temp[0]->ID;
+			$this->id = $temp[0]->ID;
 			return $this->update($dbObject);
 		}
 		else{
@@ -475,8 +475,8 @@ class Crud
 	 */
 	public function view(int $id=null,object &$dbObject=null){
 		if ($id == null) {
-			if (array_key_exists('ID', $this->array)) {
-				$id=$this->array['ID'];
+			if (array_key_exists('id', $this->array)) {
+				$id=$this->array['id'];
 			}
 			else{
 				throw new \Exception('please specify the index or set the index value as a parameter');
@@ -541,11 +541,11 @@ class Crud
 	 * @return [type]                 [description]
 	 */
 	public function update(int $id=NULL,object &$dbObject=null){
-		if (empty($id) && !isset($this->array['ID'])) {
+		if (empty($id) && !isset($this->array['id'])) {
 			throw new \Exception("null id field found");
 		}
 		$tablename =$this->getTableName();
-		$id = $id==null?$this->array['ID']:$id;
+		$id = $id==null?$this->array['id']:$id;
 		$query="UPDATE $tablename SET ";
 		$query.=$this->buildUpdateQuery($data);
 		$whereCondition = $this->buildWhereString($id,$temp);
@@ -683,11 +683,11 @@ class Crud
 	 * @return [type]                 [description]
 	 */
 	public function delete(int $id=NULL,object &$dbObject=NULL){
-		if ($id==NULL && !isset($this->array['ID'])) {
+		if ($id==NULL && !isset($this->array['id'])) {
 			throw new \Exception("object does not have id");
 		}
 		if ($id ==NULL) {
-			$id = $this->array["ID"];
+			$id = $this->array["id"];
 		}
 		$tablename =$this->getTableName();
 		$query = "delete from $tablename where id=?";
@@ -702,11 +702,11 @@ class Crud
 	 * @return [type]                 [description]
 	 */
 	public function enable(int $id=null,object &$dbObject=null){
-		if ($id==NULL && !isset($this->array['ID'])) {
+		if ($id==NULL && !isset($this->array['id'])) {
 			throw new \Exception("object does not have id");
 		}
 		if ($id ==NULL) {
-			$id = $this->array["ID"];
+			$id = $this->array["id"];
 		}
 		return $this->setEnabled($id,1,$dbObject);
 	}
@@ -718,11 +718,11 @@ class Crud
 	 * @return [type]                 [description]
 	 */
 	public function disable(int $id=null,object &$dbObject=null){
-		if ($id==NULL && !isset($this->array['ID'])) {
+		if ($id==NULL && !isset($this->array['id'])) {
 			throw new \Exception("object does not have id");
 		}
 		if ($id ==NULL) {
-			$id = $this->array["ID"];
+			$id = $this->array["id"];
 		}
 		return $this->setEnabled($id,0,$dbObject);
 	}

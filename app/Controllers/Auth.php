@@ -48,12 +48,9 @@ class Auth extends BaseController
 		$isAjax =  ($this->request->getPost('isajax') == "true") ? true : false;
 
 		$user = loadClass('user');
-		if (!$user->findBoth2($username)) {
+		if (!$user->findBoth($username)) {
 			if ($isAjax) {
-				$arr['status'] = false;
-				$arr['message'] = 'Invalid emaild or password';
-				echo json_encode($arr);
-				exit;
+				displayJson(false, "Invalid emaild or password");return;
 			} else {
 				$this->webSessionManager->setFlashMessage('error', 'invalid email or password');
 				redirect(base_url('auth/login'));
@@ -67,48 +64,29 @@ class Auth extends BaseController
 		$checkPass = decode_password(trim($password), $user->password);
 		if (!$checkPass) {
 			if ($isAjax) {
-				$arr['status'] = false;
-				$arr['message'] = "invalid email or password";
-				echo json_encode($arr);
-				return;
+				displayJson(false, "Invalid emaild or password");return;
 			} else {
 				$this->webSessionManager->setFlashMessage('error', 'invalid email or password');
 				redirect(base_url('auth/login'));
 			}
 		}
-		if($user->user_type != 'admin' && $user->user_type != 'superagent' && $user->user_type != 'nlrc' && $user->user_type != 'influencer'){
-			$arr['status'] = false;
-			$arr['message'] = 'Oops, invalid username or password';
-			echo json_encode($arr);
-			return;
+
+		if($user->user_type != 'admin'){
+			displayJson(false, "Oops, invalid username or password");return;
 		}
+
 		$baseurl = base_url();
-		if($this->allowOnlyMainEntity($user->user_type)){
-			$this->webSessionManager->saveCurrentUser($user);
-		}else{
-			$this->webSessionManager->saveOnlyCurrentUser($user);
-		}
+		$this->webSessionManager->saveCurrentUser($user);
 		$baseurl .= $this->getUserPage($user);
 		$user->last_login = formatToUTC();
 		$user->update();
 		
 		if ($isAjax) {
-			$arr['status'] = true;
-			$arr['message'] = $baseurl;
-			echo json_encode($arr);
-			return;
+			displayJson(true, $baseurl);return;
 		}else {
 			redirect($baseurl);
 			exit;
 		}
-	}
-
-	private function allowOnlyMainEntity(string $userType){
-		$result = ['nlrc'];
-		if(in_array($userType, $result)){
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -121,20 +99,9 @@ class Auth extends BaseController
 	{
 		$link = array(
 			'admin' => 'vc/admin/dashboard',
-			'superagent' => 'vc/superagent/dashboard',
-			'nlrc' => 'nlrc/dashboard',
-			'influencer' => 'influencer/dashboard'
 		);
 		$roleName = $user->user_type;
 		return $link[$roleName];
-	}
-
-	/**
-	 * [inputValidate description]
-	 * @return bool
-	 */
-	private function inputValidate(){
-    	return isset($_POST) && count($_POST) > 0 && !empty($_POST) ?? false;
 	}
 
 	/**

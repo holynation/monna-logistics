@@ -12,7 +12,7 @@ class Logistic extends BaseController {
 	public function home(){
 		$data = array();
 		helper('form');
-		return view('blank',$data);
+		return view('logistic/login', $data);
 	}
 
 }

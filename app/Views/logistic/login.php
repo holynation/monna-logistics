@@ -2,7 +2,7 @@
 <html lang="en">
     <!--begin::Head-->
     <head>
-        <title>Login Page| MonnaExpress</title>
+        <title>Login Page | MonnaExpress</title>
         <meta charset="utf-8" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -14,12 +14,12 @@
         <meta property="og:site_name" content="" />
         <link rel="canonical" href="" />
 
-        <link rel="apple-touch-icon" sizes="72x72" href="<?= base_url('apple-icon-72x72.png'); ?>">
-        <link rel="apple-touch-icon" sizes="114x114" href="<?= base_url('apple-icon-114x114.png'); ?>">
-        <link rel="icon" type="image/png" sizes="192x192"  href="<?= base_url('android-icon-192x192.png'); ?>">
-        <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('favicon-32x32.png'); ?>">
-        <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('favicon-96x96.png'); ?>">
-        <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('favicon-16x16.png'); ?>">
+        <link rel="apple-touch-icon" sizes="72x72" href="<?= base_url('assets/media/favicon/apple-icon-72x72.png'); ?>">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?= base_url('assets/media/favicon/apple-icon-114x114.png'); ?>">
+        <link rel="icon" type="image/png" sizes="192x192"  href="<?= base_url('assets/media/favicon/android-icon-192x192.png'); ?>">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/media/favicon/favicon-32x32.png'); ?>">
+        <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('assets/media/favicon/favicon-96x96.png'); ?>">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/media/favicon/favicon-16x16.png'); ?>">
 
         <!--begin::Fonts(mandatory for all pages)-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
@@ -28,41 +28,17 @@
         <link href="<?= base_url('assets/plugins/global/plugins.bundle.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('assets/css/style.bundle.css'); ?>" rel="stylesheet" type="text/css" />
         <!--end::Global Stylesheets Bundle-->
+        <script type="text/javascript" src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
     </head>
     <!--end::Head-->
     <!--begin::Body-->
     <body id="kt_body" class="app-blank app-blank">
-        <!--begin::Theme mode setup on page load-->
-        <script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
-        <!--end::Theme mode setup on page load-->
         <!--begin::Root-->
         <div class="d-flex flex-column flex-root" id="kt_app_root">
             <!--begin::Authentication - Sign-in -->
             <div class="d-flex flex-column flex-lg-row flex-column-fluid">
                 <!--begin::Aside-->
-                <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center" style="background-image: url(assets/media/misc/auth-bg.png)">
-                    <!--begin::Content-->
-                    <div class="d-flex flex-column flex-center p-6 p-lg-10 w-100">
-                        <!--begin::Logo-->
-                        <a href="../../demo1/dist/index.html" class="mb-0 mb-lg-20">
-                            <img alt="Logo" src="assets/media/logos/default-white.svg" class="h-40px h-lg-50px" />
-                        </a>
-                        <!--end::Logo-->
-                        <!--begin::Image-->
-                        <img class="d-none d-lg-block mx-auto w-300px w-lg-75 w-xl-500px mb-10 mb-lg-20" src="assets/media/misc/auth-screens.png" alt="" />
-                        <!--end::Image-->
-                        <!--begin::Title-->
-                        <h1 class="d-none d-lg-block text-white fs-2qx fw-bold text-center mb-7">Fast, Efficient and Productive</h1>
-                        <!--end::Title-->
-                        <!--begin::Text-->
-                        <div class="d-none d-lg-block text-white fs-base text-center">In this kind of post,
-                        <a href="#" class="opacity-75-hover text-warning fw-semibold me-1">the blogger</a>introduces a person they’ve interviewed
-                        <br />and provides some background information about
-                        <a href="#" class="opacity-75-hover text-warning fw-semibold me-1">the interviewee</a>and their
-                        <br />work following this is a transcript of the interview.</div>
-                        <!--end::Text-->
-                    </div>
-                    <!--end::Content-->
+                <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center" style="background-image: url(assets/media/auth_bg.jpg)">
                 </div>
                 <!--begin::Aside-->
                 <!--begin::Body-->
@@ -72,47 +48,35 @@
                         <!--begin::Wrapper-->
                         <div class="w-lg-500px p-10">
                             <!--begin::Form-->
-                            <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="../../demo1/dist/index.html" action="#">
+                            <?php echo form_open("login?_=".time(), array('class'=> 'form','id'=>'loginForm')); ?>
+                                <!-- this is the notification section -->
+                                <div id="notify"></div>
+                                <!-- end notification -->
+
                                 <!--begin::Heading-->
                                 <div class="text-center mb-11">
+                                    <!--begin::Logo-->
+                                    <a href="" class="mb-0 mb-lg-20">
+                                        <img alt="Logo" src="<?= base_url('assets/media/logo.jpg'); ?>" class="h-40px h-lg-50px" />
+                                    </a>
+                                    <!--end::Logo-->
+
                                     <!--begin::Title-->
-                                    <h1 class="text-dark fw-bolder mb-3">Sign In</h1>
+                                    <h1 class="text-dark fw-bolder mb-3 mt-3">Sign In</h1>
                                     <!--end::Title-->
                                     <!--begin::Subtitle-->
-                                    <div class="text-gray-500 fw-semibold fs-6">Your Social Campaigns</div>
+                                    <div class="text-gray-500 fw-semibold fs-6">
+                                        Securely manage and oversee operations. Enter your credentials to unlock the power for a smooth ride ahead. Your gateway to enhanced logistics administration awaits.
+                                    </div>
                                     <!--end::Subtitle=-->
                                 </div>
                                 <!--begin::Heading-->
-                                <!--begin::Login options-->
-                                <div class="row g-3 mb-9">
-                                    <!--begin::Col-->
-                                    <div class="col-md-6">
-                                        <!--begin::Google link=-->
-                                        <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                        <img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg" class="h-15px me-3" />Sign in with Google</a>
-                                        <!--end::Google link=-->
-                                    </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col-md-6">
-                                        <!--begin::Google link=-->
-                                        <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                        <img alt="Logo" src="assets/media/svg/brand-logos/apple-black.svg" class="theme-light-show h-15px me-3" />
-                                        <img alt="Logo" src="assets/media/svg/brand-logos/apple-black-dark.svg" class="theme-dark-show h-15px me-3" />Sign in with Apple</a>
-                                        <!--end::Google link=-->
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Login options-->
-                                <!--begin::Separator-->
-                                <div class="separator separator-content my-14">
-                                    <span class="w-125px text-gray-500 fw-semibold fs-7">Or with email</span>
-                                </div>
+
                                 <!--end::Separator-->
                                 <!--begin::Input group=-->
                                 <div class="fv-row mb-8">
                                     <!--begin::Email-->
-                                    <input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
+                                    <input type="email" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
                                     <!--end::Email-->
                                 </div>
                                 <!--end::Input group=-->
@@ -122,48 +86,21 @@
                                     <!--end::Password-->
                                 </div>
                                 <!--end::Input group=-->
-                                <!--begin::Wrapper-->
-                                <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
-                                    <div></div>
-                                    <!--begin::Link-->
-                                    <a href="../../demo1/dist/authentication/layouts/corporate/reset-password.html" class="link-primary">Forgot Password ?</a>
-                                    <!--end::Link-->
-                                </div>
-                                <!--end::Wrapper-->
+
                                 <!--begin::Submit button-->
                                 <div class="d-grid mb-10">
-                                    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
-                                        <!--begin::Indicator label-->
+                                    <button type="submit" id="btnLogin" class="btn btn-primary">
                                         <span class="indicator-label">Sign In</span>
-                                        <!--end::Indicator label-->
-                                        <!--begin::Indicator progress-->
-                                        <span class="indicator-progress">Please wait...
-                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                        <!--end::Indicator progress-->
                                     </button>
                                 </div>
                                 <!--end::Submit button-->
-                                <!--begin::Sign up-->
-                                <div class="text-gray-500 text-center fw-semibold fs-6">Not a Member yet?
-                                <a href="../../demo1/dist/authentication/layouts/corporate/sign-up.html" class="link-primary">Sign up</a></div>
-                                <!--end::Sign up-->
+
                             </form>
                             <!--end::Form-->
                         </div>
                         <!--end::Wrapper-->
                     </div>
                     <!--end::Form-->
-                    <!--begin::Footer-->
-                    <div class="d-flex flex-center flex-wrap px-5">
-                        <!--begin::Links-->
-                        <div class="d-flex fw-semibold text-primary fs-base">
-                            <a href="https://keenthemes.com" class="px-5" target="_blank">Terms</a>
-                            <a href="https://devs.keenthemes.com" class="px-5" target="_blank">Plans</a>
-                            <a href="https://themes.getbootstrap.com/product/keen-the-ultimate-bootstrap-admin-theme/" class="px-5" target="_blank">Contact Us</a>
-                        </div>
-                        <!--end::Links-->
-                    </div>
-                    <!--end::Footer-->
                 </div>
                 <!--end::Body-->
             </div>
@@ -171,14 +108,42 @@
         </div>
         <!--end::Root-->
         <!--begin::Javascript-->
-        <script>var hostUrl = "assets/";</script>
+        <script>var hostUrl = "<?= base_url('assets/'); ?>";</script>
         <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-        <script src="assets/plugins/global/plugins.bundle.js"></script>
-        <script src="assets/js/scripts.bundle.js"></script>
+        <script src="<?= base_url('assets/plugins/global/plugins.bundle.js'); ?>"></script>
+        <script src="<?= base_url('assets/js/scripts.bundle.js'); ?>"></script>
         <!--end::Global Javascript Bundle-->
-        <!--begin::Custom Javascript(used for this page only)-->
-        <script src="assets/js/custom/authentication/sign-in/general.js"></script>
-        <!--end::Custom Javascript-->
+
+        <script src="<?php echo base_url('assets/js/custom.js'); ?>"></script>
+        <script type="text/javascript">
+            $(function(){
+                // here is the login
+                var form = $('#loginForm');
+                var note = $("#notify");
+                note.text('').hide();
+
+                form.submit(function(event) {
+                    event.preventDefault();
+                    $("#btnLogin").html("Authenticating...").addClass('disabled').prop('disabled', true);
+                    submitAjaxForm($(this));
+                    $("#btnLogin").removeClass("disabled").removeAttr('disabled').html("Sign in");
+                });
+            })
+
+            function ajaxFormSuccess(target,data){
+                data = JSON.parse(data);
+                $("#notify").text('').show();
+                if (data.status) {
+                    var path = data.message;
+                    console.log('got here');
+                    // location.assign(path);
+                }
+                else{
+                  $("#btnLogin").removeClass("disabled").removeAttr('disabled').html("Sign in");
+                  $("#notify").text(data.message).addClass("alert alert-danger alert-dismissible show text-center").css({"font-size":"12.368px"}).append('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>');
+                }
+            }
+        </script>
         <!--end::Javascript-->
     </body>
     <!--end::Body-->

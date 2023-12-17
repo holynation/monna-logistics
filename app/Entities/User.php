@@ -189,10 +189,10 @@ public function getReferral_codeFormField($value = ''){
 
 protected function getUser_table(){
 	$query = 'SELECT * FROM user_table WHERE id=?';
-	if (!isset($this->array['ID'])) {
+	if (!isset($this->array['id'])) {
 		return null;
 	}
-	$id = $this->array['ID'];
+	$id = $this->array['id'];
 	$db = $this->db;
 	$result = $db->query($query,[$id]);
 	$result = $result->getResultArray();
@@ -201,34 +201,6 @@ protected function getUser_table(){
 	}
 	$resultObject = new \App\Entities\User_table($result[0]);
 	return $resultObject;
-}
-
-protected function getSuperagent(){
-	$query = 'SELECT * FROM superagent WHERE id=?';
-	if (!isset($this->array['user_table_id'])) {
-		return null;
-	}
-	$db = $this->db;
-	$result = $db->query($query,[$this->array['user_table_id']]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
-		return null;
-	}
-	return new \App\Entities\Superagent($result[0]);
-}
-
-protected function getInfluencer(){
-	$query = 'SELECT * FROM influencer WHERE id=?';
-	if (!isset($this->array['user_table_id'])) {
-		return null;
-	}
-	$db = $this->db;
-	$result = $db->query($query,[$this->array['user_table_id']]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
-		return null;
-	}
-	return new \App\Entities\Influencer($result[0]);
 }
 
 protected function getCustomer(){
@@ -243,53 +215,6 @@ protected function getCustomer(){
 		return null;
 	}
 	return new \App\Entities\Customer($result[0]);
-}
-
-protected function getAgent(){
-	$query = 'SELECT * FROM agent WHERE id=?';
-	if (!isset($this->array['user_table_id'])) {
-		return null;
-	}
-	$db = $this->db;
-	$result = $db->query($query,[$this->array['user_table_id']]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
-		return null;
-	}
-	return new \App\Entities\Agent($result[0]);
-}
-
-protected function getCashbackTicketCount(){
-	$query = 'SELECT ID,user_id,cashback_time,alert_type,amount FROM cashback WHERE user_id=?';
-	if (!isset($this->array['ID'])) {
-		return null;
-	}
-	$db = $this->db;
-	$result = $db->query($query,[$this->array['ID']]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
-		return null;
-	}
-	$resultObjects = [];
-	foreach($result as $value){
-		$resultObjects[] = new \App\Entities\Cashback($value);
-	}
-	return count($resultObjects);
-}
-
-protected function getUser_kyc_details(){
-	$query = 'SELECT * FROM user_kyc_details WHERE user_id=?';
-	if (!isset($this->array['ID'])) {
-		return null;
-	}
-	$db = $this->db;
-	$result = $db->query($query,[$this->array['ID']]);
-	$result = $result->getResultArray();
-	if (empty($result)) {
-		return false;
-	}
-	$resultObject = new \App\Entities\User_kyc_details($result[0]);
-	return $resultObject;
 }
 
 //this function will return the last auto generated id of the last insert statement
@@ -320,7 +245,7 @@ public function updatePassword($dataID,$password,$type=null)
 
 public function updateStatus(int $id,string $userType){
 	if(isset($id,$userType)){
-		$query = "update user,$userType set user.status = '1',$userType.status='1' where user.user_table_id = $userType.id and user.ID = ? and user.user_type=?";
+		$query = "update user,$userType set user.status = '1',$userType.status='1' where user.user_table_id = $userType.id and user.id = ? and user.user_type=?";
 		$db = $this->db;
 		$db->transBegin();
 		if($this->query($query,[$id,$userType])){
@@ -355,7 +280,7 @@ public function find($user = null){
  	return false;		
 }
 
-public function findBoth($user, string $userType){
+public function findBothOld($user, string $userType){
 	if($user){
 		$query = "SELECT * from user where (username = :username: or username_2 = :username:) and user_type = :user_type:";
 	   $data = $this->db->query($query,['username'=>$user, 'user_type'=>$userType]);
@@ -367,16 +292,13 @@ public function findBoth($user, string $userType){
  	return false;
 }
 
-public function findBoth2($user = null){
+public function findBoth($user = null){
 	if($user){
-		$query = "SELECT * from user where (username = :username: or username_2 = :username:) and (user_type = :admin: or user_type = :superagent: or user_type = :nlrc: or user_type = :influencer:)";
+		$query = "SELECT * from user where (username = :username:) and (user_type = :admin:)";
 	   $data = $this->db->query($query,
 	   	[
 	   		'username'=> $user,
 	   		'admin'=>'admin',
-	   		'superagent'=>'superagent',
-	   		'nlrc'=>'nlrc',
-	   		'influencer' => 'influencer'
 		   ]
 		);
 	   if($data->getNumRows() > 0){
@@ -420,7 +342,7 @@ public function findUserProp($user = null){
 public function memberLogin(){
 	// this handles the remember me function
 	if($this->dataExists()){
-		$userID = $this->data()->ID;
+		$userID = $this->data()->id;
 		$newUser = new User();
 		$userRes = $newUser->getWhere(array('ID'=>$userID,'status'=>'1'),$count,0,1,false);
 		$userRes = $userRes[0];
@@ -439,7 +361,7 @@ public function data(){
 public function getRealUserData(int $uid, bool $returnOriginal=false)
 {
 	$user = new User();
-	$user->ID = $uid;
+	$user->id = $uid;
 	if(!$user->load()){
 		return null;
 	}

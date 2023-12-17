@@ -9,7 +9,7 @@ class Permission extends Migration
     public function up()
     {
         $fields = [
-            'ID' => [
+            'id' => [
                 'type' => 'int',
                 'constraint' => 11,
                 'unsigned' => true,
@@ -19,7 +19,6 @@ class Permission extends Migration
                 'type' => 'int',
                 'constraint' => 11,
                 'null' => false,
-                'unique' => true
             ],
             'path' => [
                 'type' => 'varchar',
@@ -35,7 +34,8 @@ class Permission extends Migration
         ];
 
         $this->forge->addField($fields);
-        $this->forge->addKey('ID', true);
+        $this->forge->addKey('id', true);
+        $this->forge->addUniqueKey(['role_id', 'path'], 'role_id');
         $attributes = ['COLLATE' => 'utf8_general_ci'];
         $this->forge->createTable('permission', true, $attributes);
     }

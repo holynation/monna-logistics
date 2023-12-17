@@ -141,10 +141,10 @@ public function getPermissionFormField($value = ''){
 
 protected function getRole(){
 	$query = 'SELECT * FROM role WHERE id=?';
-	if (!isset($this->array['ID'])) {
+	if (!isset($this->array['id'])) {
 		return null;
 	}
-	$id = $this->array['ID'];
+	$id = $this->array['id'];
 	$db = $this->db;
 	$result = $db->query($query,[$id]);
 	$result = $result->getResultArray();

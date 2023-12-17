@@ -176,10 +176,10 @@ public function getDate_createdFormField($value = ''){
 protected function getUser()
 {
 	$query ="SELECT * FROM user WHERE user_table_id=? and user_type='customer' ";
-	if (!isset($this->array['ID'])) {
+	if (!isset($this->array['id'])) {
 		return null;
 	}
-	$id = $this->array['ID'];
+	$id = $this->array['id'];
 	$db = $this->db;
 	$result = $db->query($query,[$id]);
 	$result = $result->getResultArray();
@@ -192,11 +192,11 @@ protected function getUser()
 
 public function enable($id=null,&$db=null)
 {
-	if ($id == NULL && !isset($this->array['ID'])) {
+	if ($id == NULL && !isset($this->array['id'])) {
 		throw new Exception("object does not have id");
 	}
 	if ($id == NULL) {
-		$id = $this->array["ID"];
+		$id = $this->array["id"];
 	}
 	$db = $this->db;
 	$db->transBegin();
@@ -207,7 +207,7 @@ public function delete($id=null,&$db=null)
 {  
     $db = $db ?? $this->db;
     $db->transBegin();
-    $customer = new Customer(['ID'=>$id]);
+    $customer = new Customer(['id'=>$id]);
     $customer->load();
     $userKyc = $customer->user->user_kyc_details;
     $accountHolder = null;
@@ -217,7 +217,7 @@ public function delete($id=null,&$db=null)
     if(parent::delete($id,$db)){
         $query="delete from user where user_table_id=? and user_type='customer'";
         if($this->query($query,array($id))){
-        	if(!removeModelImage($db,'customer','ID',$id)){
+        	if(!removeModelImage($db,'customer','id',$id)){
         		// this would mean it doesn't exists
         	}
         	if($accountHolder){
@@ -240,7 +240,7 @@ public function delete($id=null,&$db=null)
 public function getCustomerOption($value){
 	$value = ($value != "") ? $value : "";
 	$disable = ($value != '') ? "disabled" : ""; // this means edit function has passed down the value
-	$where = ($value != '') ? " where ID= '$value' " : " where status = '1'";
+	$where = ($value != '') ? " where id= '$value' " : " where status = '1'";
 	$db = db_connect();
 	$query = "select id,fullname as value from customer $where order by value asc";
 	$result ="<div class='form-group'>
@@ -262,7 +262,7 @@ public function viewList(int $id=null, ?string $type,int $limit=200,bool $runQue
 	$whereClause = null;
 
 	if($runQuery){
-		$whereClause = ($id != null) ? " where customer.ID = '$id'" : "";
+		$whereClause = ($id != null) ? " where customer.id = '$id'" : "";
 		$query = "SELECT ID,fullname,email,phone_number,upper(gender) gender,address,residence_state,country,customer_path,if(status, 'Active', 'Inactive') status,date_created,date_modified from customer $whereClause order by ID desc limit $limit";
 		$result = $this->query($query);
 		return (!empty($result)) ? $result[0] : false;

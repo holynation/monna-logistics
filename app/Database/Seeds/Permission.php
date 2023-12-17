@@ -10,17 +10,17 @@ class Permission extends Seeder
     {
         $data = [
             [
-                'role_id' => 1,
+                'role_id' => '1',
                 'path' => 'vc/admin/dashboard',
-                'permission' => 'w',
+                'permission' => 'w'
             ],
             [
-                'role_id' => 1,
+                'role_id' => '1',
                 'path' => 'vc/admin/profile',
-                'permission' => 'w',
-            ]
+                'permission' => 'w'
+            ],
         ];
 
-        $this->db->table('permission')->insert($data);
+        $this->db->table('permission')->insertBatch($data);
     }
 }

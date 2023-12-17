@@ -12,7 +12,7 @@ class Admin extends Seeder
             'firstname' => 'Admin',
             'lastname' => 'Admin',
             'email' => 'admin@gmail.com',
-            'role_id' => 1,
+            'role_id' => '1',
             'status'    => '1'
         ];
 

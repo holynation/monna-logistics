@@ -123,7 +123,7 @@ public function getStatusFormField($value = ''){
 public function delete($id=null,&$db=null)
 {
 	if ($id==null) {
-		$id=$this->ID;
+		$id=$this->id;
 	}
 	if ($id==1) {
 		return false;
@@ -133,7 +133,7 @@ public function delete($id=null,&$db=null)
 
 protected function getAdmin(){
 	$query ='SELECT * FROM admin WHERE role_id=?';
-	$id = $this->array['ID'];
+	$id = $this->array['id'];
 	$db = $this->db;
 	$result = $db->query($query,array($id));
 	$result =$result->getResultArray();
@@ -150,7 +150,7 @@ protected function getAdmin(){
 	
 protected function getPermission(){
 	$query ='SELECT * FROM permission WHERE role_id=?';
-	$id = $this->array['ID'];
+	$id = $this->array['id'];
 	$db = $this->db;
 	$result = $db->query($query,array($id));
 	$result =$result->getResultArray();
@@ -167,7 +167,7 @@ protected function getPermission(){
 public function getPermissionArray()
 {
 	$query = "select * from permission where role_id=?";
-	$result = $this->query($query,array($this->ID));
+	$result = $this->query($query,array($this->id));
 	$toReturn = array();
 	if (!$result) {
 		return array();
@@ -181,7 +181,7 @@ public function getPermissionArray()
 public function processPermission($update,$remove)
 {
 	$db = $this->db;
-	$id = $db->escape($this->ID);
+	$id = $db->escape($this->id);
 	$removeQuery=$this->buildRemoveQuery($remove,$id);
 	$updateQuery = $this->buildUpdateQuery($update,$id);
 	$db->transBegin();
@@ -224,7 +224,7 @@ private function buildRemoveQuery($remove,$id)
 		$content = str_replace(',', "','", $content);
 		$content = "'$content'";
 	}
-	$result = "delete from permission where path in ($content) and role_ID={$this->ID}";
+	$result = "delete from permission where path in ($content) and role_ID={$this->id}";
 	return $result;
 }
 
@@ -233,7 +233,7 @@ public function canView($path)
 	$db = $this->db;
 	$path = $db->escape($path);
 	$query = "select * from permission where role_id=? and $path like concat('%',path,'%')";
-	$result = $this->query($query,[$this->ID]);
+	$result = $this->query($query,[$this->id]);
 	return $result;
 }
 
@@ -242,14 +242,14 @@ public function canWrite($path)
 	$db = $this->db;
 	$path = $db->escape($path);
 	$query = "select * from permission where role_id=? and $path like concat('%',path,'%') and permission='w'";
-	$result = $this->query($query,[$this->ID]);
+	$result = $this->query($query,[$this->id]);
 	return $result;
 }
 
 public function checkWritePermission(){
 	$admin = loadClass('admin');
 	$webSessionManager = new \App\Models\WebSessionManager;
-	$admin->ID = $webSessionManager->getCurrentUserProp('user_table_id');
+	$admin->id = $webSessionManager->getCurrentUserProp('user_table_id');
 	$admin->load();
 	$role = $admin->role;
 	// get the page referer and use it as the

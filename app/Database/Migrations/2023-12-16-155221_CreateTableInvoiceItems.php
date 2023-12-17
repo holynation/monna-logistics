@@ -5,7 +5,7 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\RawSql;
 
-class User extends Migration
+class CreateTableInvoiceItems extends Migration
 {
     public function up()
     {
@@ -16,43 +16,31 @@ class User extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'username' => [
-                'type' => 'varchar',
-                'constraint' => 100,
-                'null' => false,
-                'unique' => true
-            ],
-            'password' => [
-                'type' => 'varchar',
-                'constraint' => 150,
-                'null' => false,
-            ],
-            'user_type' => [
-                'type' => 'enum',
-                'constraint' => ['admin','customers'],
-                'null' => false,
-                'default' => 'customers'
-            ],
-            'user_table_id' => [
+            'invoices_id' => [
                 'type' => 'int',
                 'constraint' => 11,
-                'null' => false
-            ],
-            'has_change_password' => [
-                'type' => 'tinyint',
-                'constraint' => 1,
                 'null' => false,
-                'default' => 0,
+                'unsigned' => true,
+            ],
+            'description' => [
+                'type' => 'text',
+                'null' => false,
+            ],
+            'quantity' => [
+                'type' => 'int',
+                'constraint' => 11,
+                'null' => false,
+            ],
+            'price' => [
+                'type' => 'decimal',
+                'constraint' => '10,2',
+                'null' => false,
             ],
             'status' => [
                 'type' => 'tinyint',
                 'constraint' => 1,
                 'null' => false,
                 'default' => 1,
-            ],
-            'last_login' => [
-                'type' => 'timestamp',
-                'default' => new RawSql('current_timestamp')
             ],
             'date_created' => [
                 'type' => 'timestamp',
@@ -61,14 +49,16 @@ class User extends Migration
         ];
 
         $this->forge->addField($fields);
-        $this->forge->addField("last_login timestamp not null default current_timestamp on update current_timestamp");
+        $this->forge->addField("date_modified timestamp not null default current_timestamp on update current_timestamp");
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('invoices_id', 'invoices', 'id', 'cascade', 'cascade');
         $attributes = ['COLLATE' => 'utf8_general_ci'];
-        $this->forge->createTable('user', true, $attributes);
+        $this->forge->createTable('invoice_items', true, $attributes);
+
     }
 
     public function down()
     {
-        $this->forge->dropTable('user');
+        $this->forge->dropTable('invoice_items');
     }
 }

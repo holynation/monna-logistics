@@ -9,7 +9,7 @@ class Role extends Migration
     public function up()
     {
         $fields = [
-            'ID' => [
+            'id' => [
                 'type' => 'int',
                 'constraint' => 11,
                 'unsigned' => true,
@@ -29,7 +29,7 @@ class Role extends Migration
         ];
 
         $this->forge->addField($fields);
-        $this->forge->addKey('ID', true);
+        $this->forge->addKey('id', true);
         $attributes = ['COLLATE' => 'utf8_general_ci'];
         $this->forge->createTable('role', true, $attributes);
     }

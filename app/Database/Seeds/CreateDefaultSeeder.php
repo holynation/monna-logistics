@@ -8,9 +8,9 @@ class CreateDefaultSeeder extends Seeder
 {
     public function run()
     {
-        $this->call('admin');
-        $this->call('role');
-        $this->call('permission');
-        $this->call('user');
+        $this->call('Admin');
+        $this->call('Role');
+        $this->call('Permission');
+        $this->call('User');
     }
 }

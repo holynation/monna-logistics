@@ -5,7 +5,7 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\RawSql;
 
-class Customers extends Migration
+class CreateTableInvoiceTransaction extends Migration
 {
     public function up()
     {
@@ -16,42 +16,41 @@ class Customers extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'firstname' => [
+            'customers_id' => [
+                'type' => 'int',
+                'constraint' => 11,
+                'null' => false,
+                'unsigned' => true,
+            ],
+            'invoices_id' => [
+                'type' => 'int',
+                'constraint' => 11,
+                'null' => false,
+            ],
+            'description' => [
                 'type' => 'varchar',
                 'constraint' => 255,
-                'null' => false,
+                'null' => false
             ],
-            'lastname' => [
+            'transaction_ref' => [
                 'type' => 'varchar',
-                'constraint' => 255,
+                'constraint' => 100,
                 'null' => false,
             ],
-            'middlename' => [
+            'amount_paid' => [
+                'type' => 'decimal',
+                'constraint' => '10,2',
+                'null' => false,
+            ],
+            'payment_status' => [
                 'type' => 'varchar',
-                'constraint' => 255,
-                'null' => true,
-            ],
-            'email' => [
-                'type' => 'varchar',
-                'constraint' => 255,
+                'constraint' => 50,
                 'null' => false,
-                'unique' => true
+                'default' => 'Not Paid'
             ],
-            'phone_number' => [
-                'type' => 'varchar',
-                'constraint' => 20,
-                'null' => false,
-                'unique' => true
-            ],
-            'address' => [
-                'type' => 'text',
-                'null' => true,
-            ],
-            'status' => [
-                'type' => 'tinyint',
-                'constraint' => 1,
-                'null' => false,
-                'default' => 1,
+            'payment_date' => [
+                'type' => 'timestamp',
+                'default' => new RawSql('current_timestamp')
             ],
             'date_created' => [
                 'type' => 'timestamp',
@@ -62,12 +61,13 @@ class Customers extends Migration
         $this->forge->addField($fields);
         $this->forge->addField("date_modified timestamp not null default current_timestamp on update current_timestamp");
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('customers_id', 'customers', 'id', 'cascade', 'cascade');
         $attributes = ['COLLATE' => 'utf8_general_ci'];
-        $this->forge->createTable('customers', true, $attributes);
+        $this->forge->createTable('invoice_transaction', true, $attributes);
     }
 
     public function down()
     {
-        $this->forge->dropTable('customers');
+        $this->forge->dropTable('invoice_transaction');
     }
 }
