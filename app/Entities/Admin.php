@@ -64,7 +64,7 @@ public static $typeArray = ['firstname' => 'varchar','middlename' => 'varchar','
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['ID' => '','firstname' => '','middlename' => '','lastname' => '','email' => '','phone_number' => '','address' => '','role_id' => '','status' => ''];
+public static $labelArray = ['id' => '','firstname' => '','middlename' => '','lastname' => '','email' => '','phone_number' => '','address' => '','role_id' => '','status' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -105,68 +105,68 @@ public function __construct(array $array = [])
 }
  
 public function getFirstnameFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='firstname'>Firstname</label>
-				<input type='text' name='firstname' id='firstname' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='firstname' id='firstname' value='$value' class='form-control' placeholder='Firstname' required />
+		<label for='firstname'>Firstname</label>
+	</div>";
 } 
-public function getMiddlenameFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='middlename'>Middlename</label>
-				<input type='text' name='middlename' id='middlename' value='$value' class='form-control' required />
-			</div>";
-} 
+
 public function getLastnameFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='lastname'>Lastname</label>
-				<input type='text' name='lastname' id='lastname' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='lastname' id='lastname' value='$value' class='form-control' placeholder='Lastname' required />
+		<label for='lastname'>Lastname</label>
+	</div>";
 } 
+
+public function getMiddlenameFormField($value = ''){
+return "<div class='form-floating mb-7'>
+		<input type='text' name='middlename' id='middlename' value='$value' class='form-control' placeholder='Middlename'  />
+		<label for='middlename'>Middlename</label>
+	</div>";
+} 
+
 public function getEmailFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='email'>Email</label>
-				<input type='text' name='email' id='email' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='email' id='email' value='$value' class='form-control' placeholder='Email' required />
+		<label for='email'>Email</label>
+	</div>";
 } 
+
 public function getPhone_numberFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='phone_number'>Phone Number</label>
-				<input type='text' name='phone_number' id='phone_number' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='phone_number' id='phone_number' value='$value' class='form-control' placeholder='Phone Number' required />
+		<label for='phone_number'>Phone Number</label>
+	</div>";
 } 
-public function getAddressFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='address'>Address</label>
-				<input type='text' name='address' id='address' value='$value' class='form-control' required />
-			</div>";
-} 
+
 public function getRole_idFormField($value = ''){
-	$fk = null; 
+$fk = null; 
  	//change the value of this variable to array('table'=>'role','display'=>'role_name'); if you want to preload the value from the database where the display key is the name of the field to use for display in the table.[i.e the display key is a column name in the table specify in that array it means select id,'role_name' as value from 'role' meaning the display name must be a column name in the table model].It is important to note that the table key can be in this format[array('table' => array('role', 'another table name'))] provided that their is a relationship between these tables. The value param in the function is set to true if the form model is used for editing or updating so that the option value can be selected by default;
 
-		if(is_null($fk)){
-			return $result = "<input type='hidden' name='role_id' id='role_id' value='$value' class='form-control' />";
-		}
+	if(is_null($fk)){
+		return $result = "<input type='hidden' name='role_id' id='role_id' value='$value' class='form-control' />";
+	}
 
-		if(is_array($fk)){
-			
-			$result ="<div class='form-group'>
+	if(is_array($fk)){
+		
+		$result ="<div class='form-floating'>";
+		$option = $this->loadOption($fk,$value);
+		//load the value from the given table given the name of the table to load and the display field
+		$result.="<select name='role_id' id='role_id' class='form-select'>
+					$option
+				</select>
 			<label for='role_id'>Role</label>";
-			$option = $this->loadOption($fk,$value);
-			//load the value from the given table given the name of the table to load and the display field
-			$result.="<select name='role_id' id='role_id' class='form-control'>
-						$option
-					</select>";
-					$result.="</div>";
+			$result.="</div>";
 		return $result;
-		}
+	}
 		
 }
+
 public function getStatusFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='status'>Status</label>
-				<input type='text' name='status' id='status' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='status' id='status' value='$value' class='form-control' placeholder='Status' required />
+		<label for='status'>Status</label>
+	</div>";
 } 
 
 protected function getRole(){

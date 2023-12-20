@@ -190,7 +190,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--begin::Modal header-->
           <div class="modal-header" id="kt_modal_add_model_header">
             <!--begin::Modal title-->
-            <h2 class="fw-bold"><?php echo removeUnderscore($model);  ?></h2>
+            <h2 class="fw-bold">Create New <?php echo removeUnderscore($model);  ?></h2>
             <!--end::Modal title-->
             <!--begin::Close-->
             <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">

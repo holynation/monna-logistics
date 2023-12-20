@@ -25,7 +25,7 @@ class ModelControllerCallback
 		if ($type == 'insert') {
 			// login details as follow: username = email, password = firstname(in lowercase)
 			$password = encode_password(strtolower($data['lastname']));
-			$param = array('user_type'=>'admin','username'=>$data['email'],'username_2'=>'','password'=>$password,'user_table_id'=>$data['LAST_INSERT_ID'],'status'=>'1');
+			$param = array('user_type'=>'admin','username'=>$data['email'],'password'=>$password,'user_table_id'=>$data['LAST_INSERT_ID'],'status'=>'1');
 			$std = new $user($param);
 			if ($std->insert($db,$message)) {
 				return true;
@@ -42,8 +42,8 @@ class ModelControllerCallback
 		$user = loadClass('user');
 		if ($type == 'insert') {
 			// login details as follow: username = email, password = firstname(in lowercase)
-			$password = encode_password('_12345678');
-			$param = array('user_type'=>'customers','username'=>$data['email'],'username_2'=>'','password'=>$password,'user_table_id'=>$data['LAST_INSERT_ID'],'status'=>'1');
+			$password = encode_password($data['lastname']);
+			$param = array('user_type'=>'customers','username'=>$data['email'],'password'=>$password,'user_table_id'=>$data['LAST_INSERT_ID'],'status'=>'1');
 			$std = new $user($param);
 			if ($std->insert($db,$message)) {
 				return true;

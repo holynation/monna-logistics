@@ -20,7 +20,7 @@ protected static $tablename = "Customers";
 * This array contains the field that can be null
 * @var array
 */
-public static $nullArray = ['middlename','address'];
+public static $nullArray = ['middlename','address','status','date_created','date_modified'];
 
 /** 
 * This are fields that must be unique across a row in a table.
@@ -64,7 +64,7 @@ public static $typeArray = ['firstname' => 'varchar','lastname' => 'varchar','mi
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['ID' => '','firstname' => '','lastname' => '','middlename' => '','email' => '','phone_number' => '','address' => '','status' => '','date_created' => '','date_modified' => ''];
+public static $labelArray = ['id' => '','firstname' => '','lastname' => '','middlename' => '','email' => '','phone_number' => '','address' => '','status' => '','date_created' => '','date_modified' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -104,58 +104,57 @@ public function __construct(array $array = [])
 }
  
 public function getFirstnameFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='firstname'>Firstname</label>
-				<input type='text' name='firstname' id='firstname' value='$value' class='form-control' required />
-			</div>";
+	return "<div class='form-floating mb-7'>
+		<input type='text' name='firstname' id='firstname' value='$value' class='form-control' placeholder='Firstname' required />
+		<label for='firstname'>Firstname</label>
+	</div>";
 } 
+
 public function getLastnameFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='lastname'>Lastname</label>
-				<input type='text' name='lastname' id='lastname' value='$value' class='form-control' required />
-			</div>";
+	return "<div class='form-floating mb-7'>
+		<input type='text' name='lastname' id='lastname' value='$value' class='form-control' placeholder='Lastname' required />
+		<label for='lastname'>Lastname</label>
+	</div>";
 } 
+
 public function getMiddlenameFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='middlename'>Middlename</label>
-				<input type='text' name='middlename' id='middlename' value='$value' class='form-control' required />
-			</div>";
+	return "<div class='form-floating mb-7'>
+		<input type='text' name='middlename' id='middlename' value='$value' class='form-control' placeholder='Middlename'  />
+		<label for='middlename'>Middlename</label>
+	</div>";
 } 
+
 public function getEmailFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='email'>Email</label>
-				<input type='text' name='email' id='email' value='$value' class='form-control' required />
-			</div>";
+	return "<div class='form-floating mb-7'>
+		<input type='text' name='email' id='email' value='$value' class='form-control' placeholder='Email' required />
+		<label for='email'>Email</label>
+	</div>";
 } 
+
 public function getPhone_numberFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='phone_number'>Phone Number</label>
-				<input type='text' name='phone_number' id='phone_number' value='$value' class='form-control' required />
-			</div>";
+	return "<div class='form-floating mb-7'>
+		<input type='text' name='phone_number' id='phone_number' value='$value' class='form-control' placeholder='Phone Number' required />
+		<label for='phone_number'>Phone Number</label>
+	</div>";
 } 
+
 public function getAddressFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='address'>Address</label>
-				<input type='text' name='address' id='address' value='$value' class='form-control' required />
-			</div>";
+	return "<div class='form-floating mb-7'>
+		<textarea name='address' id='address' class='form-control' placeholder='Address' required>$value</textarea>
+		<label for='address'>Address</label>
+	</div>";
 } 
+
 public function getStatusFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='status'>Status</label>
-				<input type='text' name='status' id='status' value='$value' class='form-control' required />
-			</div>";
+	return "";
 } 
+
 public function getDate_createdFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='date_created'>Date Created</label>
-				<input type='text' name='date_created' id='date_created' value='$value' class='form-control' required />
-			</div>";
+	return "";
 } 
+
 public function getDate_modifiedFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='date_modified'>Date Modified</label>
-				<input type='text' name='date_modified' id='date_modified' value='$value' class='form-control' required />
-			</div>";
+	return "";
 } 
 
 protected function getRole(){

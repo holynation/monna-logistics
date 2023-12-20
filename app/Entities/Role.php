@@ -64,7 +64,7 @@ public static $typeArray = ['role_title' => 'varchar','status' => 'tinyint'];
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['ID' => '','role_title' => '','status' => ''];
+public static $labelArray = ['id' => '','role_title' => '','status' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -103,21 +103,19 @@ public function __construct(array $array = [])
 	parent::__construct($array);
 	$this->createSuperUser();
 }
- 
+
 public function getRole_titleFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='role_title'>Role Title</label>
-				<input type='text' name='role_title' id='role_title' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='role_title' id='role_title' value='$value' class='form-control' placeholder='Role Title' required />
+		<label for='role_title'>Role Title</label>
+	</div>";
 } 
+
 public function getStatusFormField($value = ''){
-	return "<div class='form-group'>
-	<label class='form-checkbox'>Status</label>
-	<select class='form-control' id='status' name='status' required>
-		<option value='1' selected='selected'>Yes</option>
-		<option value='0'>No</option>
-	</select>
-	</div> ";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='status' id='status' value='$value' class='form-control' placeholder='Status' required />
+		<label for='status'>Status</label>
+	</div>";
 }
 
 public function delete($id=null,&$db=null)

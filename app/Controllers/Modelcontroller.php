@@ -60,7 +60,7 @@ class Modelcontroller extends BaseController
 			}
 
 			unset($_POST['MAX_FILE_SIZE']);
-			$this->insertSingle($model, $filter);
+			$this->insertSingle($model);
 		} catch (\Exception $ex) {
 			echo $ex->getMessage();
 			$this->db->transRollback();
@@ -268,12 +268,15 @@ class Modelcontroller extends BaseController
 		return true;
 	}
 
-	//this method is called when a single insertion is to be made.
-	private function insertSingle($model, $filter)
+	/**
+	 * [insertSingle description]
+	 * @param  string $model [description]
+	 * @return [type]        [description]
+	 */
+	private function insertSingle(string $model)
 	{
 		$this->modelCheck($model, 'c');
 		$message = '';
-		$filter = (bool)$filter;
 		$data = $this->request->getPost(null);
 		$newModel = loadClass($model);
 		unset($data["edu-submit"]);

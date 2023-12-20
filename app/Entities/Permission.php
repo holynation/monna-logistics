@@ -64,7 +64,7 @@ public static $typeArray = ['role_id' => 'int','path' => 'varchar','permission' 
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['ID' => '','role_id' => '','path' => '','permission' => ''];
+public static $labelArray = ['id' => '','role_id' => '','path' => '','permission' => ''];
 
 /** 
 * Associative array of fields in the table that have default value

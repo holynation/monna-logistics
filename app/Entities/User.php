@@ -44,7 +44,7 @@ public static $uploadDependency = [];
 * table id alone, the display field name provided must be a column in the table to replace the table id shown to the user.
 * @var array|string
 */
-public static $displayField = 'ID';
+public static $displayField = 'id';
 
 /** 
 * This array contains the fields that are unique
@@ -64,7 +64,7 @@ public static $typeArray = ['username' => 'varchar','password' => 'varchar','use
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['ID' => '','username' => '','password' => '','user_type' => '','user_table_id' => '','token' => '','last_login' => '','last_logout' => '','date_created' => '','status' => ''];
+public static $labelArray = ['id' => '','username' => '','password' => '','user_type' => '','user_table_id' => '','token' => '','last_login' => '','last_logout' => '','date_created' => '','status' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -110,12 +110,6 @@ public function getUsernameFormField($value = ''){
 				<input type='text' name='username' id='username' value='$value' class='form-control' required />
 			</div>";
 }
-public function getUsername_2FormField($value = ''){
-	return "<div class='form-group'>
-				<label for='username_2'>Username 2</label>
-				<input type='text' name='username_2' id='username_2' value='$value' class='form-control' required />
-			</div>";
-} 
 public function getPasswordFormField($value = ''){
 	return "<div class='form-group'>
 				<label for='password'>Password</label>
@@ -150,12 +144,6 @@ public function getUser_table_idFormField($value = ''){
 		}
 		
 }
-public function getTokenFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='token'>Token</label>
-				<input type='text' name='token' id='token' value='$value' class='form-control' required />
-			</div>";
-} 
 public function getLast_loginFormField($value = ''){
 	return "<div class='form-group'>
 				<label for='last_login'>Last Login</label>
@@ -179,13 +167,7 @@ public function getStatusFormField($value = ''){
 				<label for='status'>Status</label>
 				<input type='text' name='status' id='status' value='$value' class='form-control' required />
 			</div>";
-} 
-public function getReferral_codeFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='referral_code'>Referral Code</label>
-				<input type='text' name='referral_code' id='referral_code' value='$value' class='form-control' required />
-			</div>";
-} 
+}
 
 protected function getUser_table(){
 	$query = 'SELECT * FROM user_table WHERE id=?';

@@ -74,25 +74,20 @@ class FormConfig
 
 			$this->insertConfig = array
 			(
-				'customer'=>array
+				'customers'=>array
 				(
 					'show_add' => false,
-					'exclude'=>array(),
-					'table_exclude'=>array(),
+					'exclude'=> [],
+					'table_exclude'=> ['date_modified', 'middlename'],
 					'header_title'=>'Manage registered customer(s)',
 					'table_title'=>'Manage registered customer(s)',
 					'has_upload'=>false,
 					'hidden'=>array(),
 					'show_status'=>false,
-					'search'=>array('fullname'),
+					'search'=>array('firstname'),
 					'search_placeholder'=>array('Search...'),
-					'order_by' => array('fullname'),
-					'table_action' => [
-                      'view profile' => "vc/admin/view_more/customer/{$type}",
-                      'edit profile' => "edit/customer",
-                      'enable' => 'getEnabled'
-                    ],
-                    'query_string' => ['reference_number','made_by'],
+					'order_by' => array('firstname'),
+                    'query_string' => ['firstname'],
 				),
 				'admin'=>array
 				(

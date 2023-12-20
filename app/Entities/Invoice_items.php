@@ -64,7 +64,7 @@ public static $typeArray = ['invoices_id' => 'int unsigned','description' => 'te
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['ID' => '','invoices_id' => '','description' => '','quantity' => '','price' => '','status' => '','date_created' => '','date_modified' => ''];
+public static $labelArray = ['id' => '','invoices_id' => '','description' => '','quantity' => '','price' => '','status' => '','date_created' => '','date_modified' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -105,63 +105,69 @@ public function __construct(array $array = [])
 }
  
 public function getInvoices_idFormField($value = ''){
-	$fk = null; 
+$fk = null; 
  	//change the value of this variable to array('table'=>'invoices','display'=>'invoices_name'); if you want to preload the value from the database where the display key is the name of the field to use for display in the table.[i.e the display key is a column name in the table specify in that array it means select id,'invoices_name' as value from 'invoices' meaning the display name must be a column name in the table model].It is important to note that the table key can be in this format[array('table' => array('invoices', 'another table name'))] provided that their is a relationship between these tables. The value param in the function is set to true if the form model is used for editing or updating so that the option value can be selected by default;
 
-		if(is_null($fk)){
-			return $result = "<input type='hidden' name='invoices_id' id='invoices_id' value='$value' class='form-control' />";
-		}
+	if(is_null($fk)){
+		return $result = "<input type='hidden' name='invoices_id' id='invoices_id' value='$value' class='form-control' />";
+	}
 
-		if(is_array($fk)){
-			
-			$result ="<div class='form-group'>
+	if(is_array($fk)){
+		
+		$result ="<div class='form-floating'>";
+		$option = $this->loadOption($fk,$value);
+		//load the value from the given table given the name of the table to load and the display field
+		$result.="<select name='invoices_id' id='invoices_id' class='form-select'>
+					$option
+				</select>
 			<label for='invoices_id'>Invoices</label>";
-			$option = $this->loadOption($fk,$value);
-			//load the value from the given table given the name of the table to load and the display field
-			$result.="<select name='invoices_id' id='invoices_id' class='form-control'>
-						$option
-					</select>";
-					$result.="</div>";
+			$result.="</div>";
 		return $result;
-		}
+	}
 		
 }
+
 public function getDescriptionFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='description'>Description</label>
-				<input type='text' name='description' id='description' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='description' id='description' value='$value' class='form-control' placeholder='Description' required />
+		<label for='description'>Description</label>
+	</div>";
 } 
+
 public function getQuantityFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='quantity'>Quantity</label>
-				<input type='text' name='quantity' id='quantity' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='quantity' id='quantity' value='$value' class='form-control' placeholder='Quantity' required />
+		<label for='quantity'>Quantity</label>
+	</div>";
 } 
+
 public function getPriceFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='price'>Price</label>
-				<input type='text' name='price' id='price' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='price' id='price' value='$value' class='form-control' placeholder='Price' required />
+		<label for='price'>Price</label>
+	</div>";
 } 
+
 public function getStatusFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='status'>Status</label>
-				<input type='text' name='status' id='status' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='status' id='status' value='$value' class='form-control' placeholder='Status' required />
+		<label for='status'>Status</label>
+	</div>";
 } 
+
 public function getDate_createdFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='date_created'>Date Created</label>
-				<input type='text' name='date_created' id='date_created' value='$value' class='form-control' required />
-			</div>";
+return "<div class='form-floating mb-7'>
+		<input type='text' name='date_created' id='date_created' value='$value' class='form-control' placeholder='Date Created' required />
+		<label for='date_created'>Date Created</label>
+	</div>";
 } 
+
 public function getDate_modifiedFormField($value = ''){
-	return "<div class='form-group'>
-				<label for='date_modified'>Date Modified</label>
-				<input type='text' name='date_modified' id='date_modified' value='$value' class='form-control' required />
-			</div>";
-} 
+return "<div class='form-floating mb-7'>
+		<input type='text' name='date_modified' id='date_modified' value='$value' class='form-control' placeholder='Date Modified' required />
+		<label for='date_modified'>Date Modified</label>
+	</div>";
+}  
 
 protected function getInvoices(){
 	$query = 'SELECT * FROM invoices WHERE id=?';

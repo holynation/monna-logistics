@@ -41,7 +41,6 @@ class ModelFormBuilder extends Model
 		$result = "<script>
 		\$(document).ready(function(){
 			\$('#{$this->formName}').submit(function(e){
-				addAsterisk();
 				e.preventDefault();
 				var btnSubmit = \$('input[type=submit]');
 				btnSubmit.addClass('disabled');
