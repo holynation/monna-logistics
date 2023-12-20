@@ -187,8 +187,7 @@ function removeUnderscore($fieldname)
 
 function uniqueString($size = 20)
 {
-	$bytes = random_bytes($size);
-	return bin2hex($bytes);
+	return randStrGen($size);
 }
 
 function generateReceipt()
@@ -196,7 +195,7 @@ function generateReceipt()
 	$rand = mt_rand(0x000000, 0xffffff); // generate a random number between 0 and 0xffffff
 	$rand = dechex($rand & 0xffffff); // make sure we're not over 0xffffff, which shouldn't happen anyway
 	$rand = str_pad($rand, 6, '0', STR_PAD_LEFT); // add zeroes in front of the generated string
-	$code = date('Y') . "" . $rand;
+	$code = date('Ymd') . "" . $rand;
 	return strtoupper($code);
 }
 
@@ -437,7 +436,7 @@ function buildOption($array, $val='',$defaultValue='')
 		$current = $array[$i];
 		$id = $current['id'];
 		$value = $current['value'];
-		$selected = $val == $id ? "selected='selected'" : '';
+		$selected = ($val == $id) ? "selected='selected'" : '';
 		$result .= "<option value='$id' $selected>$value</option> \n";
 	}
 	return $result;

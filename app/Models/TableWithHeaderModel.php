@@ -256,7 +256,7 @@ class TableWithHeaderModel extends Model
 			}else{
 				$editClass ='';
 			}
-			$result.="<div class='menu-item px-3' data-item-id='$currentid' data-default='$default' data-critical='$critical' $editClass><a href='$link' class='menu-link px-3 '>$label</a></div>";
+			$result.="<div class='menu-item px-3' data-item-id='$currentid' data-default='$default' data-critical='$critical' $editClass><a href='$link' class='menu-link px-3 '>".ucfirst($label)."</a></div>";
 		}
 		return $result;
 	}

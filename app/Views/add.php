@@ -327,13 +327,6 @@ $formContent = $modelFormBuilder->start($model.'_table')
         // location.reload();
       }
       showNotification(data.status,data.message);
-      let btnSubmit = $("input[type=submit], #refreshBankList");
-      btnSubmit.removeClass('disabled');
-      btnSubmit.prop('disabled', false);
-      btnSubmit.html('Submit');
-      if (typeof target ==='undefined') {
-        location.reload();
-      }
     }
 </script>
 

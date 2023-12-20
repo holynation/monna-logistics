@@ -62,5 +62,6 @@ $routes->post('login', 'Auth::web');
 $routes->get('logout', 'Auth::logout');
 
 $routes->get('admin/dashboard', 'Viewcontroller::view/admin/dashboard');
+$routes->post('invoices/process', 'Viewcontroller::processInvoices');
 
 $routes->cli('cron/cronJob/(:any)', 'Cron::cronJob/$1');

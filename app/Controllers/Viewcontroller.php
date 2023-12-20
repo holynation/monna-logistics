@@ -163,6 +163,162 @@ private function adminProfile(&$data)
   $data['admin'] = $admin;
 }
 
+private function adminInvoices(&$data)
+{
+  $data['invoiceNum'] = generateReceipt();
+  $data['trackNum'] = date('ymd').uniqueString(13);
+  $query = "SELECT id, concat(lastname, ' ', firstname) as value from customers where status = ?";
+  $options = buildOptionFromQuery($this->db, $query, [1], isset($_GET['customer']) ? $_GET['customer'] : null);
+  $data['customerOptions'] = $options;
+}
+
+public function processInvoices(){
+  // print_r($_POST);exit;
+  if(!$this->validate([
+    'invoice_date' => [
+      'label' => 'invoice date',
+      'rules' => 'required|valid_date',
+    ],
+    'invoice_no' => [
+      'label' => 'invoice number',
+      'rules' => 'required|alpha_numeric',
+    ],
+    'track_number' => [
+      'label' => 'track number',
+      'rules' => 'required|alpha_numeric',
+    ],
+    'customer' => 'required',
+    'bill_to_name' => [
+      'label' => 'bill to name',
+      'rules' => 'required|string|min_length[3]'
+    ],
+    'bill_to_email' => [
+      'label' => 'bill to email',
+      'rules' => 'required|valid_email',
+    ],
+    'bill_to_phone' => [
+      'label' => 'bill to phone',
+      'rules' => 'required|min_length[10]',
+    ],
+    'bill_to_city' => [
+      'label' => 'bill to city',
+      'rules' => 'required|string'
+    ],
+    'bill_to_country' => [
+      'label' => 'bill to country',
+      'rules' => 'required|string'
+    ],
+    'bill_to_address' => [
+      'label' => 'bill to address',
+      'rules' => 'required|string'
+    ],
+    'bill_to_postalcode' => [
+      'label' => 'bill to postalcode',
+      'rules' => 'permit_empty|alpha_numeric'
+    ],
+    'description' => [
+      'label' => 'description',
+      'rules' => 'permit_empty|required'
+    ],
+    'quantity' => [
+      'label' => 'quantity',
+      'rules' => 'required_with[description]'
+    ],
+    'price' => [
+      'label' => 'price',
+      'rules' => 'required_with[description]'
+    ],
+    'invoice_notes' => [
+      'label' => 'invoice notes',
+      'rules' => 'permit_empty|string'
+    ],
+  ])){
+    foreach($this->validator->getErrors() as $error){
+      displayJson(false, $error);return;
+    }
+    $this->webSessionManager->setFlashMessage('error', $this->validator->getErrors());
+    return redirect()->back()->withInput();
+  }
+
+  $validData = $this->validator->getValidated();
+  $discount  = $this->request->getPost('discount') ?? 0;
+  $mustPay  = $this->request->getPost('must_pay');
+  $tax  = $this->request->getPost('tax') ?? 0;
+  $quantity = $validData['quantity'];
+  $price = $validData['price'];
+
+  $customers = loadClass('customers');
+  $customers = $customers->getWhere(['id' => $validData['customer']],$c,0,null,false);
+  if(!$customers){
+    $message = "Unable to locate the customer, please try agian later";
+    displayJson(false, $message);return;
+    $this->webSessionManager->setFlashMessage('error', $message);
+    return redirect()->back()->withInput();
+  }
+  $customers = $customers[0];
+
+  $subTotal = 0;
+  $total = 0;
+  for($i = 0; $i < count($validData['description']); $i++){
+    $validData['price'][$i] = str_replace(',', '', $validData['price'][$i]);
+    $subTotal += (float)$validData['quantity'][$i] * (float)$validData['price'][$i];
+  }
+
+  $total += ($subTotal + $tax);
+  $total -= $discount;
+
+  $param = [
+    'customers_id' => $validData['customer'],
+    'invoice_no' => $validData['invoice_no'],
+    'bill_from_name' => $customers->firstname." ".$customers->lastname." ".$customers->middlename,
+    'bill_from_phone' => $customers->phone_number,
+    'bill_from_address' => $customers->address ?: '',
+    'bill_to_name' => $validData['bill_to_name'],
+    'bill_to_email' => $validData['bill_to_email'],
+    'bill_to_phone' => $validData['bill_to_phone'],
+    'bill_to_city' => $validData['bill_to_city'],
+    'bill_to_country' => $validData['bill_to_country'],
+    'bill_to_address' => $validData['bill_to_address'],
+    'bill_to_postalcode' => $validData['bill_to_postalcode'],
+    'invoice_subtotal' => $subTotal,
+    'invoice_tax' => $tax,
+    'invoice_discount' => $discount,
+    'invoice_total' => $total,
+    'invoice_date' => $validData['invoice_date'],
+    'invoice_notes' => $validData['invoice_notes'],
+    'track_number' => $validData['track_number'],
+  ];
+
+  // $this->db->transBegin();
+  $inserted = $this->db->table('invoices')->insert($param);
+  $inserted = $this->db->insertID();
+
+  $insertParam = [];
+  for($i = 0; $i < count($validData['description']); $i++){
+    $description = $validData['description'][$i];
+    $price = $validData['price'][$i];
+    $quantity = $validData['quantity'][$i];
+    if($description != '' && $price != '' && $quantity != ''){
+      $insertParam[] = [
+        'invoices_id' => $inserted,
+        'description' => $description,
+        'quantity' => $quantity,
+        'price' => $price
+      ];
+    }
+  }
+
+  // if(!$this->db->table('invoice_items')->insertBatch($insertParam)){
+  //   $this->db->transRollback();
+  //   displayJson(false, "Something went wrong, please try again later");
+  //   return;
+  // }
+
+  $this->db->table('invoice_items')->insertBatch($insertParam);
+  // $this->db->transCommit();
+  displayJson(true, "You have successfully created the invoice");return;
+}
+
 /**
  * This would ensure that custom query on table model is allowed based
  * on different type of the entity

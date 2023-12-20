@@ -87,7 +87,7 @@ class FormConfig
 					'search'=>array('firstname'),
 					'search_placeholder'=>array('Search...'),
 					'order_by' => array('firstname'),
-                    'query_string' => ['firstname'],
+                    'query_string' => [],
 				),
 				'admin'=>array
 				(
