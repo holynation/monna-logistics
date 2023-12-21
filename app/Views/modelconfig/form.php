@@ -1,6 +1,6 @@
 <?php
 
-$show_add = ($configData && array_key_exists('show_add', $configData))?$configData['show_add']:false;
+$show_add = ($configData && array_key_exists('show_add', $configData))?$configData['show_add']:true;
 $exclude = ($configData && array_key_exists('exclude', $configData))?$configData['exclude']:array();
 $has_upload = ($configData && array_key_exists('has_upload', $configData))?$configData['has_upload']:false;
 $hidden = ($configData && array_key_exists('hidden', $configData))?$configData['hidden']:array();

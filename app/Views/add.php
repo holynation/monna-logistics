@@ -94,6 +94,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--end::Search-->
         </div>
         <!--begin::Card title-->
+        <?php if($show_add): ?>
         <!--begin::Card toolbar-->
         <div class="card-toolbar">
           <!--begin::Toolbar-->
@@ -113,6 +114,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--end::Toolbar-->
         </div>
         <!--end::Card toolbar-->
+        <?php endif; ?>
       </div>
       <!--end::Card header-->
       <!--begin::Card body-->

@@ -57,14 +57,14 @@ public static $uniqueArray = [];
 * of the field
 * @var array
 */
-public static $typeArray = ['customers_id' => 'int unsigned','invoice_no' => 'varchar','bill_from_name' => 'varchar','bill_from_phone' => 'varchar','bill_from_address' => 'text','bill_to_name' => 'varchar','bill_to_phone' => 'varchar','bill_to_email' => 'varchar','bill_to_city' => 'varchar','bill_to_country' => 'varchar','bill_to_postalcode' => 'varchar','invoice_subtotal' => 'decimal','invoice_tax' => 'decimal','invoice_discount' => 'decimal','invoice_total' => 'decimal','invoice_date' => 'date','invoice_notes' => 'text','status' => 'tinyint','date_created' => 'timestamp','date_modified' => 'timestamp'];
+public static $typeArray = ['customers_id' => 'int unsigned','invoice_no' => 'varchar','bill_from_name' => 'varchar','bill_from_phone' => 'varchar','bill_from_address' => 'text','bill_to_name' => 'varchar','bill_to_phone' => 'varchar','bill_to_email' => 'varchar','bill_to_city' => 'varchar','bill_to_country' => 'varchar','bill_to_postalcode' => 'varchar','invoice_subtotal' => 'decimal','invoice_tax' => 'decimal','invoice_discount' => 'decimal','invoice_total' => 'decimal','invoice_date' => 'date','invoice_notes' => 'text','status' => 'tinyint','date_created' => 'timestamp','date_modified' => 'timestamp','track_number' => 'varchar','bill_to_address' => 'text','invoice_status' => 'varchar'];
 
 /** 
 * This is a dictionary that map a field name with the label name that
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['id' => '','customers_id' => '','invoice_no' => '','bill_from_name' => '','bill_from_phone' => '','bill_from_address' => '','bill_to_name' => '','bill_to_phone' => '','bill_to_email' => '','bill_to_city' => '','bill_to_country' => '','bill_to_postalcode' => '','invoice_subtotal' => '','invoice_tax' => '','invoice_discount' => '','invoice_total' => '','invoice_date' => '','invoice_notes' => '','status' => '','date_created' => '','date_modified' => ''];
+public static $labelArray = ['id' => '','customers_id' => '','invoice_no' => '','track_number' => '','bill_from_name' => '','bill_from_phone' => '','bill_from_address' => '','bill_to_name' => '','bill_to_phone' => '','bill_to_email' => '','bill_to_city' => '','bill_to_country' => '','bill_to_postalcode' => '','invoice_subtotal' => '','invoice_tax' => '','invoice_discount' => '','invoice_total' => '','invoice_date' => '','invoice_notes' => '','status' => '','date_created' => '','date_modified' => '','bill_to_address' => '','invoice_status' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -258,7 +258,28 @@ return "<div class='form-floating mb-7'>
 		<input type='text' name='date_modified' id='date_modified' value='$value' class='form-control' placeholder='Date Modified' required />
 		<label for='date_modified'>Date Modified</label>
 	</div>";
-}
+} 
+
+public function getTrack_numberFormField($value = ''){
+return "<div class='form-floating mb-7'>
+		<input type='text' name='track_number' id='track_number' value='$value' class='form-control' placeholder='Track Number' required />
+		<label for='track_number'>Track Number</label>
+	</div>";
+} 
+
+public function getBill_to_addressFormField($value = ''){
+return "<div class='form-floating mb-7'>
+		<input type='text' name='bill_to_address' id='bill_to_address' value='$value' class='form-control' placeholder='Bill To Address' required />
+		<label for='bill_to_address'>Bill To Address</label>
+	</div>";
+} 
+
+public function getInvoice_statusFormField($value = ''){
+return "<div class='form-floating mb-7'>
+		<input type='text' name='invoice_status' id='invoice_status' value='$value' class='form-control' placeholder='Invoice Status' required />
+		<label for='invoice_status'>Invoice Status</label>
+	</div>";
+} 
 
 protected function getCustomers(){
 	$query = 'SELECT * FROM customers WHERE id=?';

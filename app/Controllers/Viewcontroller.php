@@ -308,6 +308,14 @@ public function processInvoices(){
     }
   }
 
+  $transParam = [
+    'customers_id' => $customers->id,
+    'invoices_id' => $inserted,
+    'description' => '',
+    'transaction_ref' => generateHashRef('receipt'),
+    'amount_paid' => $total
+  ];
+
   // if(!$this->db->table('invoice_items')->insertBatch($insertParam)){
   //   $this->db->transRollback();
   //   displayJson(false, "Something went wrong, please try again later");
@@ -315,6 +323,7 @@ public function processInvoices(){
   // }
 
   $this->db->table('invoice_items')->insertBatch($insertParam);
+  $this->db->table('invoice_transaction')->insert($transParam);
   // $this->db->transCommit();
   displayJson(true, "You have successfully created the invoice");return;
 }

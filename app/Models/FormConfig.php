@@ -59,24 +59,12 @@ class FormConfig
 			);
 		}
 		else{
-			$type = @$_GET['type'] ?? 'detail';
-			$withdrawalAction = @$type == 'pending' ? [
-				'User Details' => "vc/admin/view_more/profile/withdrawal",
-				'change status' => 'getEnumStatus'
-			] : [];
-			$walletAction = @$type == 'detail' ? [
-				'User Details' => "vc/admin/view_more/profile/wallet",
-			] : [];
-			$cashbackAction = @$type == 'checkin' ? [] : [
-				'view page' => "vc/admin/view_more/cashback/{$type}",
-				'edit' => "edit/cashback",
-            ];
 
 			$this->insertConfig = array
 			(
 				'customers'=>array
 				(
-					'show_add' => false,
+					'show_add' => true,
 					'exclude'=> [],
 					'table_exclude'=> ['date_modified', 'middlename'],
 					'header_title'=>'Manage registered customer(s)',
@@ -108,79 +96,9 @@ class FormConfig
 					'show_add_caption' => 'This page is strictly from creating NLRC login details',
 					'table_title' => 'NLRC User Page'
 				),
-				'agent'=>array(
+				'invoices'=>array(
 					'show_add'=> false,
-					'table_action' => [
-                      	'view profile' => "vc/admin/view_more/agent/{$type}",
-                      	'enable' => 'getEnabled',
-                    ],
-                    'table_exclude' => ['gender','address','residence_state','country','agent_path','date_modified','first_wallet_pay','date_created'],
-				),
-				'bank_lists'=>array(
-						'show_add'=> true,
-						'has_upload' => true
-				),
-				'time_percentage'=>array(
-						'show_add'=> true
-				),
-				'notices'=>array(
-						'show_add'=> true
-				),
-				'superagent'=>array(
-					'show_add'=> true,
-					'table_action' => [
-                      	'view profile' => "vc/admin/view_more/superagent/{$type}",
-                      	'view agents' => 'vc/admin/view_model/agent',
-                      	'enable' => 'getEnabled',
-                      	'edit profile' => "edit/superagent",
-                    ],
-                    'query_string' => ['super_code'],
-				),
-				'influencer'=>array(
-					'show_add'=> true,
-					'table_title' => 'Manage Influencer Page'
-				),
-				'withdrawal_request' => array(
-					'table_action' => $withdrawalAction,
-					'query_string' => ['reference','made_by'],
-				),
-				'wallet_payment_history' => array(
-					'table_action' => $walletAction,
-					'query_string' => ['reference_number','made_by'],
-				),
-				'cashback' => array(
-					'table_action' => $cashbackAction,
-				),
-				'transaction_history' => array(
-					'table_exclude' => ['status'],
-					'table_title' => 'Wallet Transaction History'
-				),
-				'daily_timestamp' => array(
-					'table_title' => 'Results For Daily Boom Numbers',
-					'table_exclude' => ['status', 'percentage']
-				),
-				'spinwheel_setting' => array(
-					'show_add' => false,
-					'table_exclude' => ['last_cashback_counter'],
-					'table_title' => 'Spinwheel Setting'
-				),
-				'giveaway_setting' => array(
-					'show_add' => false,
-					'table_title' => 'Crossover Setting',
-					'show_add_caption' => "Do not add new one of the same type, you can easily edit",
-					'table_exclude' => ['crossover_date', 'crossover_time']
-				),
-				'notification' => array(
-					'show_add' => true,
-				),
-				'boomcode_setting' => array(
-					'show_add' => true,
-				),
-				'boom_points' => array(
-					'table_title' => 'Boom points Winning Page'
-				),
-				'share_ads' => array(
-					'show_add' => false,
+					'table_exclude' => ['bill_from_address', 'bill_to_email', 'bill_to_address', 'bill_to_city', 'bill_to_country', 'bill_to_postalcode', 'bill_to_city', 'customers_id', 'invoice_discount', 'invoice_tax','invoice_subtotal', 'invoice_notes','date_created','date_modified','status']
 				),
 				//add new entry to this array
 			);

@@ -331,6 +331,7 @@ public function getModules(){
 		'Invoice Management' => array(
 			'class' => 'las la-file-invoice',
 			'children' => array(
+				'Invoice Lists' => 'vc/create/invoices',
 				'Invoice' => 'vc/admin/invoices',
 			),
 		),
