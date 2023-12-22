@@ -194,13 +194,13 @@ public function getCustomerOption($value){
 	$where = ($value != '') ? " where ID= '$value' " : " where status = '1'";
 	$db = db_connect();
 	$query = "SELECT id,concat(firstname, ' ', lastname) as value from customers $where order by value asc";
-	$result ="<div class='form-floating'>";
+	$result ="<div class='form-floating mb-7'>";
 		$option = buildOptionFromQuery($db,$query,null,$value);
 		//load the value from the given table given the name of the table to load and the display field
-		$result.="<select name='customer_id' id='customer_id' class='form-select' required>
+		$result.="<select name='customers_id' id='customers_id' class='form-select' required>
 					$option
 				</select>
-				<label for='customer_id'>Customer's name</label>";
+				<label for='customers_id'>Customer's name</label>";
 	$result.="</div>";
 	return $result;	
 }

@@ -191,7 +191,6 @@ class Actioncontroller extends BaseController
 	public function mail(string $model, $id)
 	{
 		if($model == 'invoices'){
-			echo "gotjhere";exit;
 			if(!$this->sendInvoiceMail($model, $id)){
 				echo createJsonMessage('status',false,'message','Something went wrong and unable to perform the action. Please try again later','flagAction',false);
 				return false;
@@ -204,6 +203,19 @@ class Actioncontroller extends BaseController
 	private function logAction($user,$model,$description){
 		$applicationLog = loadClass('application_log');
 		$applicationLog->log($user,$model,$description);
+	}
+
+	private function invoiceTransactionValidation($id){
+		$transaction = loadClass('invoice_transaction');
+		$transaction = $transaction->geWhere(['invoices_id' => $id], $c, 0, null, false, 'order by payment_date desc');
+		if(!$transaction){
+			return false;
+		}
+		$transaction = $transaction[0];
+		if($transaction->payment_status == 'not paid'){
+			return false;
+		}
+		return true;
 	}
 
 	private function sendInvoiceMail(string $model, $id)

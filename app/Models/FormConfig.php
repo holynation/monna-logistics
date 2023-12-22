@@ -46,16 +46,7 @@ class FormConfig
 		if($this->apiEntity){
 			$this->insertConfig = array
 			(
-				'customer' => array(
-					'search' => array('fullname')
-				),
-				//add new entry to this array
-				'transaction_history' => array(
-					'search' => array('tranx_name','tranx_type')
-				),
-				'daily_winner' => array(
-					'search' => array('phone_number')
-				),
+				
 			);
 		}
 		else{
@@ -89,17 +80,13 @@ class FormConfig
 						'query'=>'select * from role where ID<>1',
 						'show_add' => true
 				),
-				'user' => array(
-					'query' => "SELECT ID,username,last_login,status,date_created from user where user_type = 'nlrc'",
-					'exclude' => ['username_2', 'user_type','token','last_logout','last_login','date_created','referral_code'],
-					'show_add' => true,
-					'show_add_caption' => 'This page is strictly from creating NLRC login details',
-					'table_title' => 'NLRC User Page'
-				),
 				'invoices'=>array(
 					'show_add'=> false,
 					'table_exclude' => ['bill_from_address', 'bill_to_email', 'bill_to_address', 'bill_to_city', 'bill_to_country', 'bill_to_postalcode', 'bill_to_city', 'customers_id', 'invoice_discount', 'invoice_tax','invoice_subtotal', 'invoice_notes','date_created','date_modified','status','invoice_no','bill_from_phone']
 				),
+				'invoice_transaction' => [
+					'table_exclude' => ['date_modified']
+				]
 				//add new entry to this array
 			);
 		}
@@ -148,9 +135,7 @@ class FormConfig
 		}
 		$this->updateConfig = array
 		(
-			'user' => array(
-				'exclude' => ['username_2','user_type','token','last_logout','last_login','date_created','referral_code','password'],
-			)
+			
 			//add new entry to this array
 		);
 	}

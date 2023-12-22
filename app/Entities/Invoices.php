@@ -379,6 +379,23 @@ public function initMpdfLibrary($html,$filename=null,$outputFormat='I',$title=nu
 	return $mpdf->Output($filename.'.pdf', $outputFormat);
 }
 
+public function getInvoicesOption($value){
+	$value = ($value != "") ? $value : "";
+	$disable = ($value != '') ? "disabled" : ""; // this means edit function has passed down the value
+	$where = ($value != '') ? " where ID= '$value' " : " where status = '1'";
+	$db = db_connect();
+	$query = "SELECT id,concat(bill_from_name, ' [#', invoice_no, ']') as value from invoices $where order by value asc";
+	$result ="<div class='form-floating mb-7'>";
+		$option = buildOptionFromQuery($db,$query,null,$value);
+		//load the value from the given table given the name of the table to load and the display field
+		$result.="<select name='invoices_id' id='invoices_id' class='form-select' required>
+					$option
+				</select>
+				<label for='invoices_id'>Invoice List</label>";
+	$result.="</div>";
+	return $result;	
+}
+
  
 }
 

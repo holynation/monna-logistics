@@ -20,7 +20,7 @@ protected static $tablename = "Invoice_transaction";
 * This array contains the field that can be null
 * @var array
 */
-public static $nullArray = [];
+public static $nullArray = ['date_created', 'date_modified'];
 
 /** 
 * This are fields that must be unique across a row in a table.
@@ -110,26 +110,7 @@ public function getCustomers_idFormField($value = ''){
 }
 
 public function getInvoices_idFormField($value = ''){
-$fk = null; 
- 	//change the value of this variable to array('table'=>'invoices','display'=>'invoices_name'); if you want to preload the value from the database where the display key is the name of the field to use for display in the table.[i.e the display key is a column name in the table specify in that array it means select id,'invoices_name' as value from 'invoices' meaning the display name must be a column name in the table model].It is important to note that the table key can be in this format[array('table' => array('invoices', 'another table name'))] provided that their is a relationship between these tables. The value param in the function is set to true if the form model is used for editing or updating so that the option value can be selected by default;
-
-	if(is_null($fk)){
-		return $result = "<input type='hidden' name='invoices_id' id='invoices_id' value='$value' class='form-control' />";
-	}
-
-	if(is_array($fk)){
-		
-		$result ="<div class='form-floating'>";
-		$option = $this->loadOption($fk,$value);
-		//load the value from the given table given the name of the table to load and the display field
-		$result.="<select name='invoices_id' id='invoices_id' class='form-select'>
-					$option
-				</select>
-			<label for='invoices_id'>Invoices</label>";
-			$result.="</div>";
-		return $result;
-	}
-		
+	return getInvoicesOption($value);
 }
 
 public function getDescriptionFormField($value = ''){
@@ -140,45 +121,49 @@ return "<div class='form-floating mb-7'>
 } 
 
 public function getTransaction_refFormField($value = ''){
+	$value = ($value) ?: generateHashRef('receipt');
 return "<div class='form-floating mb-7'>
-		<input type='text' name='transaction_ref' id='transaction_ref' value='$value' class='form-control' placeholder='Transaction Ref' required />
+		<input type='text' name='transaction_ref' id='transaction_ref' value='$value' class='form-control' placeholder='Transaction Ref' required readonly />
 		<label for='transaction_ref'>Transaction Ref</label>
 	</div>";
 } 
 
 public function getAmount_paidFormField($value = ''){
 return "<div class='form-floating mb-7'>
-		<input type='text' name='amount_paid' id='amount_paid' value='$value' class='form-control' placeholder='Amount Paid' required />
+		<input type='number' name='amount_paid' id='amount_paid' value='$value' class='form-control' placeholder='Amount Paid' required step='any' />
 		<label for='amount_paid'>Amount Paid</label>
 	</div>";
 } 
 
 public function getPayment_statusFormField($value = ''){
-return "<div class='form-floating mb-7'>
-		<input type='text' name='payment_status' id='payment_status' value='$value' class='form-control' placeholder='Payment Status' required />
-		<label for='payment_status'>Payment Status</label>
-	</div>";
+	$options = buildOptionUnassoc2([
+		'pending' => 'pending',
+		'not paid' => 'Not Paid',
+		'paid' => 'paid'
+	], $value);
+
+	$result ="<div class='form-floating mb-7'>";
+	$result.="<select name='payment_status' id='payment_status' class='form-select' required>
+					$options
+				</select>
+				<label for='payment_status'>Payment Status</label>";
+	$result.="</div>";
+	return $result;
 } 
 
 public function getPayment_dateFormField($value = ''){
 return "<div class='form-floating mb-7'>
-		<input type='text' name='payment_date' id='payment_date' value='$value' class='form-control' placeholder='Payment Date' required />
+		<input type='date' name='payment_date' id='payment_date' value='$value' class='form-control' placeholder='Payment Date' required />
 		<label for='payment_date'>Payment Date</label>
 	</div>";
 } 
 
 public function getDate_createdFormField($value = ''){
-return "<div class='form-floating mb-7'>
-		<input type='text' name='date_created' id='date_created' value='$value' class='form-control' placeholder='Date Created' required />
-		<label for='date_created'>Date Created</label>
-	</div>";
+return "";
 } 
 
 public function getDate_modifiedFormField($value = ''){
-return "<div class='form-floating mb-7'>
-		<input type='text' name='date_modified' id='date_modified' value='$value' class='form-control' placeholder='Date Modified' required />
-		<label for='date_modified'>Date Modified</label>
-	</div>";
+return "";
 } 
 
 protected function getCustomers(){

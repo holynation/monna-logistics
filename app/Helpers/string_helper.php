@@ -745,6 +745,12 @@ function getCustomerOption($value = '')
 	return $customer->getCustomerOption($value);
 }
 
+function getInvoicesOption($value = '')
+{
+	$invoices = loadClass('invoices');
+	return $invoices->getInvoicesOption($value);
+}
+
 function getUserOption($value = '')
 {
 	$user = loadClass('user');
