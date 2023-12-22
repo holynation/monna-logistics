@@ -741,7 +741,7 @@ if(!function_exists('attrToSepString'))
 
 function getCustomerOption($value = '')
 {
-	$customer = loadClass('customer');
+	$customer = loadClass('customers');
 	return $customer->getCustomerOption($value);
 }
 

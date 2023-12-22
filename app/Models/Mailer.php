@@ -12,11 +12,12 @@ class Mailer extends Model
     private $view;
     private $ccMailAddress = '';
     private $templateBody = '';
+    private $attachment = null;
 
     const EMAIL_HOST = "mail.nairaboom.com.ng";
-    const COMPANY_URL = 'nairaboom.com.ng';
-    const COMPANY_NAME = 'Nairaboom';
-    const COMPANY_SUPPORT = 'support@nairaboom.com.ng';
+    const COMPANY_URL = 'https://monaaexpress.com/';
+    const COMPANY_NAME = 'MonnaExpress';
+    const COMPANY_SUPPORT = 'info@monaaexpress.com';
     const COMPANY_EMAIL = "noreply@nairaboom.com.ng";
 
     public function __construct()
@@ -66,6 +67,11 @@ class Mailer extends Model
         $this->templateBody = $name;
     }
 
+    public function setAttachment(array $content): void
+    {
+        $this->attachment = $content;
+    }
+
     public function getTemplateBody(): string
     {
         return $this->templateBody;
@@ -78,9 +84,8 @@ class Mailer extends Model
      */
     public function mailTemplateRender(array $data,string $page)
     {
-        $this->view->setData($data);
-        $page = $page.'.php';
-        $templateMsg = $this->view->render('emails/'.$page);
+        $parser = \Config\Services::parser();
+        $templateMsg = $parser->setData($data)->render('emails/'.$page.'.php');
         $this->setTemplateBody($templateMsg);
         return $templateMsg;
     }
@@ -101,6 +106,11 @@ class Mailer extends Model
         }
         $this->mailer->setSubject($subject);
         $this->mailer->setMessage($message);
+
+        if($this->attachment != null){
+            $this->mailer->attach($this->attachment['content'], 'attachment', $this->attachment['filename'], $this->attachment['content_type']);
+        }
+        
         if ($this->mailer->send()) {
             unset($this->ccMailAddress);
             return true;
@@ -125,15 +135,10 @@ class Mailer extends Model
      * @param  string $type [description]
      * @return [type]       [description]
      */
-    private function mailSubject(string $type)
+    private function mailSubject(string $type, string $title=null)
     {
         $result  = array(
-            'verify_account' => 'Verification of account from Nairaboom',
-            'welcome' => 'Welcome On Board To Nairaboom Platform',
-            'payment_invoice' => 'Notice On Your Payment Invoice on Nairaboom',
-            'password_reset' => 'Request to Reset your Password!',
-            'password_app_token' => 'Nairaboom password Recovery OTP',
-            'password_reset_success' => 'Nairaboom Password Recovery Success',
+            'payment_invoice' => "Shipping Invoice for Order #[$title] on MonnaExpress",
         );
         return $result[$type];
     }
@@ -147,31 +152,15 @@ class Mailer extends Model
      * @param  array|string $info      [description]
      * @return [type]                  [description]
      */
-    public function sendCustomerMail(string $recipient,string $subject,int $type=null,string $customer=null,array $info = null)
+    public function sendNotificationMail(string $recipient,string $subject,array $info = [])
     {
-        // it property templateBody take precedence over the mailBody method
-        if ($this->templateBody != '')
-        {
-            $message = $this->templateBody;
-        }
-        else
-        {
-            $message = $this->formatMsg($recipient, $type, $customer, $info);
-        }
-        $recipient = trim($recipient);
-        $subject = $this->mailSubject($subject);
+        $orderNumber = isset($info['order_number']) ? $info['order_number'] : null;
+        $subject = $this->mailSubject($subject, $orderNumber);
 
-        if (!$this->mailerSend($recipient, $subject, $message)) {
+        if (!$this->mailerSend($recipient, $subject, $this->templateBody)) {
             return false;
         }
         return true;
     }
 
-    private function formatMsg($recipient = '', $type = null, $customer=null, $info=null)
-    {
-        if ($recipient) {
-            $msg = '';
-            return $msg;
-        }
-    }
 }

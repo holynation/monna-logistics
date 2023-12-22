@@ -97,7 +97,7 @@ public static $relation = ['customers' => array('customers_id','id')
 * be changed in the formConfig model file for flexibility
 * @var array
 */
-public static $tableAction = ['delete' => 'delete/invoices', 'edit' => 'edit/invoices'];
+public static $tableAction = ['delete' => 'delete/invoices', 'preview' => 'vc/admin/preview', 'mail' => 'getMail'];
 
 public function __construct(array $array = [])
 {
@@ -283,18 +283,101 @@ return "<div class='form-floating mb-7'>
 
 protected function getCustomers(){
 	$query = 'SELECT * FROM customers WHERE id=?';
-	if (!isset($this->array['ID'])) {
+	if (!isset($this->array['customers_id'])) {
 		return null;
 	}
-	$id = $this->array['ID'];
+	$id = $this->array['customers_id'];
 	$result = $this->query($query,[$id]);
 	if (!$result) {
-		return false;
+		return null;
 	}
 	$resultObject = new \App\Entities\Customers($result[0]);
 	return $resultObject;
 }
 
+protected function getInvoice_items(){
+	$query = 'SELECT * FROM invoice_items WHERE invoices_id=?';
+	if (!isset($this->array['id'])) {
+		return null;
+	}
+	$id = $this->array['id'];
+	$result = $this->query($query,[$id]);
+	if (!$result) {
+		return [];
+	}
+	return $result;
+}
+
+public function buildInvoiceData($id){
+	$invoices = new \App\Entities\Invoices();
+	$invoices->id = $id;
+	if(!$invoices->load()){
+	  return false;
+	}
+	$customers = $invoices->customers;
+	$variables = [
+		'bill_from_email' => $customers->email,
+		'bill_from_name' => $invoices->bill_from_name,
+	  	'bill_to_name' => $invoices->bill_to_name,
+	  	'bill_to_address' => $invoices->bill_to_address,
+	  	'order_number' => $invoices->invoice_no,
+	  	'ship_date' => $invoices->invoice_date,
+	  	'track_number' => $invoices->track_number,
+	  	'invoice_date' => $invoices->date_created,
+	  	'sub_total' => number_format($invoices->invoice_subtotal, 2),
+	  	'tax' => number_format($invoices->invoice_tax, 2),
+	  	'total' => number_format($invoices->invoice_total, 2),
+	  	'total_amount' => number_format($invoices->invoice_total, 2)
+	];
+
+	$items = $invoices->invoice_items;
+	$itemsParam = ['items' => []];
+	if(!empty($items)){
+	  foreach($items as $item){
+	    $itemsParam['items'][] = array(
+	      'desc' => $item['description'],
+	      'quantity' => $item['quantity'],
+	      'amount' => number_format($item['price'], 2),
+	    );
+	  }
+	}else{
+	  $itemsParam = array(
+	    'items' => array(
+	      array(
+	        'desc' => '',
+	        'quantity' => '',
+	        'amount' => ''
+	      )
+	    )
+	  );
+	}
+	
+	$templateVariables = $variables + $itemsParam;
+	return $templateVariables;
+}
+
+public function initMpdfLibrary($html,$filename=null,$outputFormat='I',$title=null,$format='A4-P'){
+	$mpdf = new \Mpdf\Mpdf([
+		'tempDir' => ROOTPATH . 'temp',
+		'mode' => 'utf-8',
+		'format' => $format,
+		'margin_top' => 7,
+	]);
+	$title = $title ?: 'Shipping Invoice';
+	$mpdf->SetAuthor('MonnaExpress');
+	$mpdf->SetTitle($title);
+	$mpdf->SetSubject($title);
+	$mpdf->SetKeywords('PDF');
+	$mpdf->SetDisplayMode('fullpage');
+
+	$mpdf->WriteHTML(utf8_encode($html));
+	$filename = $filename ?: randStrGen(11)."_document";
+	if($outputFormat == 'S'){
+		$content = $mpdf->Output('', 'S');
+		return $content;
+	}
+	return $mpdf->Output($filename.'.pdf', $outputFormat);
+}
 
  
 }

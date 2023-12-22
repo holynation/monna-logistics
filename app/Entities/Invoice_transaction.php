@@ -106,26 +106,7 @@ public function __construct(array $array = [])
 }
 
 public function getCustomers_idFormField($value = ''){
-$fk = null; 
- 	//change the value of this variable to array('table'=>'customers','display'=>'customers_name'); if you want to preload the value from the database where the display key is the name of the field to use for display in the table.[i.e the display key is a column name in the table specify in that array it means select id,'customers_name' as value from 'customers' meaning the display name must be a column name in the table model].It is important to note that the table key can be in this format[array('table' => array('customers', 'another table name'))] provided that their is a relationship between these tables. The value param in the function is set to true if the form model is used for editing or updating so that the option value can be selected by default;
-
-	if(is_null($fk)){
-		return $result = "<input type='hidden' name='customers_id' id='customers_id' value='$value' class='form-control' />";
-	}
-
-	if(is_array($fk)){
-		
-		$result ="<div class='form-floating'>";
-		$option = $this->loadOption($fk,$value);
-		//load the value from the given table given the name of the table to load and the display field
-		$result.="<select name='customers_id' id='customers_id' class='form-select'>
-					$option
-				</select>
-			<label for='customers_id'>Customers</label>";
-			$result.="</div>";
-		return $result;
-	}
-		
+	return getCustomerOption($value)		;
 }
 
 public function getInvoices_idFormField($value = ''){

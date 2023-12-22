@@ -171,10 +171,10 @@ return "<div class='form-floating mb-7'>
 
 protected function getInvoices(){
 	$query = 'SELECT * FROM invoices WHERE id=?';
-	if (!isset($this->array['ID'])) {
+	if (!isset($this->array['invoices_id'])) {
 		return null;
 	}
-	$id = $this->array['ID'];
+	$id = $this->array['invoices_id'];
 	$result = $this->query($query,[$id]);
 	if (!$result) {
 		return false;

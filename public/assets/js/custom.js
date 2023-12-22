@@ -325,8 +325,9 @@ function showToastNotification(status,data,asyncTime,position){
 
 $(document).ready(function(){
 	// addAsterisk();
+   
 	// this is aspect shows when you are trying to perform an action that requires permission
-	$('li[data-critical=1] a').click(function(event){
+	$('div[data-critical=1] a').click(function(event){
 		event.preventDefault();
 		var link = $(this).attr('href');
 		var action = $(this).text();

@@ -328,6 +328,21 @@ public function processInvoices(){
   displayJson(true, "You have successfully created the invoice");return;
 }
 
+private function adminPreview(&$data){
+  $invoices = loadClass('invoices');
+  $templateVariables = $invoices->buildInvoiceData($data['id']);
+  if(!$templateVariables){
+    exit("Something went wrong and unable to perform the action. Please try again later");
+  }
+  
+  $parser = \Config\Services::parser();
+  // $content = $parser->setData($templateVariables)->render('admin/preview');
+  
+  $template = view('admin/invoice-template');
+  $content = $parser->setData($templateVariables)->renderString($template);
+  $data['previewTemplate'] = $content;
+}
+
 /**
  * This would ensure that custom query on table model is allowed based
  * on different type of the entity

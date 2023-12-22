@@ -159,10 +159,10 @@ public function getDate_modifiedFormField($value = ''){
 
 protected function getRole(){
 	$query = 'SELECT * FROM role WHERE id=?';
-	if (!isset($this->array['ID'])) {
+	if (!isset($this->array['id'])) {
 		return null;
 	}
-	$id = $this->array['ID'];
+	$id = $this->array['id'];
 	$result = $this->query($query,[$id]);
 	if (!$result) {
 		return false;
@@ -170,6 +170,42 @@ protected function getRole(){
 	$resultObject = new \App\Entities\Role($result[0]);
 	return $resultObject;
 }
+
+public function delete($id=null,&$db=null)
+{  
+    $db = $db ?? $this->db;
+    $db->transBegin();
+    $customer = new Customers(['ID'=>$id]);
+    $customer->load();
+    if(parent::delete($id,$db)){
+        $query = "DELETE from user where user_table_id=? and user_type='customers'";
+        if($this->query($query,array($id))){
+            $db->transCommit();
+            return true;
+        }
+    }
+    $db->transRollback();
+    return false;
+}
+
+public function getCustomerOption($value){
+	$value = ($value != "") ? $value : "";
+	$disable = ($value != '') ? "disabled" : ""; // this means edit function has passed down the value
+	$where = ($value != '') ? " where ID= '$value' " : " where status = '1'";
+	$db = db_connect();
+	$query = "SELECT id,concat(firstname, ' ', lastname) as value from customers $where order by value asc";
+	$result ="<div class='form-floating'>";
+		$option = buildOptionFromQuery($db,$query,null,$value);
+		//load the value from the given table given the name of the table to load and the display field
+		$result.="<select name='customer_id' id='customer_id' class='form-select' required>
+					$option
+				</select>
+				<label for='customer_id'>Customer's name</label>";
+	$result.="</div>";
+	return $result;	
+}
+
+
 
 
  

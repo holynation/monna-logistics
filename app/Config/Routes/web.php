@@ -49,7 +49,7 @@ $routes->group('ac', function ($routes) {
 $routes->post('delete/(:any)/(:any)', 'Actioncontroller::delete/$1/$2');
 $routes->post('delete/(:any)/(:any)/(:any)', 'Actioncontroller::delete/$1/$2/$3');
 $routes->post('truncate/(:any)', 'Actioncontroller::truncate/$1');
-$routes->post('mail/(:any)/(:any)', 'Actioncontroller::mail/$1/$2');
+$routes->get('mail/(:any)/(:any)', 'Actioncontroller::mail/$1/$2');
 $routes->post('changestatus/(:any)/(:any)/(:any)', 'Actioncontroller::changeStatus/$1/$2/$3');
 
 $routes->get('account/verify/(:any)/(:any)/(:any)', 'Auth::verify/$1/$2/$3');

@@ -365,6 +365,7 @@ public function getExtraModules(){
 			'class' => 'las la-archway',
 			'children' => array(
 				'Customer Profile' => 'vc/admin/view_more/customer/detail',
+				'Invoice Preview' => 'vc/admin/preview',
 			)
 		)
 	);

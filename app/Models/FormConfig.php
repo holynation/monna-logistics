@@ -98,7 +98,7 @@ class FormConfig
 				),
 				'invoices'=>array(
 					'show_add'=> false,
-					'table_exclude' => ['bill_from_address', 'bill_to_email', 'bill_to_address', 'bill_to_city', 'bill_to_country', 'bill_to_postalcode', 'bill_to_city', 'customers_id', 'invoice_discount', 'invoice_tax','invoice_subtotal', 'invoice_notes','date_created','date_modified','status']
+					'table_exclude' => ['bill_from_address', 'bill_to_email', 'bill_to_address', 'bill_to_city', 'bill_to_country', 'bill_to_postalcode', 'bill_to_city', 'customers_id', 'invoice_discount', 'invoice_tax','invoice_subtotal', 'invoice_notes','date_created','date_modified','status','invoice_no','bill_from_phone']
 				),
 				//add new entry to this array
 			);
