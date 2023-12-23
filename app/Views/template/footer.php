@@ -1,3 +1,23 @@
+    <!--begin::Footer-->
+    <div id="kt_app_footer" class="app-footer">
+      <!--begin::Footer container-->
+      <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
+        <!--begin::Copyright-->
+        <div class="text-dark order-2 order-md-1">
+          <span class="text-muted fw-semibold me-1">
+            <script>
+              document.write(new Date().getFullYear());
+            </script>
+          &copy;</span>
+
+          MonnaExpress. All Rights Reserved | Powered by
+          <a href="duratechsolutions.com.ng" target="_blank" class="footer-link fw-bolder">Duratech Multi-Solutions.</a>
+        </div>
+        <!--end::Copyright-->
+      </div>
+      <!--end::Footer container-->
+    </div>
+    <!--end::Footer-->
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
       <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->

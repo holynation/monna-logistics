@@ -57,14 +57,14 @@ public static $uniqueArray = ['email','phone_number'];
 * of the field
 * @var array
 */
-public static $typeArray = ['firstname' => 'varchar','middlename' => 'varchar','lastname' => 'varchar','email' => 'varchar','phone_number' => 'varchar','address' => 'text','role_id' => 'int','status' => 'tinyint'];
+public static $typeArray = ['firstname' => 'varchar','middlename' => 'varchar','lastname' => 'varchar','email' => 'varchar','phone_number' => 'varchar','role_id' => 'int','status' => 'tinyint'];
 
 /** 
 * This is a dictionary that map a field name with the label name that
 * will be shown in a form
 * @var array
 */
-public static $labelArray = ['id' => '','firstname' => '','middlename' => '','lastname' => '','email' => '','phone_number' => '','address' => '','role_id' => '','status' => ''];
+public static $labelArray = ['id' => '','firstname' => '','middlename' => '','lastname' => '','email' => '','phone_number' => '','role_id' => '','status' => ''];
 
 /** 
 * Associative array of fields in the table that have default value
@@ -140,7 +140,7 @@ return "<div class='form-floating mb-7'>
 } 
 
 public function getRole_idFormField($value = ''){
-$fk = null; 
+$fk = ['table' => 'role', 'display' => 'role_title']; 
  	//change the value of this variable to array('table'=>'role','display'=>'role_name'); if you want to preload the value from the database where the display key is the name of the field to use for display in the table.[i.e the display key is a column name in the table specify in that array it means select id,'role_name' as value from 'role' meaning the display name must be a column name in the table model].It is important to note that the table key can be in this format[array('table' => array('role', 'another table name'))] provided that their is a relationship between these tables. The value param in the function is set to true if the form model is used for editing or updating so that the option value can be selected by default;
 
 	if(is_null($fk)){
@@ -149,7 +149,7 @@ $fk = null;
 
 	if(is_array($fk)){
 		
-		$result ="<div class='form-floating'>";
+		$result ="<div class='form-floating mb-7'>";
 		$option = $this->loadOption($fk,$value);
 		//load the value from the given table given the name of the table to load and the display field
 		$result.="<select name='role_id' id='role_id' class='form-select'>

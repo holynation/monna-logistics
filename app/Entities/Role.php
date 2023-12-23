@@ -20,7 +20,7 @@ protected static $tablename = "Role";
 * This array contains the field that can be null
 * @var array
 */
-public static $nullArray = [];
+public static $nullArray = ['status'];
 
 /** 
 * This are fields that must be unique across a row in a table.
@@ -325,7 +325,7 @@ public function getModules(){
 			'class' => 'las la-hamburger',
 			'children' => array(
 				'Home' => 'vc/admin/dashboard',
-				'Profile' => 'vc/admin/profile',
+				// 'Profile' => 'vc/admin/profile',
 			)
 		),
 		'Invoice Management' => array(

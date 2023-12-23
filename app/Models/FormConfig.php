@@ -77,7 +77,7 @@ class FormConfig
 					'header_title' => 'Manage Admin(s)'
 				),
 				'role'=>array(
-						'query'=>'select * from role where ID<>1',
+						'query'=>'select * from role where id<>1',
 						'show_add' => true
 				),
 				'invoices'=>array(

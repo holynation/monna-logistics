@@ -7,6 +7,8 @@ namespace App\Models\Custom;
 use CodeIgniter\Model;
 use App\Models\WebSessionManager;
 use App\Entities\Customers;
+use App\Entities\Invoices;
+use App\Entities\Invoice_transaction;
 
 class AdminData
 {	
@@ -24,8 +26,13 @@ class AdminData
 		$result = [];
 
 		$result['countData'] = [
-			'customer' => 0,
+			'customer' => Customers::totalCount(),
+			'invoice' => Customers::totalCount(),
+			'transaction' => Invoice_transaction::totalSum('amount_paid', " where payment_status = 'paid'"),
 		];
+
+		$invoices = loadClass('Invoices');
+		$result['transactionContent'] = $invoices->all($total, false, 0, 20);
 
 		// print_r($result);exit;
 		return $result;
