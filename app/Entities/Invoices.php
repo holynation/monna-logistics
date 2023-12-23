@@ -57,7 +57,7 @@ public static $uniqueArray = [];
 * of the field
 * @var array
 */
-public static $typeArray = ['customers_id' => 'int unsigned','invoice_no' => 'varchar','bill_from_name' => 'varchar','bill_from_phone' => 'varchar','bill_from_address' => 'text','bill_to_name' => 'varchar','bill_to_phone' => 'varchar','bill_to_email' => 'varchar','bill_to_city' => 'varchar','bill_to_country' => 'varchar','bill_to_postalcode' => 'varchar','invoice_subtotal' => 'decimal','invoice_tax' => 'decimal','invoice_discount' => 'decimal','invoice_total' => 'decimal','invoice_date' => 'date','invoice_notes' => 'text','status' => 'tinyint','date_created' => 'timestamp','date_modified' => 'timestamp','track_number' => 'varchar','bill_to_address' => 'text','invoice_status' => 'varchar'];
+public static $typeArray = ['customers_id' => 'int unsigned','invoice_no' => 'varchar','track_number' => 'varchar','bill_from_name' => 'varchar','bill_from_phone' => 'varchar','bill_from_address' => 'text','bill_to_name' => 'varchar','bill_to_phone' => 'varchar','bill_to_email' => 'varchar','bill_to_city' => 'varchar','bill_to_country' => 'varchar','bill_to_postalcode' => 'varchar','invoice_subtotal' => 'decimal','invoice_tax' => 'decimal','invoice_discount' => 'decimal','invoice_total' => 'decimal','invoice_date' => 'date','invoice_notes' => 'text','status' => 'tinyint','date_created' => 'timestamp','date_modified' => 'timestamp','track_number' => 'varchar','bill_to_address' => 'text','invoice_status' => 'varchar'];
 
 /** 
 * This is a dictionary that map a field name with the label name that
@@ -129,7 +129,7 @@ $fk = null;
 
 public function getInvoice_noFormField($value = ''){
 return "<div class='form-floating mb-7'>
-		<input type='text' name='invoice_no' id='invoice_no' value='$value' class='form-control' placeholder='Invoice No' required />
+		<input type='text' name='invoice_no' id='invoice_no' value='$value' class='form-control' placeholder='Invoice No' required readonly />
 		<label for='invoice_no'>Invoice No</label>
 	</div>";
 } 
@@ -240,29 +240,20 @@ return "<div class='form-floating mb-7'>
 } 
 
 public function getStatusFormField($value = ''){
-return "<div class='form-floating mb-7'>
-		<input type='text' name='status' id='status' value='$value' class='form-control' placeholder='Status' required />
-		<label for='status'>Status</label>
-	</div>";
+return "";
 } 
 
 public function getDate_createdFormField($value = ''){
-return "<div class='form-floating mb-7'>
-		<input type='text' name='date_created' id='date_created' value='$value' class='form-control' placeholder='Date Created' required />
-		<label for='date_created'>Date Created</label>
-	</div>";
+return "";
 } 
 
 public function getDate_modifiedFormField($value = ''){
-return "<div class='form-floating mb-7'>
-		<input type='text' name='date_modified' id='date_modified' value='$value' class='form-control' placeholder='Date Modified' required />
-		<label for='date_modified'>Date Modified</label>
-	</div>";
+return "";
 } 
 
 public function getTrack_numberFormField($value = ''){
 return "<div class='form-floating mb-7'>
-		<input type='text' name='track_number' id='track_number' value='$value' class='form-control' placeholder='Track Number' required />
+		<input type='text' name='track_number' id='track_number' value='$value' class='form-control' placeholder='Track Number' required readonly />
 		<label for='track_number'>Track Number</label>
 	</div>";
 } 
@@ -275,10 +266,21 @@ return "<div class='form-floating mb-7'>
 } 
 
 public function getInvoice_statusFormField($value = ''){
-return "<div class='form-floating mb-7'>
-		<input type='text' name='invoice_status' id='invoice_status' value='$value' class='form-control' placeholder='Invoice Status' required />
-		<label for='invoice_status'>Invoice Status</label>
-	</div>";
+	$optionArr = [
+		\App\Enums\InvoiceStatusEnum::PENDING->value,
+		\App\Enums\InvoiceStatusEnum::PROCESSING->value,
+		\App\Enums\InvoiceStatusEnum::INTRANSIT->value,
+		\App\Enums\InvoiceStatusEnum::CANCELLED->value,
+		\App\Enums\InvoiceStatusEnum::COMPLETED->value,
+	];
+	$options = buildOptionUnassoc($optionArr, $value);
+	$result ="<div class='form-floating mb-7'>";
+	$result.="<select name='invoice_status' id='invoice_status' class='form-select' required>
+					$options
+				</select>
+				<label for='invoice_status'>Invoice Status</label>";
+	$result.="</div>";
+	return $result;
 } 
 
 protected function getCustomers(){

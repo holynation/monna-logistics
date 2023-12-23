@@ -47,6 +47,17 @@ class AdminData
 		return $result;
 	}
 
+	public function getInvoices(){
+		$result = [];
+		$invoices = loadClass('invoices');
+		$status = \App\Enums\InvoiceStatusEnum::COMPLETED->value;
+		$status1 = \App\Enums\InvoiceStatusEnum::CANCELLED->value;
+  		$invoices = $invoices->allNonObject($total, false, 0, 20, 'order by date_created desc', " where invoice_status <> '$status' or invoice_status <> '$status1'");
+		$result['contents'] = $invoices ?: [];
+
+		return $result;
+	}
+
 	public function getAdminSidebar($combine = false)
 	{
 		$role = loadClass('role');

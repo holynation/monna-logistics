@@ -340,7 +340,7 @@ class Crud
 			$limit = " limit ?, ? ";
 			$array=array($lower,$length);
 		}
-		$query =$resolveForeign?$this->buildSelectClause()." $where $sort $limit":"SELECT SQL_CALC_FOUND_ROWS * FROM $tablename $where $sort $limit ";
+		$query = $resolveForeign ? $this->buildSelectClause()." $where $sort $limit":"SELECT SQL_CALC_FOUND_ROWS * FROM $tablename $where $sort $limit ";
 		
 		$result = $this->query($query,$array);
 		$result2 = $this->query("SELECT FOUND_ROWS() as totalCount");
@@ -476,13 +476,13 @@ class Crud
 	public function view(int $id=null,object &$dbObject=null){
 		if ($id == null) {
 			if (array_key_exists('id', $this->array)) {
-				$id=$this->array['id'];
+				$id = $this->array['id'];
 			}
 			else{
 				throw new \Exception('please specify the index or set the index value as a parameter');
 			}
 		}
-		$tablename=$this->getTableName();
+		$tablename = $this->getTableName();
 		$query="SELECT * FROM $tablename where id=?";
 		$result = $this->query($query,array($id),$dbObject);
 		if (count($result) == 0) {
@@ -522,7 +522,7 @@ class Crud
 	}
 
 	public function query(string $query, array $data=[],object &$dbObject=null){
-		$db=$this->db;
+		$db = $this->db;
 		if ($dbObject!=null) {
 			$db=$dbObject;
 		}

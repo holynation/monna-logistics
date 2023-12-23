@@ -468,7 +468,7 @@ function buildOptionUnassoc($array, $val = '')
 	foreach ($array as $key => $value) {
 		$current = trim($value);
 		$selected = $val == $current ? "selected='selected'" : '';
-		$result .= "<option $selected >$current</option>";
+		$result .= "<option value='$current' $selected >".ucfirst($current)."</option>";
 	}
 
 	return $result;

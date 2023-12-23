@@ -275,12 +275,6 @@ $formContent = $modelFormBuilder->start($model.'_table')
 <!--end::Content wrapper-->
 </div>
 <!--end:::Main-->
-</div>
-<!--end::Wrapper-->
-</div>
-<!--end::Page-->
-</div>
-<!--end::App-->
 
 <!-- footer & JavaScript -->
 <?php require APPPATH.'Views/template/footer.php'; ?>
@@ -300,7 +294,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
           location.reload();
         }
       });
-      $('li[data-ajax-edit=1] a').click(function(event){
+      $('div[data-ajax-edit=1] a').click(function(event){
         event.preventDefault();
         let link = $(this).attr('href');
         let action = $(this).text();

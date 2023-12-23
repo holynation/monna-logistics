@@ -14,11 +14,11 @@ class Mailer extends Model
     private $templateBody = '';
     private $attachment = null;
 
-    const EMAIL_HOST = "mail.nairaboom.com.ng";
+    const EMAIL_HOST = "monaaexpress.com ";
     const COMPANY_URL = 'https://monaaexpress.com/';
     const COMPANY_NAME = 'MonnaExpress';
     const COMPANY_SUPPORT = 'info@monaaexpress.com';
-    const COMPANY_EMAIL = "noreply@nairaboom.com.ng";
+    const COMPANY_EMAIL = "no-reply@monaaexpress.com";
 
     public function __construct()
     {

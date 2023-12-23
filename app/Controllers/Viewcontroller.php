@@ -173,7 +173,6 @@ private function adminInvoices(&$data)
 }
 
 public function processInvoices(){
-  // print_r($_POST);exit;
   if(!$this->validate([
     'invoice_date' => [
       'label' => 'invoice date',
@@ -336,8 +335,6 @@ private function adminPreview(&$data){
   }
   
   $parser = \Config\Services::parser();
-  // $content = $parser->setData($templateVariables)->render('admin/preview');
-  
   $template = view('admin/invoice-template');
   $content = $parser->setData($templateVariables)->renderString($template);
   $data['previewTemplate'] = $content;
@@ -345,6 +342,11 @@ private function adminPreview(&$data){
 
 private function adminInvoice_transaction(&$data){
   $data = array_merge($data,$this->adminData->getInvoiceTransaction());
+}
+
+private function adminInvoice_action(&$data){
+  $data['modelFormBuilder'] = $this->modelFormBuilder;
+  $data = array_merge($data,$this->adminData->getInvoices());
 }
 
 /**
@@ -437,7 +439,7 @@ public function edit($model,$id){
   }
   $formConfig = new FormConfig($role);
   $configData = $formConfig->getUpdateConfig($model);
-  $exclude = ($configData && array_key_exists('exclude', $configData))?$configData['exclude']:[];
+  $exclude = ($configData && array_key_exists('exclude', $configData)) ? $configData['exclude'] : [];
 
   $formContent = $this->modelFormBuilder->start($model.'_edit')
       ->appendUpdateForm($model,true,$id,$exclude,'')

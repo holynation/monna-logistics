@@ -326,11 +326,11 @@ class ModelFormBuilder extends Model
 
 	public function appendUpdateForm($model,$isParent=false,$id='',$ignore=array(),$divider=''){
 		if (!$this->opened) {
-			throw new Exception('you must open form before you can generate');
+			throw new Exception('You must open form before you can generate');
 		}
 		if (!empty($this->models) ) {
 			if (empty($this->parent)) {
-				throw new Exception("When combining multiple tables parent must be  set first");
+				throw new Exception("When combining multiple tables parent must be set first");
 			}
 		}
 		$oldModel = $model;
@@ -343,10 +343,10 @@ class ModelFormBuilder extends Model
 		$newModel = loadClass($oldModel);
 		$this->addFormUploadProperty($model);
 		if($id instanceof $model){
-			$values=$id;
+			$values = $id;
 		}
 		else{
-			$newModel->ID = $id;
+			$newModel->id = $id;
 			$newModel->load();
 			$values = $newModel;
 		}
@@ -355,31 +355,26 @@ class ModelFormBuilder extends Model
 			return $this;
 		}
 		$fields = array_keys($model::$typeArray);
-		$result='';
+		$result = '';
 
 		foreach ($fields as  $field) {
-			if ($field=='status' || in_array($field, $ignore)) {
+			if ($field == 'status' || in_array($field, $ignore)) {
 				continue;
 			}
 			if ($oldModel != $this->parent && $this->common ==$field && empty($this->commonFieldSet) ) {//make sure there is no name conflict in the generated file
 				continue;
 			}
 			$method ='get'.ucfirst($field).'FormField';
-			$temp = @$values->$method(@$values->$field);//call this method correctly
-			$result.=$temp;//call this method correctly
-			$result.="\n";
-			if (!empty($temp)) {//disregard method that generates empty value
+			$temp = @$values->$method(@$values->$field); // call this method correctly
+			$result .= $temp; // call this method correctly
+			$result .= "\n";
+			if (!empty($temp)) { // disregard method that generates empty value
 				$this->count++;
 			}
 		}
 		$result.="\n";
-		$this->constructed.=$result;
-		if ($oldModel=='payment_log') {
-			$this->models[$oldModel]=array($this->count,$id->transaction_number);
-		}
-		else{
-			$this->models[$oldModel]=array($this->count,$id instanceof $model?$id->ID:$id);
-		}
+		$this->constructed .= $result;
+		$this->models[$oldModel] = array($this->count,$id instanceof $model ? $id->id : $id);
 		return $this;
 	}
 

@@ -94,14 +94,14 @@
 						<tr>
 							<td class="d-flex align-items-center">
 								<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-									<a href="#">
+									<a href="javascript:void(0);">
 										<div class="symbol-label fs-3 bg-light-danger text-danger">
 											<?= formatToNameLabel($content['fullname'], true); ?>
 										</div>
 									</a>
 								</div>
 								<div class="d-flex flex-column">
-									<a href="#" class="text-gray-800 text-hover-primary mb-1"><?= $content['fullname']; ?></a>
+									<a href="javascript:void(0);" class="text-gray-800 text-hover-primary mb-1"><?= $content['fullname']; ?></a>
 									<span><?= $content['email']; ?></span>
 								</div>
 							</td>
@@ -167,11 +167,5 @@
 <!--end::Content wrapper-->
 </div>
 <!--end:::Main-->
-</div>
-<!--end::Wrapper-->
-</div>
-<!--end::Page-->
-</div>
-<!--end::App-->
 
 <?php  require APPPATH.'Views/template/footer.php'; ?>

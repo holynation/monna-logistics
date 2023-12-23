@@ -10,8 +10,8 @@ class AddColumnInvoices2 extends Migration
     {
         $field = [
             'invoice_status' => [
-                'type' => 'varchar',
-                'constraint' => 50,
+                'type' => 'enum',
+                'constraint' => ['pending','processing','in-transit','cancelled','completed'],
                 'default' => 'pending',
             ]
         ];

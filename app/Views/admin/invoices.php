@@ -380,12 +380,6 @@
 <!--end::Content wrapper-->
 </div>
 <!--end:::Main-->
-</div>
-<!--end::Wrapper-->
-</div>
-<!--end::Page-->
-</div>
-<!--end::App-->
 
 <?php  require APPPATH.'Views/template/footer.php'; ?>
 
