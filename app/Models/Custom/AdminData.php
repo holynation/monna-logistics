@@ -31,6 +31,15 @@ class AdminData
 		return $result;
 	}
 
+	public function getInvoiceTransaction(){
+		$result = [];
+		$transaction = loadClass('invoice_transaction');
+  		$transaction = $transaction->getTransactions();
+		$result['contents'] = $transaction ?: [];
+
+		return $result;
+	}
+
 	public function getAdminSidebar($combine = false)
 	{
 		$role = loadClass('role');

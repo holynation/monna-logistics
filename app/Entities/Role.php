@@ -338,6 +338,7 @@ public function getModules(){
 		'Finance Management' => array(
 			'class' => 'las la-wallet',
 			'children' => array(
+				'Invoice Payment' => 'vc/admin/invoice_transaction',
 				'Invoice Transaction' => 'vc/create/invoice_transaction',
 			),
 		),

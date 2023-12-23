@@ -343,6 +343,10 @@ private function adminPreview(&$data){
   $data['previewTemplate'] = $content;
 }
 
+private function adminInvoice_transaction(&$data){
+  $data = array_merge($data,$this->adminData->getInvoiceTransaction());
+}
+
 /**
  * This would ensure that custom query on table model is allowed based
  * on different type of the entity

@@ -159,26 +159,23 @@ class Actioncontroller extends BaseController
 	 */
 	public function changeStatus(string $model, string $value ,int $id)
 	{
-		if($model == 'withdrawal_request'){
+		if($model == 'invoice_transaction'){
 			$model = loadClass($model);
-			$wallet = loadClass('wallet');
-			$ref = $_GET['reference'];
-			$model = $model->getWhere(['reference'=>$ref],$count,0,1,false);
-			if($model){
-				$model = $model[0];
-				// return wallet amount
-				$wallet->updateWallet($model->user_id,$model->amount,'admin_reversal_fund','withdrawal');
-				
-				$id = $model->ID;
-				$model->request_status = $value;
-				$model->message = "Admin cancelled the request";
+			$model->id = $id;
+			$value = ($value == 'approved') ? 'paid' : 'not paid';
+			$message = ($value == 'paid') ? "Payment has been approved" : "Payment has been disapproved";
+			if($model->load()){
+				$model->payment_status = $value;
 				if($model->update($id)){
-					echo createJsonMessage('status',true,'message',"action successfully performed",'flagAction',true);
+					if($value == 'paid'){
+						$this->invoicesTransactionSuccess($model->invoices_id);
+					}
+					echo createJsonMessage('status',true,'message',$message,'flagAction',true);
 				}else{
-					echo createJsonMessage('status',false,'message',"action can't be performed",'flagAction',false);
+					echo createJsonMessage('status',false,'message',"Something went wrong, action can't be performed",'flagAction',false);
 				}
 			}else{
-				echo createJsonMessage('status',false,'message',"action can't be performed",'flagAction',false);
+				echo createJsonMessage('status',false,'message',"Action can't be performed",'flagAction',false);
 			}
 		}
 	}
@@ -203,6 +200,26 @@ class Actioncontroller extends BaseController
 	private function logAction($user,$model,$description){
 		$applicationLog = loadClass('application_log');
 		$applicationLog->log($user,$model,$description);
+	}
+
+	private function invoicesTransactionSuccess($id){
+		$invoices = loadClass('invoices');
+		$templateVariables = $invoices->buildInvoiceData($id);
+		if(!$templateVariables){
+		 	return false;
+		}
+
+		$email = $templateVariables['bill_from_email'];
+		$param = [
+			'customer_name' => $templateVariables['bill_from_name'],
+			'order_number' => $templateVariables['order_number'],
+			'invoice_number' => $templateVariables['order_number'],
+			'invoice_date' => $templateVariables['invoice_date'],
+			'tracking_number' => $templateVariables['track_number']
+		];
+		$template = $this->mailer->mailTemplateRender($param, 'invoice-payment');
+		$this->mailer->sendNotificationMail($email, 'payment_success');
+		return true;
 	}
 
 	private function invoiceTransactionValidation($id){

@@ -98,7 +98,7 @@ public static $relation = ['customers' => array('customers_id','id')
 * be changed in the formConfig model file for flexibility
 * @var array
 */
-public static $tableAction = ['delete' => 'delete/invoice_transaction', 'edit' => 'edit/invoice_transaction'];
+public static $tableAction = ['edit' => 'edit/invoice_transaction'];
 
 public function __construct(array $array = [])
 {
@@ -192,6 +192,12 @@ protected function getInvoices(){
 	}
 	$resultObject = new \App\Entities\Invoices($result[0]);
 	return $resultObject;
+}
+
+public function getTransactions(){
+	$query = "SELECT a.*,concat(b.firstname,' ',b.lastname) as fullname,b.email,c.invoice_no from invoice_transaction a join customers b on b.id = a.customers_id join invoices c on c.id = a.invoices_id order by payment_date desc";
+	$result = $this->query($query);
+	return $result;
 }
 
 

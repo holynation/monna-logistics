@@ -139,6 +139,7 @@ class Mailer extends Model
     {
         $result  = array(
             'payment_invoice' => "Shipping Invoice for Order #[$title] on MonnaExpress",
+            'payment_success' => "Congratulations on the Successful Payment for Your Shipped Goods!",
         );
         return $result[$type];
     }
