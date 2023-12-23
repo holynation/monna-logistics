@@ -303,6 +303,9 @@ $formContent = $modelFormBuilder->start($model.'_table')
     });
 
     function showUpdateForm(target,data) {
+      const element = document.getElementById(`kt_modal_edit_model`);
+      const modal = new bootstrap.Modal(element);
+
       var data = JSON.parse(data);
       if (data.status==false) {
         showNotification(false,data.message);
@@ -312,7 +315,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
        let container = $('#edit-container');
        container.html(data.message);
        //rebind the autoload functions inside
-       $('#modal-edit').modal();
+       modal.show();
     }
 
     function ajaxFormSuccess(target,data) {
@@ -353,5 +356,52 @@ $formContent = $modelFormBuilder->start($model.'_table')
   // On document ready
   KTUtil.onDOMContentLoaded(function () {
       KTUsersAddUser.init();
+  });
+</script>
+
+<script type="text/javascript">
+  "use strict";
+
+  var KTUsersList = function () {
+      // Define shared variables
+      var table = document.getElementById('kt_table_users');
+      var datatable;
+
+      // Private functions
+      var initUserTable = function () {
+          // Init datatable --- more info on datatables: https://datatables.net/manual/
+          datatable = $(table).DataTable({
+              "info": false,
+              'order': [],
+              "pageLength": 10,
+              "lengthChange": false,
+          });
+      }
+
+      // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+      var handleSearchDatatable = () => {
+          const filterSearch = document.querySelector('[data-kt-user-table-filter="search"]');
+          filterSearch.addEventListener('keyup', function (e) {
+              datatable.search(e.target.value).draw();
+          });
+      }
+
+      return {
+          // Public functions  
+          init: function () {
+              if (!table) {
+                  return;
+              }
+
+              initUserTable();
+              handleSearchDatatable();
+
+          }
+      }
+  }();
+
+  // On document ready
+  KTUtil.onDOMContentLoaded(function () {
+      KTUsersList.init();
   });
 </script>

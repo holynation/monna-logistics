@@ -151,12 +151,17 @@
                                                     <span class="text-gray-800 fw-bolder">N<?= $content->invoice_total; ?></span>
                                                 </td>
                                                 <td class="text-end">
-                                                    <?php if($content->invoice_status == 'processing'): ?>
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-info"><?= ucfirst($content->invoice_status); ?></span>
-                                                    <?php elseif($content->invoice_status == 'delivered'): ?>
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-success"><?= ucfirst($content->invoice_status); ?></span>
+
+                                                    <?php if($content->invoice_status == \App\Enums\InvoiceStatusEnum::INTRANSIT->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-primary"><?= ucfirst($content->invoice_status); ?></div>
+                                                    <?php elseif($content->invoice_status == \App\Enums\InvoiceStatusEnum::PROCESSING->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-info"><?= ucfirst($content->invoice_status); ?></div>
+                                                    <?php elseif($content->invoice_status == \App\Enums\InvoiceStatusEnum::COMPLETED->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-success"><?= ucfirst($content->invoice_status); ?></div>
+                                                    <?php elseif($content->invoice_status == \App\Enums\InvoiceStatusEnum::CANCELLED->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-danger"><?= ucfirst($content->invoice_status); ?></div>
                                                     <?php else: ?>
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-warning"><?= ucfirst($content->invoice_status); ?></span>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-warning"><?= ucfirst($content->invoice_status); ?></div>
                                                     <?php endif; ?>
                                                 </td>
                                             </tr>

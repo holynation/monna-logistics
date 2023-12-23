@@ -153,7 +153,7 @@ public function getPayment_statusFormField($value = ''){
 
 public function getPayment_dateFormField($value = ''){
 return "<div class='form-floating mb-7'>
-		<input type='date' name='payment_date' id='payment_date' value='$value' class='form-control' placeholder='Payment Date' required />
+		<input type='date' name='payment_date' id='payment_date' value='$value' class='form-control' placeholder='Payment Date' required readonly />
 		<label for='payment_date'>Payment Date</label>
 	</div>";
 } 
