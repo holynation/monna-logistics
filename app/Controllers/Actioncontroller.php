@@ -166,6 +166,7 @@ class Actioncontroller extends BaseController
 			$message = ($value == 'paid') ? "Payment has been approved" : "Payment has been disapproved";
 			if($model->load()){
 				$model->payment_status = $value;
+				$model->payment_date = date('Y-m-d H:i:s');
 				if($model->update($id)){
 					if($value == 'paid'){
 						$this->invoicesTransactionSuccess($model->invoices_id);
@@ -207,6 +208,14 @@ class Actioncontroller extends BaseController
 		$templateVariables = $invoices->buildInvoiceData($id);
 		if(!$templateVariables){
 		 	return false;
+		}
+		$invoices->id = $id;
+		if(!$invoices->load()){
+		  return false;
+		}
+		$invoices->invoice_status = \App\Enums\InvoiceStatusEnum::PROCESSING->value;
+		if(!$invoices->update($id)){
+			// fail gracefully
 		}
 
 		$email = $templateVariables['bill_from_email'];
@@ -259,7 +268,9 @@ class Actioncontroller extends BaseController
 			'filename' => underscore($templateVariables['bill_from_name'])."_shipment_invoice.pdf",
 			'content_type' => 'application/pdf'
 		]);
-		$this->mailer->sendNotificationMail($email, 'payment_invoice', ['order_number' => $param['order_number']]);
+		if(!$this->mailer->sendNotificationMail($email, 'payment_invoice', ['order_number' => $param['order_number']])){
+			return false;
+		}
 		return true;
 	}
 

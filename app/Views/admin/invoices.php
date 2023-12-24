@@ -25,7 +25,7 @@
 				</li>
 				<!--end::Item-->
 				<!--begin::Item-->
-				<li class="breadcrumb-item text-muted">Invoice Manager</li>
+				<li class="breadcrumb-item text-muted">Invoice Management</li>
 				<!--end::Item-->
 			</ul>
 			<!--end::Breadcrumb-->
@@ -240,11 +240,14 @@
 											</tr>
 											<tr class="align-top fw-bold text-gray-700">
 												<th></th>
-												<th colspan="2" class="fs-4 ps-0">Add tax</th>
+												<th colspan="2" class="fs-4 ps-0">Add tax
+													<span class="text-muted">(The amount should not be in percentage(%))</span>
+												</th>
 												<th colspan="2" class="text-end fs-4 text-nowrap">
 												<span>
 													<input type="text" class="form-control form-control-solid text-end" name="tax" placeholder="0.00" value="0.00" data-kt-element="tax" />
-												</span></th>
+												</span>
+											</th>
 											</tr>
 											<tr class="align-top fw-bold text-gray-700">
 												<th></th>
@@ -259,6 +262,12 @@
 												<th colspan="2" class="fs-4 ps-0">Total</th>
 												<th colspan="2" class="text-end fs-4 text-nowrap">
 												<span data-kt-element="grand-total">0.00</span></th>
+											</tr>
+											<tr class="align-top fw-bold text-gray-700">
+												<th></th>
+												<th colspan="3" class="fs-7 ps-0">
+													<span class="text-danger">NOTE: Both tax and discount values would only be calculated during processing after submission, so don't be bothered when you noticed nothing is happening to the input.</span>
+												</th>
 											</tr>
 										</tfoot>
 										<!--end::Table foot-->
@@ -339,20 +348,6 @@
 						<!--end::Separator-->
 						<!--begin::Actions-->
 						<div class="mb-0">
-							<!--begin::Row-->
-							<div class="row mb-5">
-								<!--begin::Col-->
-								<div class="col">
-									<a href="#" class="btn btn-light btn-active-light-primary w-100">Preview</a>
-								</div>
-								<!--end::Col-->
-								<!--begin::Col-->
-								<div class="col">
-									<a href="#" class="btn btn-light btn-active-light-primary w-100">Download</a>
-								</div>
-								<!--end::Col-->
-							</div>
-							<!--end::Row-->
 							<button type="submit" class="btn btn-primary w-100" id="kt_invoice_submit_button">
 							<!--begin::Svg Icon | path: icons/duotune/general/gen016.svg-->
 							<span class="svg-icon svg-icon-3">
@@ -502,8 +497,8 @@
 	function ajaxFormSuccess(target,data) {
 	  data = JSON.parse(data);
 	  if (data.status) {
-	    inserted = true;
 	    $('form').trigger('reset');
+	    location.reload();
 	  }
 	  showNotification(data.status,data.message);
 	}

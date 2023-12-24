@@ -27,7 +27,7 @@ class AdminData
 
 		$result['countData'] = [
 			'customer' => Customers::totalCount(),
-			'invoice' => Customers::totalCount(),
+			'invoice' => Invoices::totalCount(),
 			'transaction' => Invoice_transaction::totalSum('amount_paid', " where payment_status = 'paid'"),
 		];
 

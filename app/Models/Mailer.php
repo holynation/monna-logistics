@@ -14,7 +14,7 @@ class Mailer extends Model
     private $templateBody = '';
     private $attachment = null;
 
-    const EMAIL_HOST = "monaaexpress.com ";
+    const EMAIL_HOST = "monaaexpress.com";
     const COMPANY_URL = 'https://monaaexpress.com/';
     const COMPANY_NAME = 'MonnaExpress';
     const COMPANY_SUPPORT = 'info@monaaexpress.com';
@@ -44,6 +44,7 @@ class Mailer extends Model
         $config['SMTPCrypto'] = 'ssl';
         $config['SMTPUser'] = $senderMail;
         $config['SMTPPass'] = getenv('mailKey');
+        $config['SMTPTimeout'] = 15;
         $config['mailType'] = 'html';
         $config['CRLF'] = "\r\n";
         $config['newline'] = "\r\n";

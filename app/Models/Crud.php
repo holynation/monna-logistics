@@ -544,12 +544,12 @@ class Crud
 		if (empty($id) && !isset($this->array['id'])) {
 			throw new \Exception("null id field found");
 		}
-		$tablename =$this->getTableName();
-		$id = $id==null?$this->array['id']:$id;
-		$query="UPDATE $tablename SET ";
-		$query.=$this->buildUpdateQuery($data);
+		$tablename = $this->getTableName();
+		$id = $id == null ? $this->array['id'] : $id;
+		$query = "UPDATE $tablename SET ";
+		$query .= $this->buildUpdateQuery($data);
 		$whereCondition = $this->buildWhereString($id,$temp);
-		$query .=" WHERE $whereCondition";
+		$query .= " WHERE $whereCondition";
 		$data = array_merge($data,$temp);
 
 		$result = $this->query($query,$data,$dbObject);

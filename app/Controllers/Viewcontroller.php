@@ -310,7 +310,7 @@ public function processInvoices(){
   $transParam = [
     'customers_id' => $customers->id,
     'invoices_id' => $inserted,
-    'description' => '',
+    'description' => 'Create an invoice for shipping',
     'transaction_ref' => generateHashRef('receipt'),
     'amount_paid' => $total
   ];
