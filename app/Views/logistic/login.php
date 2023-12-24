@@ -129,7 +129,7 @@
                     event.preventDefault();
                     $("#btnLogin").html("Authenticating...").addClass('disabled').prop('disabled', true);
                     submitAjaxForm($(this));
-                    $("#btnLogin").removeClass("disabled").removeAttr('disabled').html("Sign in");
+                    // $("#btnLogin").removeClass("disabled").removeAttr('disabled').html("Sign in");
                 });
             })
 

@@ -42,8 +42,8 @@ $routes->group('mc', function ($routes) {
 });
 
 $routes->group('ac', function ($routes) {
-    $routes->post('disable/(:any)/(:any)', 'Actioncontroller::disable/$1/$2');
-    $routes->post('enable/(:any)/(:any)', 'Actioncontroller::enable/$1/$2');
+    $routes->get('disable/(:any)/(:any)', 'Actioncontroller::disable/$1/$2');
+    $routes->get('enable/(:any)/(:any)', 'Actioncontroller::enable/$1/$2');
 });
 
 $routes->get('delete/(:any)/(:any)', 'Actioncontroller::delete/$1/$2');
