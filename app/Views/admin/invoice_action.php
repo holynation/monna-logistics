@@ -248,6 +248,7 @@
 	    // Define shared variables
 	    var table = document.getElementById('kt_table_users');
 	    var datatable;
+	    $.fn.dataTable.ext.errMode = 'throw';
 
 	    // Private functions
 	    var initUserTable = function () {
