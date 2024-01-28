@@ -1,43 +1,42 @@
 <?php
 
-require_once APPPATH.'Views/modelconfig/table.php';
-require_once APPPATH.'Views/modelconfig/form.php';
+require_once APPPATH . 'Views/modelconfig/table.php';
+require_once APPPATH . 'Views/modelconfig/form.php';
 
 if (isset($_GET['export'])) {
-  $queryHtmlTableObjModel->export = true;
-  $tableWithHeaderModel->export = true;
+	$queryHtmlTableObjModel->export = true;
+	$tableWithHeaderModel->export = true;
 }
 
 $tableData = null;
 
-if($query) {
-  $query.= ' '.$where;
-  if($searchOrderBy){
-    $countFil = 0;
-    $tempOrder='';
-    foreach($searchOrderBy as $valFilter){
-      $tempOrder .= $countFil == 0 ? " $valFilter " : " , $valFilter ";
-      $countFil++;
-    }
-    $query .= "order by $tempOrder desc";
-  }
-  $tableData = $queryHtmlTableObjModel->openTableHeader($query,array(),null,$tableAttr,$tableExclude)
-    ->excludeSerialNumber(false)
-    // ->paging(true,0,50)
-    ->appendTableAction($tableAction,null)
-    // ->appendQueryString($tableQueryString)
-    ->appendCheckBox($checkBox,array('class'=>'form-control'))
-    ->generateTable();
-}
-else{
-  $tableData = $tableWithHeaderModel->openTableHeader($model,$tableAttr,$tableExclude,true)
-  ->excludeSerialNumber(false)
-  ->appendTableAction($tableAction)
-  ->appendEmptyIcon('<i class=las la-dumpster mr-2 mb-2 fs-2x"></i>')
-  ->appendQueryString($tableQueryString)
-  ->generateTableBody(null,true,0,100,' order by id desc ',$where)
-  // ->pagedTable(true,20)
-  ->generate();
+if ($query) {
+	$query .= ' ' . $where;
+	if ($searchOrderBy) {
+		$countFil = 0;
+		$tempOrder = '';
+		foreach ($searchOrderBy as $valFilter) {
+			$tempOrder .= $countFil == 0 ? " $valFilter " : " , $valFilter ";
+			$countFil++;
+		}
+		$query .= "order by $tempOrder desc";
+	}
+	$tableData = $queryHtmlTableObjModel->openTableHeader($query, array(), null, $tableAttr, $tableExclude)
+		->excludeSerialNumber(false)
+	// ->paging(true,0,50)
+		->appendTableAction($tableAction, null)
+	// ->appendQueryString($tableQueryString)
+		->appendCheckBox($checkBox, array('class' => 'form-control'))
+		->generateTable();
+} else {
+	$tableData = $tableWithHeaderModel->openTableHeader($model, $tableAttr, $tableExclude, true)
+		->excludeSerialNumber(false)
+		->appendTableAction($tableAction)
+		->appendEmptyIcon('<i class=las la-dumpster mr-2 mb-2 fs-2x"></i>')
+		->appendQueryString($tableQueryString)
+		->generateTableBody(null, true, 0, 100, ' order by id desc ', $where)
+	// ->pagedTable(true,20)
+		->generate();
 }
 
 ?>
@@ -46,18 +45,18 @@ else{
 $modelPath = null;
 $extra = "";
 
-$formContent = $modelFormBuilder->start($model.'_table')
-->appendInsertForm($model,true,$hidden,'',$showStatus,$exclude)
-->addSubmitLink($modelPath)
-->appendExtra($extra)
-->appendResetButton('Reset','btn btn-lg btn-danger')
-->appendSubmitButton($submitLabel,'btn btn-lg btn-primary')
-->build();
+$formContent = $modelFormBuilder->start($model . '_table')
+	->appendInsertForm($model, true, $hidden, '', $showStatus, $exclude)
+	->addSubmitLink($modelPath)
+	->appendExtra($extra)
+	->appendResetButton('Reset', 'btn btn-lg btn-danger')
+	->appendSubmitButton($submitLabel, 'btn btn-lg btn-primary')
+	->build();
 ?>
 
 
 <!-- main header @s -->
-<?php require APPPATH."Views/template/header.php"; ?>
+<?php require APPPATH . "Views/template/header.php";?>
 <!-- main header @e -->
 
 <!--begin::Main-->
@@ -72,7 +71,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
 <div id="kt_app_content" class="app-content flex-column-fluid">
   <!--begin::Content container-->
   <div id="kt_app_content_container" class="app-container container-xxl">
-    
+
     <!--begin::Card-->
     <div class="card">
       <!--begin::Card header-->
@@ -94,7 +93,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--end::Search-->
         </div>
         <!--begin::Card title-->
-        <?php if($show_add): ?>
+        <?php if ($show_add): ?>
         <!--begin::Card toolbar-->
         <div class="card-toolbar">
           <!--begin::Toolbar-->
@@ -108,13 +107,13 @@ $formContent = $modelFormBuilder->start($model.'_table')
                 <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
               </svg>
             </span>
-            <!--end::Svg Icon-->Add <?= removeUnderscore($model); ?></button>
+            <!--end::Svg Icon-->Add <?=removeUnderscore($model);?></button>
             <!--end::Add user-->
           </div>
           <!--end::Toolbar-->
         </div>
         <!--end::Card toolbar-->
-        <?php endif; ?>
+        <?php endif;?>
       </div>
       <!--end::Card header-->
       <!--begin::Card body-->
@@ -127,7 +126,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
 
 
     <!-- modal for batch uploading -->
-    <?php if ($configData==false || array_key_exists('has_upload', $configData)==false || $configData['has_upload']): ?>
+    <?php if ($configData == false || array_key_exists('has_upload', $configData) == false || $configData['has_upload']): ?>
       <div class="modal fade" id="kt_modal_upload_model" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -136,7 +135,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
             <!--begin::Modal header-->
             <div class="modal-header" id="kt_modal_upload_model_header">
               <!--begin::Modal title-->
-              <h2 class="fw-bold"><?php echo removeUnderscore($model);  ?> Batch Upload</h2>
+              <h2 class="fw-bold"><?php echo removeUnderscore($model); ?> Batch Upload</h2>
               <!--end::Modal title-->
               <!--begin::Close-->
               <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
@@ -155,9 +154,9 @@ $formContent = $modelFormBuilder->start($model.'_table')
             <!--begin::Modal body-->
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
               <?php
-                $batchUrl = "mc/template/$model?exec=name";
-                $batchActionUrl = "mc/sFile/$model";
-              ?>
+$batchUrl = "mc/template/$model?exec=name";
+$batchActionUrl = "mc/sFile/$model";
+?>
 
               <div>
                 <a  class='btn btn-info' href="<?=base_url($batchUrl)?>">Download Template</a>
@@ -180,7 +179,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
         </div>
         <!--end::Modal dialog-->
       </div>
-    <?php endif; ?>
+    <?php endif;?>
     <!-- batch uploading end -->
 
     <!-- modal add form end -->
@@ -192,7 +191,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--begin::Modal header-->
           <div class="modal-header" id="kt_modal_add_model_header">
             <!--begin::Modal title-->
-            <h2 class="fw-bold">Create New <?php echo removeUnderscore($model);  ?></h2>
+            <h2 class="fw-bold">Create New <?php echo removeUnderscore($model); ?></h2>
             <!--end::Modal title-->
             <!--begin::Close-->
             <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
@@ -210,11 +209,11 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--end::Modal header-->
           <!--begin::Modal body-->
           <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-            <?php if($showAddCaption): ?>
+            <?php if ($showAddCaption): ?>
               <div class="alert alert-danger" style="background-color: #ea2825;color:#fff;">
-                  <b><?= $showAddCaption; ?></b>
+                  <b><?=$showAddCaption;?></b>
               </div>
-            <?php endif; ?>
+            <?php endif;?>
 
             <?php echo $formContent; ?>
           </div>
@@ -235,7 +234,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--begin::Modal header-->
           <div class="modal-header" id="kt_modal_edit_model_header">
             <!--begin::Modal title-->
-            <h2 class="fw-bold"><?php echo removeUnderscore($model);  ?> Update</h2>
+            <h2 class="fw-bold"><?php echo removeUnderscore($model); ?> Update</h2>
             <!--end::Modal title-->
             <!--begin::Close-->
             <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
@@ -253,11 +252,11 @@ $formContent = $modelFormBuilder->start($model.'_table')
           <!--end::Modal header-->
           <!--begin::Modal body-->
           <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-            <?php if(@$editMessageInfo != ""): ?>
+            <?php if (@$editMessageInfo != ""): ?>
               <div class="alert alert-danger" style="background-color: #ea2825;color:#fff;">
                   <b><?php echo @$editMessageInfo; ?></b>
               </div>
-              <?php endif; ?>
+              <?php endif;?>
               <p id="edit-container"> </p>
           </div>
           <!--end::Modal body-->
@@ -277,7 +276,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
 <!--end:::Main-->
 
 <!-- footer & JavaScript -->
-<?php require APPPATH.'Views/template/footer.php'; ?>
+<?php require APPPATH . 'Views/template/footer.php';?>
 
 <script>
     var inserted=false;
@@ -325,6 +324,10 @@ $formContent = $modelFormBuilder->start($model.'_table')
         $('form').trigger('reset');
         // location.reload();
       }
+      var btnSubmit = $('input[type=submit]');
+        btnSubmit.removeClass('disabled');
+            btnSubmit.prop('disabled', false);
+            btnSubmit.html('Save');
       showNotification(data.status,data.message);
     }
 </script>
@@ -340,8 +343,8 @@ $formContent = $modelFormBuilder->start($model.'_table')
           // Close button handler
           const closeButton = element.querySelector('[data-kt-users-modal-action="close"]');
           closeButton.addEventListener('click', e => {
-              e.preventDefault();  
-              modal.hide(); 
+              e.preventDefault();
+              modal.hide();
           });
       }
 
@@ -388,7 +391,7 @@ $formContent = $modelFormBuilder->start($model.'_table')
       }
 
       return {
-          // Public functions  
+          // Public functions
           init: function () {
               if (!table) {
                   return;

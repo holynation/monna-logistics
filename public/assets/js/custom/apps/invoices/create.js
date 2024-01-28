@@ -16,8 +16,8 @@ var KTAppInvoicesCreate = function () {
 		});
 
 		items.map(function (item) {
-            var quantity = item.querySelector('[data-kt-element="quantity"]');
-			var price = item.querySelector('[data-kt-element="price"]');
+            var quantity = item.querySelector('[data-kt-element="weight"]');
+			var price = item.querySelector('[data-kt-element="rate"]');
 
 			var priceValue = format.from(price.value);
 			priceValue = (!priceValue || priceValue < 0) ? 0 : priceValue;
@@ -69,8 +69,8 @@ var KTAppInvoicesCreate = function () {
 			updateTotal();			
 		});		
 
-		// Handle price and quantity changes
-		KTUtil.on(form, '[data-kt-element="items"] [data-kt-element="quantity"], [data-kt-element="items"] [data-kt-element="price"]', 'change', function(e) {
+		// Handle rate and weight changes
+		KTUtil.on(form, '[data-kt-element="items"] [data-kt-element="weight"], [data-kt-element="items"] [data-kt-element="rate"]', 'change', function(e) {
 			e.preventDefault();
 
 			updateTotal();			

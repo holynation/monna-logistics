@@ -288,24 +288,12 @@
                 style="line-height:1.295;margin-top:0pt;margin-bottom:2pt;">
                 <span style="font-size:10.5pt;font-family:Lato,sans-serif;;color:#000000;font-weight:400;
                   font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">
-                  Custom duties and taxes may apply to your items in the destination country. MonnaExpress has no
-                  control over these charges as
-                  these tariffs are determined by the
-                  customs of the destination country and payable only by the receiver.
+                  Custom duties and taxes may apply to your items in the destination country. MonaaExpress has no control over these charges as these tariffs are determined by the customs of the destination country and payable only by the cosignee
                   <br /><br />
 
-                  MonnaExpress shall not be responsible for any delays arising from customs border control. The shipper
-                  and receiver are
-                  responsible for providing all documentation
-                  needed for customs clearance. In the event the shipper or receiver fails to provide this, the shipper
-                  will be
-                  charged
-                  for the return of the shipment to the origin. <br /><br />
+                  MonaaExpress shall not be responsible for any delays arising from customs border control. The shipper and receiver are responsible for providing all documentation needed for customs clearance. In the event the shipper or receiver fails to provide this, the shipper/sender will be charged for the return of the shipment to the origin.<br /><br />
 
-                  MonnaExpress shall not be liable for confiscation or destruction of illegal or illicit items such as
-                  copied or unauthorized
-                  designer brands and other illegal items defined by
-                  the destination country's government agencies.
+                  MonaaExpress shall not be liable for confiscation or destruction of illegal or prohibited items defined by the destination country's government agencies.
                 </span>
               </p>
             </td>

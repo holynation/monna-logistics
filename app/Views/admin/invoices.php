@@ -1,4 +1,4 @@
-<?php require APPPATH."Views/template/header.php"; ?>
+<?php require APPPATH . "Views/template/header.php";?>
 
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -16,7 +16,7 @@
 			<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
 				<!--begin::Item-->
 				<li class="breadcrumb-item text-muted">
-					<a href="<?= base_url('admin/dashboard'); ?>" class="text-muted text-hover-primary">Home</a>
+					<a href="<?=base_url('admin/dashboard');?>" class="text-muted text-hover-primary">Home</a>
 				</li>
 				<!--end::Item-->
 				<!--begin::Item-->
@@ -39,12 +39,12 @@
 	<!--begin::Content container-->
 	<div id="kt_app_content_container" class="app-container container-xxl">
 		<!--begin::Form-->
-		<form action="<?= base_url('invoices/process'); ?>" id="kt_invoice_form" method="post">
+		<form action="<?=base_url('invoices/process');?>" id="kt_invoice_form" method="post">
 		<div class="d-flex flex-column flex-lg-row">
 			<!--begin::Content-->
 			<div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-1">
 
-			<?php if($webSessionManager->getFlashMessage('error')): ?>
+			<?php if ($webSessionManager->getFlashMessage('error')): ?>
 				<!--begin::Alert-->
 				<div class="alert alert-dismissible bg-light-danger border border-danger d-flex flex-column flex-sm-row p-5 mb-10">
 				    <!--begin::Icon-->
@@ -58,9 +58,9 @@
 				        <!--end::Title-->
 
 				        <!--begin::Content-->
-				        <?php foreach($webSessionManager->getFlashMessage('error') as $err): ?>
-				        <span><?= $err; ?></span>
-				    	<?php endforeach; ?>
+				        <?php foreach ($webSessionManager->getFlashMessage('error') as $err): ?>
+				        <span><?=$err;?></span>
+				    	<?php endforeach;?>
 				        <!--end::Content-->
 				    </div>
 				    <!--end::Wrapper-->
@@ -72,7 +72,7 @@
 				    <!--end::Close-->
 				</div>
 				<!--end::Alert-->
-			<?php endif; ?>
+			<?php endif;?>
 
 				<!--begin::Card-->
 				<div class="card">
@@ -88,7 +88,7 @@
 									<!--begin::Input-->
 									<div class="position-relative d-flex align-items-center w-150px">
 										<!--begin::Datepicker-->
-										<input class="form-control form-control-transparent fw-bold pe-5" placeholder="Select date" name="invoice_date" value="<?= old('invoice_date'); ?>" />
+										<input class="form-control form-control-transparent fw-bold pe-5" placeholder="Select date" name="invoice_date" value="<?=old('invoice_date');?>" />
 										<!--end::Datepicker-->
 										<!--begin::Icon-->
 										<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
@@ -106,12 +106,12 @@
 								<!--begin::Input group-->
 								<div class="d-flex flex-center flex-equal fw-row text-nowrap order-1 order-xxl-2 me-4" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Enter invoice number">
 									<span class="fs-2x fw-bold text-gray-800">Invoice #</span>
-									<input type="text" class="form-control form-control-flush fw-bold text-muted fs-3 w-125px" value="<?= old('invoice_no', $invoiceNum); ?>" placehoder="..." name='invoice_no'/>
+									<input type="text" class="form-control form-control-flush fw-bold text-muted fs-3 w-125px" value="<?=old('invoice_no', $invoiceNum);?>" placehoder="..." name='invoice_no'/>
 								</div>
 								<!--end::Input group-->
 								<div class="d-flex flex-center flex-equal fw-row text-nowrap order-1 order-xxl-2 me-4" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Enter tracking number">
 									<span class="fs-2x fw-bold text-gray-800">Tracking No.</span>
-									<input type="text" class="form-control form-control-flush fw-bold text-muted fs-3 w-125px" value="<?= old('track_number', $trackNum); ?>" placehoder="..." name="track_number" />
+									<input type="text" class="form-control form-control-flush fw-bold text-muted fs-3 w-125px" value="<?=old('track_number', $trackNum);?>" placehoder="..." name="track_number" />
 								</div>
 								<!--end::Input group-->
 							</div>
@@ -129,7 +129,7 @@
 										<div class="mb-5">
 											<select class="form-control" name="customer" id="customer">
 												<option value=''>...choose customer...</option>
-												<?= $customerOptions; ?>
+												<?=$customerOptions;?>
 											</select>
 										</div>
 									</div>
@@ -143,16 +143,16 @@
 										<label class="form-label fs-6 fw-bold text-gray-700 mb-3">Ship To Details</label>
 										<!--begin::Input group-->
 										<div class="mb-5">
-											<input type="text" class="form-control form-control-solid" placeholder="Name" name="bill_to_name" value="<?= old('bill_to_name'); ?>" />
+											<input type="text" class="form-control form-control-solid" placeholder="Name" name="bill_to_name" value="<?=old('bill_to_name');?>" />
 										</div>
 										<!--end::Input group-->
 										<!--begin::Input group-->
 										<div class="mb-5">
-											<input type="text" class="form-control form-control-solid" placeholder="Email" name="bill_to_email" value="<?= old('bill_to_email'); ?>" />
+											<input type="text" class="form-control form-control-solid" placeholder="Email" name="bill_to_email" value="<?=old('bill_to_email');?>" />
 										</div>
 										<!--end::Input group-->
 										<div class="mb-5">
-											<input type="text" class="form-control form-control-solid" placeholder="Phone number" name="bill_to_phone" value="<?= old('bill_to_phone'); ?>" />
+											<input type="text" class="form-control form-control-solid" placeholder="Phone number" name="bill_to_phone" value="<?=old('bill_to_phone');?>" />
 										</div>
 									</div>
 									<!--end::Col-->
@@ -161,19 +161,19 @@
 										<label class="form-label fs-6 fw-bold text-gray-700 mb-3">Bill To Address</label>
 										<!--begin::Input group-->
 										<div class="mb-5">
-											<input type="text" class="form-control form-control-solid" placeholder="City" name="bill_to_city" value="<?= old('bill_to_city'); ?>" />
+											<input type="text" class="form-control form-control-solid" placeholder="City" name="bill_to_city" value="<?=old('bill_to_city');?>" />
 										</div>
 										<!--end::Input group-->
 										<!--begin::Input group-->
 										<div class="mb-5">
-											<input type="text" class="form-control form-control-solid" placeholder="Country" name="bill_to_country" value="<?= old('bill_to_country'); ?>" />
+											<input type="text" class="form-control form-control-solid" placeholder="Country" name="bill_to_country" value="<?=old('bill_to_country');?>" />
 										</div>
 										<!--end::Input group-->
 										<div class="mb-5">
-											<input type="text" class="form-control form-control-solid" placeholder="Address number" name="bill_to_address" value="<?= old('bill_to_address'); ?>" />
+											<input type="text" class="form-control form-control-solid" placeholder="Address number" name="bill_to_address" value="<?=old('bill_to_address');?>" />
 										</div>
 										<div class="mb-5">
-											<input type="text" class="form-control form-control-solid" placeholder="Postal Code" name="bill_to_postalcode" value="<?= old('bill_to_postalcode'); ?>" />
+											<input type="text" class="form-control form-control-solid" placeholder="Postal Code" name="bill_to_postalcode" value="<?=old('bill_to_postalcode');?>" />
 										</div>
 									</div>
 									<!--end::Col-->
@@ -187,8 +187,9 @@
 										<thead>
 											<tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
 												<th class="min-w-300px w-475px">Item</th>
-												<th class="min-w-100px w-100px">QTY</th>
-												<th class="min-w-150px w-150px">Price</th>
+												<th class="min-w-100px w-100px">Weight(Kg)</th>
+												<th class="min-w-150px w-150px">Rate</th>
+												<th class="min-w-150px w-150px">Value</th>
 												<th class="min-w-100px w-150px text-end">Total</th>
 												<th class="min-w-75px w-75px text-end">Action</th>
 											</tr>
@@ -198,13 +199,20 @@
 										<tbody>
 											<tr class="border-bottom border-bottom-dashed" data-kt-element="item">
 												<td class="pe-7">
-													<input type="text" class="form-control form-control-solid mb-2" name="description[]" placeholder="Item name" value="<?= old('description[]'); ?>" />
+													<input type="text" class="form-control form-control-solid mb-2" name="description[]" placeholder="Item name" value="<?=old('description[]');?>" />
 												</td>
 												<td class="ps-0">
-													<input class="form-control form-control-solid" type="number" min="1" name="quantity[]" placeholder="1" value="<?= old('quantity[]', 1); ?>" data-kt-element="quantity" />
+													<input class="form-control form-control-solid" type="number" min="1" name="weight[]" placeholder="1" value="<?=old('weight[]', 1);?>" data-kt-element="weight" />
 												</td>
 												<td>
-													<input type="text" class="form-control form-control-solid text-end" name="price[]" placeholder="0.00" value="0.00" data-kt-element="price" />
+													<select class="form-control form-control-solid text-end" name="rates[]" id="rates" data-kt-element="rates">
+														<option value=''>choose rates</option>
+														<?=$rateOptions;?>
+													</select>
+													<input type="hidden" name="custom_prices[]" value="" data-kt-element="custom_prices" />
+												</td>
+												<td>
+													<input type="text" class="form-control form-control-solid text-end" name="custom_value[]" placeholder="0.00" data-kt-element="custom_value" />
 												</td>
 												<td class="pt-8 text-end text-nowrap"> <!-- &#x20A6; -->
 												<span data-kt-element="total">0.00</span></td>
@@ -240,14 +248,30 @@
 											</tr>
 											<tr class="align-top fw-bold text-gray-700">
 												<th></th>
-												<th colspan="2" class="fs-4 ps-0">Add tax
+												<th colspan="2" class="fs-4 ps-0">Add VAT
 													<span class="text-muted">(The amount should not be in percentage(%))</span>
 												</th>
 												<th colspan="2" class="text-end fs-4 text-nowrap">
 												<span>
-													<input type="text" class="form-control form-control-solid text-end" name="tax" placeholder="0.00" value="0.00" data-kt-element="tax" />
+													<input type="text" class="form-control form-control-solid text-end" name="tax" placeholder="0.00" value="7.5" data-kt-element="tax" />
 												</span>
 											</th>
+											</tr>
+											<tr class="align-top fw-bold text-gray-700">
+												<th></th>
+												<th colspan="2" class="fs-4 ps-0">Packaging Fee</th>
+												<th colspan="2" class="text-end fs-4 text-nowrap">
+												<span>
+													<input type="text" class="form-control form-control-solid text-end" name="package_fee" placeholder="0.00" value="0.00" data-kt-element="package_fee" />
+												</span></th>
+											</tr>
+											<tr class="align-top fw-bold text-gray-700">
+												<th></th>
+												<th colspan="2" class="fs-4 ps-0">Phytosanitary Certificate</th>
+												<th colspan="2" class="text-end fs-4 text-nowrap">
+												<span>
+													<input type="text" class="form-control form-control-solid text-end" name="certificate_fee" placeholder="0.00" value="0.00" data-kt-element="certificate_fee" />
+												</span></th>
 											</tr>
 											<tr class="align-top fw-bold text-gray-700">
 												<th></th>
@@ -266,7 +290,7 @@
 											<tr class="align-top fw-bold text-gray-700">
 												<th></th>
 												<th colspan="3" class="fs-7 ps-0">
-													<span class="text-danger">NOTE: Both tax and discount values would only be calculated during processing after submission, so don't be bothered when you noticed nothing is happening to the input.</span>
+													<span class="text-danger">NOTE: Both VAT and discount values would only be calculated during processing after submission, so don't be bothered when you noticed nothing is happening to the input.</span>
 												</th>
 											</tr>
 										</tfoot>
@@ -274,6 +298,7 @@
 									</table>
 								</div>
 								<!--end::Table-->
+
 								<!--begin::Item template-->
 								<table class="table d-none" data-kt-element="item-template">
 									<tr class="border-bottom border-bottom-dashed" data-kt-element="item">
@@ -281,12 +306,19 @@
 											<input type="text" class="form-control form-control-solid mb-2" name="description[]" placeholder="Item name" />
 										</td>
 										<td class="ps-0">
-											<input class="form-control form-control-solid" type="number" min="1" name="quantity[]" placeholder="1" data-kt-element="quantity" />
+											<input class="form-control form-control-solid" type="number" min="1" name="weight[]" placeholder="1" data-kt-element="weight" />
 										</td>
 										<td>
-											<input type="text" class="form-control form-control-solid text-end" name="price[]" placeholder="0.00" data-kt-element="price" />
+											<select class="form-control form-control-solid text-end" name="rates[]" id="rates" data-kt-element="rates">
+												<option value=''>choose rates</option>
+												<?=$rateOptions;?>
+											</select>
+											<input type="hidden" name="custom_prices[]" value="" data-kt-element="custom_prices" />
 										</td>
-										<td class="pt-8 text-end">$
+										<td>
+											<input type="text" class="form-control form-control-solid text-end" name="custom_value[]" placeholder="0.00" data-kt-element="custom_value" />
+										</td>
+										<td class="pt-8 text-end"><!-- &#x20A6; -->
 										<span data-kt-element="total">0.00</span></td>
 										<td class="pt-5 text-end">
 											<button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item">
@@ -317,7 +349,7 @@
 								<!--end::Notes-->
 							</div>
 							<!--end::Wrapper-->
-						
+
 					</div>
 					<!--end::Card body-->
 				</div>
@@ -376,7 +408,7 @@
 </div>
 <!--end:::Main-->
 
-<?php  require APPPATH.'Views/template/footer.php'; ?>
+<?php require APPPATH . 'Views/template/footer.php';?>
 
 <script type="text/javascript">
 	"use strict";
@@ -397,19 +429,26 @@
 			});
 
 			items.map(function (item) {
-	            var quantity = item.querySelector('[data-kt-element="quantity"]');
-				var price = item.querySelector('[data-kt-element="price"]');
+	            let quantity = item.querySelector('[data-kt-element="weight"]');
+				let price = item.querySelector('[data-kt-element="rates"]');
+				let customPrice = item.querySelector('[data-kt-element="custom_prices"]');
 
-				var priceValue = format.from(price.value);
+				var priceValue = price.value;
+				var customPriceValue = customPrice.value;
+				if(priceValue){
+					let temp = priceValue.split('::');
+					priceValue = format.from(temp[1]);
+				}
 				priceValue = (!priceValue || priceValue < 0) ? 0 : priceValue;
+				customPriceValue = priceValue;
 
 				var quantityValue = parseInt(quantity.value);
 				quantityValue = (!quantityValue || quantityValue < 0) ?  1 : quantityValue;
 
-				price.value = format.to(priceValue);
 				quantity.value = quantityValue;
+				customPrice.value = customPriceValue;
 
-				item.querySelector('[data-kt-element="total"]').innerText = format.to(priceValue * quantityValue);			
+				item.querySelector('[data-kt-element="total"]').innerText = format.to(priceValue * quantityValue);
 
 				grandTotal += priceValue * quantityValue;
 			});
@@ -437,7 +476,7 @@
 				form.querySelector('[data-kt-element="items"] tbody').appendChild(item);
 
 				handleEmptyState();
-				updateTotal();			
+				updateTotal();
 			});
 
 			// Remove item
@@ -448,13 +487,13 @@
 
 				handleEmptyState();
 				updateTotal();
-			});		
+			});
 
 			// Handle price and quantity changes
-			KTUtil.on(form, '[data-kt-element="items"] [data-kt-element="quantity"], [data-kt-element="items"] [data-kt-element="price"]', 'change', function(e) {
+			KTUtil.on(form, '[data-kt-element="items"] [data-kt-element="weight"], [data-kt-element="items"] [data-kt-element="rates"]', 'change', function(e) {
 				e.preventDefault();
 
-				updateTotal();		
+				updateTotal();
 			});
 		}
 
@@ -498,7 +537,9 @@
 	  data = JSON.parse(data);
 	  if (data.status) {
 	    $('form').trigger('reset');
-	    location.reload();
+	    setTimeout(() => {
+	    	location.reload();
+	    }, 2000);
 	  }
 	  showNotification(data.status,data.message);
 	}

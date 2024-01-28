@@ -1,17 +1,26 @@
 <?php
 
-if(!function_exists('get_setting'))
-{
-	function get_setting(string $settings_name): string
-	{
-	    $db = db_connect();
-	    $buidler = $db->table('settings');
-	    $query = $buidler->getWhere(array('settings_name' => $settings_name) );
+if (!function_exists('ddd')) {
+	function ddd($data) {
+		print_r($data);exit;
+	}
+}
 
-	    foreach ($query->result_array() as $row)
-	    {
-	       return $row['settings_value'];
-	    }
+if (!function_exists('ddump')) {
+	function ddump($data) {
+		var_dump($data);
+	}
+}
+
+if (!function_exists('get_setting')) {
+	function get_setting(string $settings_name): string {
+		$db = db_connect();
+		$buidler = $db->table('settings');
+		$query = $buidler->getWhere(array('settings_name' => $settings_name));
+
+		foreach ($query->result_array() as $row) {
+			return $row['settings_value'];
+		}
 	}
 }
 
@@ -19,14 +28,12 @@ if(!function_exists('get_setting'))
  *  This generate pair of random tokens called selector and validator
  * @return [type] [description]
  */
-if(!function_exists('generate_me_tokens'))
-{
-	function generate_me_tokens(): array
-	{
-	    $selector = bin2hex(random_bytes(16));
-	    $validator = bin2hex(random_bytes(32));
+if (!function_exists('generate_me_tokens')) {
+	function generate_me_tokens(): array {
+		$selector = bin2hex(random_bytes(16));
+		$validator = bin2hex(random_bytes(32));
 
-	    return [$selector, $validator, $selector . ':' . $validator];
+		return [$selector, $validator, $selector . ':' . $validator];
 	}
 }
 
@@ -35,41 +42,40 @@ if(!function_exists('generate_me_tokens'))
  * @param  string $token [description]
  * @return [type]        [description]
  */
-if(!function_exists('parse_me_token'))
-{
-	function parse_me_token(string $token): ?array
-	{
-	    $parts = explode(':', $token);
+if (!function_exists('parse_me_token')) {
+	function parse_me_token(string $token): ?array {
+		$parts = explode(':', $token);
 
-	    if ($parts && count($parts) == 2) {
-	        return [$parts[0], $parts[1]];
-	    }
-	    return null;
+		if ($parts && count($parts) == 2) {
+			return [$parts[0], $parts[1]];
+		}
+		return null;
 	}
 }
 
-if(!function_exists('token_me_valid'))
-{
-	function token_me_valid(string $token){
+if (!function_exists('token_me_valid')) {
+	function token_me_valid(string $token) {
 		return parse_me_token($token);
 	}
 }
 
-if(!function_exists('getUserInfo'))
-{
-	function getUserRealInfo($user_id){
-		if(!$user_id) return '';
+if (!function_exists('getUserInfo')) {
+	function getUserRealInfo($user_id) {
+		if (!$user_id) {
+			return '';
+		}
+
 		$user = loadClass('user');
 		$user = $user->getRealUserData($user_id);
-		if(!$user){
+		if (!$user) {
 			return null;
 		}
 		return "{$user['fullname']} ({$user['user_type']})";
 	}
 }
 
-if( ! function_exists('convertImageToBase64')){
-	function convertImageToBase64($path,$extension){
+if (!function_exists('convertImageToBase64')) {
+	function convertImageToBase64($path, $extension) {
 		// get the file data
 		$img_data = file_get_contents($path);
 		// get base64 encoded code of the image
@@ -77,64 +83,62 @@ if( ! function_exists('convertImageToBase64')){
 		// create base64 string of image
 		$base64_str = 'data:image/' . $extension . ';base64,' . $base64_code;
 		return $base64_str;
-		 
+
 	}
 }
 
-if(! function_exists('generateNumericRef')){
-	function generateNumericRef(object $db,string $table,string $dbColumn,string $prefix='REF'){
+if (!function_exists('generateNumericRef')) {
+	function generateNumericRef(object $db, string $table, string $dbColumn, string $prefix = 'REF') {
 		$orderStart = '10000011';
 		$query = "select {$dbColumn} as code from {$table} order by ID desc limit 1";
 		$result = $db->query($query);
-		if($result->getNumRows() > 0){
+		if ($result->getNumRows() > 0) {
 			$result = $result->getResultArray()[0];
-			$explode = explode($prefix,$result['code']);
-			if(!empty($explode) && count($explode) >= 2){
-				[$label,$temp] = $explode;
-				$orderStart = ($temp) ? $temp+1 : $orderStart;
+			$explode = explode($prefix, $result['code']);
+			if (!empty($explode) && count($explode) >= 2) {
+				[$label, $temp] = $explode;
+				$orderStart = ($temp) ? $temp + 1 : $orderStart;
 			}
 		}
-		return $prefix.$orderStart;
+		return $prefix . $orderStart;
 	}
 }
 
-function getMacAddress(){
+function getMacAddress() {
 	return getMacAddr1() ?? getMacAddr2() ?? null;
 }
 
-function getMacAddr1(){
+function getMacAddr1() {
 	ob_start();
 	system('getmac');
 	$Content = ob_get_contents();
 	ob_clean();
-	return substr($Content, strpos($Content,'\\')-20, 17);
+	return substr($Content, strpos($Content, '\\') - 20, 17);
 }
 
-function getMacAddr2(){
+function getMacAddr2() {
 	ob_start(); // Turn on output buffering
 	system('ipconfig /all'); //Execute external program to display output
 	$mycom = ob_get_contents(); // Capture the output into a variable
 	ob_clean(); // Clean (erase) the output buffer
-	 
+
 	$findme = "Physical";
 	$pmac = strpos($mycom, $findme); // Find the position of Physical text
-	$mac = substr($mycom,($pmac+36),17); // Get Physical Address
+	$mac = substr($mycom, ($pmac + 36), 17); // Get Physical Address
 }
 
-if(!function_exists('toUserAgent'))
-{
-	function toUserAgent(object $agent){
+if (!function_exists('toUserAgent')) {
+	function toUserAgent(object $agent) {
 		if ($agent->isBrowser()) {
-		    $currentAgent = $agent->getBrowser() . ' ' . $agent->getVersion();
+			$currentAgent = $agent->getBrowser() . ' ' . $agent->getVersion();
 		} elseif ($agent->isRobot()) {
-		    $currentAgent = $agent->getRobot();
+			$currentAgent = $agent->getRobot();
 		} elseif ($agent->isMobile()) {
-		    $currentAgent = $agent->getMobile();
-		}elseif ($agent->getAgentString() != '') {
-		    $currentAgent = $agent->getAgentString();
-		}
-		else {
-		    $currentAgent = 'Unidentified User Agent';
+			$currentAgent = $agent->getMobile();
+		} elseif ($agent->getAgentString() != '') {
+			$currentAgent = $agent->getAgentString();
+		} else {
+			$currentAgent = 'Unidentified User Agent';
 		}
 		return $currentAgent;
 	}
@@ -145,33 +149,30 @@ if(!function_exists('toUserAgent'))
  * @param  string|null $date [description]
  * @return [type]            [description]
  */
-function formatToUTC(string $date=null,$timezone=null,bool $isTime=false){
+function formatToUTC(string $date = null, $timezone = null, bool $isTime = false) {
 	$date = $date ?? "now";
-	$date = new \CodeIgniter\I18n\Time($date,$timezone);
-	if(!$isTime){
+	$date = new \CodeIgniter\I18n\Time($date, $timezone);
+	if (!$isTime) {
 		return $date->format('Y-m-d H:i:s');
-	}else{
+	} else {
 		return $date->toTimeString();
 	}
 }
 
-function discountOffPriceAmount($discPercentage, $sellPrice,&$discountAmount)
-{
-	if(!is_decimal($discPercentage)){
-		$discPercentage = $discPercentage/100;
+function discountOffPriceAmount($discPercentage, $sellPrice, &$discountAmount) {
+	if (!is_decimal($discPercentage)) {
+		$discPercentage = $discPercentage / 100;
 	}
 
 	$discountAmount = round($sellPrice * $discPercentage, 2);
 	return $sellPrice - $discountAmount;
 }
 
-function is_decimal($val)
-{
-    return is_numeric( $val ) && floor( $val ) != $val;
+function is_decimal($val) {
+	return is_numeric($val) && floor($val) != $val;
 }
 
-function removeUnderscore($fieldname)
-{
+function removeUnderscore($fieldname) {
 	$result = '';
 	if (empty($fieldname)) {
 		return $result;
@@ -185,13 +186,11 @@ function removeUnderscore($fieldname)
 	return $result;
 }
 
-function uniqueString($size = 20)
-{
+function uniqueString($size = 20) {
 	return randStrGen($size);
 }
 
-function generateReceipt()
-{
+function generateReceipt() {
 	$rand = mt_rand(0x000000, 0xffffff); // generate a random number between 0 and 0xffffff
 	$rand = dechex($rand & 0xffffff); // make sure we're not over 0xffffff, which shouldn't happen anyway
 	$rand = str_pad($rand, 6, '0', STR_PAD_LEFT); // add zeroes in front of the generated string
@@ -201,8 +200,7 @@ function generateReceipt()
 
 //this function returns the json encoded string based on the key pair paremter saved on it.
 //
-function createJsonMessage()
-{
+function createJsonMessage() {
 	$argNum = func_num_args();
 	if ($argNum % 2 != 0) {
 		throw new Exception('argument must be a key-pair and therefore argument length must be even');
@@ -222,8 +220,7 @@ function createJsonMessage()
  * check that non of the given paramter is empty
  * @return boolean [description]
  */
-function isNotEmpty()
-{
+function isNotEmpty() {
 	$args = func_get_args();
 	for ($i = 0; $i < count($args); $i++) {
 		if (empty($args[$i])) {
@@ -233,19 +230,17 @@ function isNotEmpty()
 	return true;
 }
 //function to build csv file into a mutidimentaional array
-function stringToCsv($string)
-{
+function stringToCsv($string) {
 	$result = array();
 	$lines = explode("\n", trim($string));
 	for ($i = 0; $i < count($lines); $i++) {
-		$current  = $lines[$i];
+		$current = $lines[$i];
 		$result[] = explode(',', trim($current));
 	}
 	return $result;
 }
 
-function array2csv($array, $header = false)
-{
+function array2csv($array, $header = false) {
 	$content = '';
 	if ($array) {
 		$content = strtoupper(implode(',', $header ? $header : array_keys($array[0]))) . "\n";
@@ -256,14 +251,12 @@ function array2csv($array, $header = false)
 	return $content;
 }
 
-function endsWith($string, $end)
-{
+function endsWith($string, $end) {
 	$temp = substr($string, strlen($string) - strlen($end));
 	return $end == $temp;
 }
 
-function verifyPassword($password)
-{
+function verifyPassword($password) {
 	$minLength = 8;
 	$numPattern = "/[0-9]/";
 	$upperCasePattern = "/[A-Z]/";
@@ -271,40 +264,34 @@ function verifyPassword($password)
 	return preg_match($numPattern, $password) && preg_match($upperCasePattern, $password) && preg_match($lowerCasePattern, $password) && strlen($password) >= $minLength;
 }
 
-function makeHash($string, $salt = '')
-{
+function makeHash($string, $salt = '') {
 	return hash('sha256', $string . $salt);
 }
 
-function encode_password($password)
-{
+function encode_password($password) {
 	return password_hash($password, PASSWORD_BCRYPT, array(
-		'cost'  => 10
+		'cost' => 10,
 	));
 }
 
-function decode_password($userData, $fromDb)
-{
+function decode_password($userData, $fromDb) {
 	if ($userData != NULL) {
 		return password_verify($userData, $fromDb);
 	}
 	return false;
 }
 
-function unique()
-{
+function unique() {
 	return makeHash(uniqid());
 }
 
-function isValidEmail($string)
-{
+function isValidEmail($string) {
 	if (filter_var($string, FILTER_VALIDATE_EMAIL) == FALSE) {
 		return false;
 	}
 	return true;
 }
-function getFirstString($str, $uppercase = false)
-{
+function getFirstString($str, $uppercase = false) {
 	if ($str) {
 		$value = substr($str, 0, 1);
 		return ($uppercase) ? strtoupper($value) : strtolower($value);
@@ -312,9 +299,11 @@ function getFirstString($str, $uppercase = false)
 	return false;
 }
 
-function formatToNameLabel($string, $uppercase = false)
-{
-	if (!$string) return '';
+function formatToNameLabel($string, $uppercase = false) {
+	if (!$string) {
+		return '';
+	}
+
 	$splitName = explode(' ', $string);
 	if (count($splitName) < 2) {
 		return getFirstString($string, $uppercase);
@@ -325,71 +314,67 @@ function formatToNameLabel($string, $uppercase = false)
 	}
 }
 
-function isUniquePhone(object $scope, $phone,string $userType)
-{
+function isUniquePhone(object $scope, $phone, string $userType) {
 	$query = "select * from $userType where phone_number=?";
 	$result = $scope->query($query, array($phone));
 	$result = $result->getResultArray();
 	return count($result) == 0;
 }
 
-function getPasswordOTP(object $scope)
-{
+function getPasswordOTP(object $scope) {
 	$result = '';
 	do {
-		$result  = random_int(100000, 999999);
+		$result = random_int(100000, 999999);
 	} while (!isValidPasswordOTP($scope, $result));
 	return $result;
 }
 
-function isValidPasswordOTP($scope, $otp)
-{
+function isValidPasswordOTP($scope, $otp) {
 	$query = "select * from password_otp where otp=? and status=1";
 	$result = $scope->query($query, array($otp));
 	$result = $result->getResultArray();
 	return !$result;
 }
 
-function isValidState($state)
-{
+function isValidState($state) {
 	$state = strtolower($state);
 	$states = array('abia', 'adamawa', 'akwa ibom', 'awka', 'bauchi', 'bayelsa', 'benue', 'borno', 'cross river', 'delta', 'ebonyi', 'edo', 'ekiti', 'enugu', 'gombe', 'imo', 'jigawa', 'kaduna', 'kano', 'katsina', 'kebbi', 'kogi', 'kwara', 'lagos', 'nasarawa', 'niger', 'ogun', 'ondo', 'osun', 'oyo', 'plateau', 'rivers', 'sokoto', 'taraba', 'yobe', 'zamfara');
 	return in_array($state, $states);
 }
 
 function formatToNgPhone($phone) {
-  	// note: making sure we have something
-  	if(!isset($phone)) { return ''; }
-  	// note: strip out everything but numbers 
-  	$phone = preg_replace("/[^0-9]/", "", $phone);
-  	$length = strlen($phone);
-  	switch($length) {
-	  	case 7:
-	    	return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
-	  		break;
-	  	case 10:
-	   		return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
-	  		break;
-	  	case 11:
-	  		return preg_replace("/([0-9]{1})([0-9]{3})([0-9]{3})([0-9]{4})/", "+234$2$3$4", $phone);
-	  		break;
-	  	default:
-	    	return "+".$phone;
-	  		break;
-  	}
+	// note: making sure we have something
+	if (!isset($phone)) {return '';}
+	// note: strip out everything but numbers
+	$phone = preg_replace("/[^0-9]/", "", $phone);
+	$length = strlen($phone);
+	switch ($length) {
+	case 7:
+		return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
+		break;
+	case 10:
+		return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
+		break;
+	case 11:
+		return preg_replace("/([0-9]{1})([0-9]{3})([0-9]{3})([0-9]{4})/", "+234$2$3$4", $phone);
+		break;
+	default:
+		return "+" . $phone;
+		break;
+	}
 }
 
-function isValidPhone($phone)
-{
+function isValidPhone($phone) {
 	$justNums = preg_replace("/[^0-9]/", '', $phone);
-	if (strlen($justNums) == 13) $justNums = preg_replace("/^234/", '0', $justNums);
+	if (strlen($justNums) == 13) {
+		$justNums = preg_replace("/^234/", '0', $justNums);
+	}
 
 	//if we have 10 digits left, it's probably valid.
 	return strlen($justNums) == 11;
 }
 
-function getLastInsertId($db)
-{
+function getLastInsertId($db) {
 	$query = "SELECT LAST_INSERT_ID() AS last"; //sud specify the table
 	$result = $db->query($query);
 	$result = $result->getResultArray();
@@ -397,8 +382,7 @@ function getLastInsertId($db)
 }
 
 //function migrated from  crud.php
-function extractDbField($dbType)
-{
+function extractDbField($dbType) {
 	$index = strpos($dbType, '(');
 	if ($index) {
 		return substr($dbType, 0, $index);
@@ -406,8 +390,7 @@ function extractDbField($dbType)
 	return $dbType;
 }
 
-function extractDbTypeLength($dbType)
-{
+function extractDbTypeLength($dbType) {
 	$index = strpos($dbType, '(');
 	if ($index) {
 		$len = strlen($dbType) - ($index + 2);
@@ -416,8 +399,7 @@ function extractDbTypeLength($dbType)
 	return '';
 }
 
-function getPhpType($dbType)
-{
+function getPhpType($dbType) {
 	$type = array('varchar' => 'string', 'text' => 'string', 'int' => 'integer', 'year' => 'integer', 'real' => 'double', 'float' => 'float', 'double' => 'double', 'timestamp' => 'date', 'date' => 'date', 'datetime' => 'date', 'time' => 'time', 'varbinary' => 'byte_array', 'blob' => 'byte_array', 'boolean' => 'boolean', 'tinyint' => 'boolean', 'bit' => 'boolean');
 	$dbType = extractDbField($dbType);
 	$dbType = strtolower($dbType);
@@ -425,8 +407,7 @@ function getPhpType($dbType)
 }
 
 //function to build select option from array object with id and value key
-function buildOption($array, $val='',$defaultValue='')
-{
+function buildOption($array, $val = '', $defaultValue = '') {
 	if (empty($array)) {
 		return '';
 	}
@@ -441,25 +422,22 @@ function buildOption($array, $val='',$defaultValue='')
 	}
 	return $result;
 }
-function getRoleIdByName($db, $name)
-{
+function getRoleIdByName($db, $name) {
 	$query = "select id from role where role_name=?";
 	$result = $db->query($query, array($name));
 	$result = $result->getResultArray();
 	return $result[0]['id'];
 }
-function buildOptionFromQuery($db, $query, $data = null, $val = '',$defaultValue='')
-{
+function buildOptionFromQuery($db, $query, $data = null, $val = '', $defaultValue = '') {
 	$result = $db->query($query, $data);
 	if ($result->getNumRows() == 0) {
 		return '';
 	}
 	$result = $result->getResultArray();
-	return buildOption($result,$val,$defaultValue);
+	return buildOption($result, $val, $defaultValue);
 }
 //function to buiild select option from an array of numerical keys
-function buildOptionUnassoc($array, $val = '')
-{
+function buildOptionUnassoc($array, $val = '') {
 	if (empty($array) || !is_array($array)) {
 		return '';
 	}
@@ -468,13 +446,13 @@ function buildOptionUnassoc($array, $val = '')
 	foreach ($array as $key => $value) {
 		$current = trim($value);
 		$selected = $val == $current ? "selected='selected'" : '';
-		$result .= "<option value='$current' $selected >".ucfirst($current)."</option>";
+		$result .= "<option value='$current' $selected >" . ucfirst($current) . "</option>";
 	}
 
 	return $result;
 }
 
-function buildOptionUnassoc2($array,$val='',$defaultValue=''){
+function buildOptionUnassoc2($array, $val = '', $defaultValue = '') {
 	if (empty($array) || !is_array($array)) {
 		return '';
 	}
@@ -483,43 +461,44 @@ function buildOptionUnassoc2($array,$val='',$defaultValue=''){
 	$result = "<option>$optionValue</option>";
 	foreach ($array as $key => $value) {
 		$current = trim($key);
-		$selected = $val==$current?"selected='selected'":'';
-		$result.="<option value='$current' $selected >". ucfirst($value)."</option>";
-	} 
+		$selected = $val == $current ? "selected='selected'" : '';
+		$result .= "<option value='$current' $selected >" . ucfirst($value) . "</option>";
+	}
 	return $result;
 }
 
 //function to tell if a string start with another string
-function startsWith($str, $sub)
-{
-	if (!$str) return '';
+function startsWith($str, $sub) {
+	if (!$str) {
+		return '';
+	}
+
 	$len = strlen($sub);
 	$temp = substr($str, 0, $len);
 	return $temp === $sub;
 }
 
-function getMediaType($path,$arr = false){
+function getMediaType($path, $arr = false) {
 	$file = new \CodeIgniter\Files\File($path);
-	if($file = @$file->getMimeType()){
+	if ($file = @$file->getMimeType()) {
 		$media = explode('/', $file);
 		return ($arr) ? $media : $media[0];
 	}
 	return null;
 }
 
-function createSymlink(string $link, string $target){
+function createSymlink(string $link, string $target) {
 	$link = "uploads/{$link}";
-    if(!is_link($link)){
-        symlink($target, $link);
-    }
-    return $link;
+	if (!is_link($link)) {
+		symlink($target, $link);
+	}
+	return $link;
 }
 
-function removeModelImage(object $db,string $modelName,string $fieldName,int $id)
-{
-	$result = $db->table($modelName)->getWhere([$fieldName=>$id]);
-	if($result->getNumRows() > 0){
-		$modelPath = $modelName."_path";
+function removeModelImage(object $db, string $modelName, string $fieldName, int $id) {
+	$result = $db->table($modelName)->getWhere([$fieldName => $id]);
+	if ($result->getNumRows() > 0) {
+		$modelPath = $modelName . "_path";
 		$result = $result->getResultArray()[0][$modelPath];
 		removeSymlinkWithImage($result);
 		return true;
@@ -527,24 +506,23 @@ function removeModelImage(object $db,string $modelName,string $fieldName,int $id
 	return false;
 }
 
-function removeSymlinkWithImage(string $image){
-	if(startsWith($image, base_url())){
-		$image = str_replace(base_url(),'',$image);
+function removeSymlinkWithImage(string $image) {
+	if (startsWith($image, base_url())) {
+		$image = str_replace(base_url(), '', $image);
 	}
-	$image = ltrim($image,"/"); # remove image from the public directory
-	if(file_exists($image)){
+	$image = ltrim($image, "/"); # remove image from the public directory
+	if (file_exists($image)) {
 		@chmod($image, 0777);
 		@unlink($image);
 	}
-	$image = ROOTPATH.ltrim("writable/".$image); # remove image from the writable directory
-	if(file_exists($image)){
+	$image = ROOTPATH . ltrim("writable/" . $image); # remove image from the writable directory
+	if (file_exists($image)) {
 		@chmod($image, 0777);
 		@unlink($image);
 	}
 }
 
-function showUploadErrorMessage($webSessionManager, $message, $isSuccess = true, $ajax = false)
-{
+function showUploadErrorMessage($webSessionManager, $message, $isSuccess = true, $ajax = false) {
 	if ($ajax) {
 		echo $message;
 		exit;
@@ -561,8 +539,7 @@ function showUploadErrorMessage($webSessionManager, $message, $isSuccess = true,
 	exit;
 }
 
-function loadClass($classname, $namespace = null)
-{
+function loadClass($classname, $namespace = null) {
 	if (!class_exists($classname)) {
 		$modelName = is_null($namespace) ? "App\\Entities\\" . ucfirst($classname) : $namespace . "\\" . ucfirst($classname);
 		return new $modelName;
@@ -570,22 +547,19 @@ function loadClass($classname, $namespace = null)
 }
 
 // function to get date difference
-function getDateDifference($first, $second)
-{
+function getDateDifference($first, $second) {
 	$interval = date_diff(date_create($first), date_create($second));
 	return $interval;
 }
 
 //function to get is first function is greater than the second
-function isDateGreater($first, $second)
-{
+function isDateGreater($first, $second) {
 	$interval = getDateDifference($first, $second);
 	return $interval->invert;
 }
 
 // function to send download request of a file to the browser
-function sendDownload($content, $header, $filename)
-{
+function sendDownload($content, $header, $filename) {
 	$content = trim($content);
 	$header = trim($header);
 	$filename = trim($filename);
@@ -595,10 +569,8 @@ function sendDownload($content, $header, $filename)
 	exit;
 }
 
-
-function padNumber($n, $value)
-{
-	$value = '' + $value; //convert the type to string
+function padNumber($n, $value) {
+	$value = ''+$value; //convert the type to string
 	$prevLen = strlen($value);
 	// if ($prevLen > $n) {
 	// 	throw new Exception("Error occur while processing");
@@ -610,9 +582,11 @@ function padNumber($n, $value)
 	}
 	return $value;
 }
-function getFileExtension($filename)
-{
-	if(!$filename) return '';
+function getFileExtension($filename) {
+	if (!$filename) {
+		return '';
+	}
+
 	$index = strripos($filename, '.', 0); //start from the back
 	if ($index === -1) {
 		return '';
@@ -620,16 +594,14 @@ function getFileExtension($filename)
 	return substr($filename, $index + 1);
 }
 //function to determine if a string is a file path
-function isFilePath($str)
-{
+function isFilePath($str) {
 	$recognisedExtension = array('doc', 'docx', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'txt', 'csv');
 	$extension = getFileExtension($str);
 	return (startsWith($str, 'uploads') && strpos($str, '/') && in_array($extension, $recognisedExtension));
 }
 
 //function to pad a string by a number of zeros
-function padwithZeros($str, $len)
-{
+function padwithZeros($str, $len) {
 	$str .= '';
 	$count = $len - strlen($str);
 	for ($i = 0; $i < $count; $i++) {
@@ -637,12 +609,10 @@ function padwithZeros($str, $len)
 	}
 	return $str;
 }
-function generatePassword()
-{
+function generatePassword() {
 	return randStrGen(10);
 }
-function randStrGen($len)
-{
+function randStrGen($len) {
 	$result = "";
 	$chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 	$charArray = str_split($chars);
@@ -655,8 +625,7 @@ function randStrGen($len)
 }
 
 //function to get the recent page cookie information
-function getPageCookie()
-{
+function getPageCookie() {
 	$result = array();
 	if (isset($_COOKIE['nairaboom'])) {
 		$content = $_COOKIE['nairaboom'];
@@ -666,25 +635,21 @@ function getPageCookie()
 }
 
 //function to save the page cookie
-function sendPageCookie($module, $page)
-{
+function sendPageCookie($module, $page) {
 	$content = $module . '-' . $page;
 	setcookie('nairaboom', $content, 0, '/', '', false, true);
 }
-function show_access_denied()
-{
+function show_access_denied() {
 	$viewName = "App\\Views\\access_denied";
 	return view($viewName);
 }
 
-function show_operation_denied()
-{
+function show_operation_denied() {
 	$viewName = "App\\Views\\operation_denied";
 	view($viewName);
 }
 //function to replace the first occurrence of a string
-function replaceFirst($toReplace, $replacement, $string)
-{
+function replaceFirst($toReplace, $replacement, $string) {
 	$pos = stripos($string, $toReplace);
 	if ($pos === false) {
 		return $string;
@@ -693,25 +658,21 @@ function replaceFirst($toReplace, $replacement, $string)
 	return substr_replace($string, $replacement, $pos, $len);
 }
 
-function displayJson(bool $status,string $message,$payload = null,$return=false)
-{
+function displayJson(bool $status, string $message, $payload = null, $return = false) {
 	$param = array('status' => $status, 'message' => $message, 'payload' => $payload);
 	$result = json_encode($param);
-	if($return){
+	if ($return) {
 		return $result;
 	}
 	echo $result;
 }
 
-function formatToLocalCurrency($value = null)
-{
+function formatToLocalCurrency($value = null) {
 	return "&#8358;$value"; // this is a naira currency
 }
 
-if(!function_exists('attrToString'))
-{
-	function attrToString($attributes = array())
-	{
+if (!function_exists('attrToString')) {
+	function attrToString($attributes = array()) {
 		if (is_array($attributes)) {
 			$atts = '';
 			foreach ($attributes as $key => $val) {
@@ -723,15 +684,13 @@ if(!function_exists('attrToString'))
 	}
 }
 
-if(!function_exists('attrToSepString'))
-{
-	function attrToSepString($attributes = array(),string $sep=',')
-	{
+if (!function_exists('attrToSepString')) {
+	function attrToSepString($attributes = array(), string $sep = ',') {
 		if (is_array($attributes)) {
 			$atts = '';
 			foreach ($attributes as $key => $val) {
 				$atts .= ($atts) ? "{$sep}" : '';
-				$atts .= ' ' . $key .' '. $val;
+				$atts .= ' ' . $key . ' ' . $val;
 			}
 
 			return $atts;
@@ -739,32 +698,27 @@ if(!function_exists('attrToSepString'))
 	}
 }
 
-function getCustomerOption($value = '')
-{
+function getCustomerOption($value = '') {
 	$customer = loadClass('customers');
 	return $customer->getCustomerOption($value);
 }
 
-function getInvoicesOption($value = '')
-{
+function getInvoicesOption($value = '') {
 	$invoices = loadClass('invoices');
 	return $invoices->getInvoicesOption($value);
 }
 
-function getUserOption($value = '')
-{
+function getUserOption($value = '') {
 	$user = loadClass('user');
 	return $user->getUserIdOption($value);
 }
 
-function getTitlePage($page = '')
-{
+function getTitlePage($page = '') {
 	$formatted = " $page | Nairaboom ";
 	return ($page != '') ? " $formatted " : " Nairaboom";
 }
 
-function getIDByName($scope, $table, $column, $value)
-{
+function getIDByName($scope, $table, $column, $value) {
 	$query = "select ID from $table where $column=?";
 	$result = $scope->query($query, [$value]);
 	$result = $result->getResultArray();
@@ -774,25 +728,21 @@ function getIDByName($scope, $table, $column, $value)
 	return $result[0]['ID'];
 }
 
-function rndEncode($data, $len = 16)
-{
+function rndEncode($data, $len = 16) {
 	return urlencode(base64_encode(randStrGen($len) . $data));
 }
 
-function rndDecode($data, $len = 16)
-{
+function rndDecode($data, $len = 16) {
 	$hash = base64_decode(urldecode($data));
 	return substr($hash, $len);
 }
 
-function refEncode($data=29)
-{
+function refEncode($data = 29) {
 	// the ref code should not be more than 30 characters
 	return randStrGen($data);
 }
 
-function generateHashRef($type,$max=17)
-{
+function generateHashRef($type, $max = 17) {
 	$hash = randStrGen(8) . randStrGen(10) . date("s"); //  the total should be 20 in character
 	$ref = randStrGen($max);
 	$result = array('receipt' => $hash, 'reference' => $ref);
@@ -805,28 +755,25 @@ function generateHashRef($type,$max=17)
  * @param  string $column [description]
  * @return [type]         [description]
  */
-function generateNumber(object $db, string $table,string $column)
-{
-	$orderStart='1000000011';
-	$query="select max($column) as model_hash from $table";
+function generateNumber(object $db, string $table, string $column) {
+	$orderStart = '1000000011';
+	$query = "select max($column) as model_hash from $table";
 	$result = $db->query($query);
-	if($result->getNumRows() > 0){
+	if ($result->getNumRows() > 0) {
 		$result = $result->getResultArray()[0];
 		$temp = $result['model_hash'];
-		return ($temp) ? $temp+1 : $orderStart;
-	}else{
+		return ($temp) ? $temp + 1 : $orderStart;
+	} else {
 		return $orderStart;
 	}
 }
 
-function formatToDateOnly($dateTime)
-{
+function formatToDateOnly($dateTime) {
 	$date = new DateTime($dateTime);
 	return $date->format('Y-m-d');
 }
 
-function isTimePassed($start, $end, $limit = 30)
-{
+function isTimePassed($start, $end, $limit = 30) {
 	$expiration = "+$limit minutes";
 	$expTime = strtotime($expiration, $end);
 	if ($start <= $expTime) {
@@ -835,33 +782,29 @@ function isTimePassed($start, $end, $limit = 30)
 	return true;
 }
 
-function dateFormatter($posted)
-{
+function dateFormatter($posted) {
 	if ($posted) {
 		$date = date_create($posted);
-		$date = date_format($date,"d F Y");
+		$date = date_format($date, "d F Y");
 		return $date;
 	}
 	return false;
 }
-function dateTimeFormatter($posted, $hourFormat = 24)
-{
+function dateTimeFormatter($posted, $hourFormat = 24) {
 	if ($posted) {
 		$date = date_create($posted);
-		$date = date_format($date,"d F Y");
+		$date = date_format($date, "d F Y");
 		return $date . ', ' . localTimeRead($posted, $hourFormat);
 	}
 	return false;
 }
 
-function formatDate()
-{
+function formatDate() {
 	$d = new DateTime();
 	return $d->format("Y-m-d H:i:s");
 }
 
-function calc_size($file_size)
-{
+function calc_size($file_size) {
 	$_size = '';
 	$kb = 1024;
 	$mb = 1048576;
@@ -894,23 +837,20 @@ function calc_size($file_size)
 // '%i Minute %s Seconds'                                        =>  49 Minute 36 Seconds
 // '%h Hours                                                    =>  11 Hours
 // '%a Days                                                        =>  468 Days
-function dateDiffFormat($date_1, $date_2, $differenceFormat = '%a')
-{
+function dateDiffFormat($date_1, $date_2, $differenceFormat = '%a') {
 	$datetime1 = date_create($date_1);
 	$datetime2 = date_create($date_2);
 	$interval = date_diff($datetime1, $datetime2);
 	return $interval->format($differenceFormat);
 }
 
-function localTimeRead($dateTime, $hourFormat = 24)
-{
+function localTimeRead($dateTime, $hourFormat = 24) {
 	$format = ($hourFormat == 24) ? "G" : "g";
 	$date = date_create($dateTime);
 	return date_format($date, "$format:i a");
 }
 
-function calcPercentageDiff($startVal, $endVal)
-{
+function calcPercentageDiff($startVal, $endVal) {
 	// using percentage decrease formula
 	// percentage decrease = ((starting value-ending value)/starting value) * 100
 	// if ans is negative, it expresses a rate of increase, otherwise a decrease
@@ -918,8 +858,7 @@ function calcPercentageDiff($startVal, $endVal)
 	return round(($diff * 100), 2);
 }
 
-function appConfig(string $configKey)
-{
+function appConfig(string $configKey) {
 	$mailLink = array(
 		'salt' => '_~2y~12~T31xd7x7b67FO',
 		'type' => array(
@@ -927,8 +866,8 @@ function appConfig(string $configKey)
 			2 => 'verify_success',
 			3 => 'forget',
 			4 => 'forget_success',
-			5 => 'password_forget_token'
-		)
+			5 => 'password_forget_token',
+		),
 	);
 	return $mailLink[$configKey];
 }
