@@ -1,4 +1,4 @@
-<?php require APPPATH."Views/template/header.php"; ?>
+<?php require APPPATH . "Views/template/header.php";?>
 
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -16,10 +16,10 @@
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
-                            <a href="<?= base_url('admin/dashboard'); ?>" class="text-muted text-hover-primary">Home</a>
+                            <a href="<?=base_url('admin/dashboard');?>" class="text-muted text-hover-primary">Home</a>
                         </li>
                         <!--end::Item-->
-                        
+
                     </ul>
                     <!--end::Breadcrumb-->
                 </div>
@@ -34,8 +34,8 @@
                 <!--begin::Row-->
                 <div class="row gy-5 g-xl-10">
                     <!--begin::Col-->
-                    <div class="col-4 mb-xl-10">
-                        <div class="card overflow-hidden h-md-50 mb-5 mb-xl-10">
+                    <div class="col-4 ">
+                        <div class="card overflow-hidden h-auto mb-xl-10">
                             <!--begin::Card body-->
                             <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
                                 <!--begin::Statistics-->
@@ -43,7 +43,7 @@
                                     <!--begin::Info-->
                                     <div class="d-flex align-items-center mb-2">
                                         <!--begin::Value-->
-                                        <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?= $countData['customer']; ?></span>
+                                        <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$countData['customer'];?></span>
                                         <!--end::Label-->
                                     </div>
                                     <!--end::Info-->
@@ -52,9 +52,6 @@
                                     <!--end::Description-->
                                 </div>
                                 <!--end::Statistics-->
-                                <!--begin::Chart-->
-                                <div class="min-h-auto" style="height: 125px"></div>
-                                <!--end::Chart-->
                             </div>
                             <!--end::Card body-->
                         </div>
@@ -62,8 +59,8 @@
                     <!--end::Col-->
 
                     <!--begin::Col-->
-                    <div class="col-4 mb-xl-10">
-                        <div class="card overflow-hidden h-md-50 mb-5 mb-xl-10">
+                    <div class="col-4 ">
+                        <div class="card overflow-hidden h-auto mb-xl-10">
                             <!--begin::Card body-->
                             <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
                                 <!--begin::Statistics-->
@@ -71,7 +68,7 @@
                                     <!--begin::Info-->
                                     <div class="d-flex align-items-center mb-2">
                                         <!--begin::Value-->
-                                        <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?= $countData['invoice']; ?></span>
+                                        <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=$countData['invoice'];?></span>
                                         <!--end::Value-->
                                     </div>
                                     <!--end::Info-->
@@ -80,9 +77,6 @@
                                     <!--end::Description-->
                                 </div>
                                 <!--end::Statistics-->
-                                <!--begin::Chart-->
-                                <div class="min-h-auto" style="height: 125px"></div>
-                                <!--end::Chart-->
                             </div>
                             <!--end::Card body-->
                         </div>
@@ -90,8 +84,8 @@
                     <!--end::Col-->
 
                     <!--begin::Col-->
-                    <div class="col-4 mb-xl-10">
-                        <div class="card overflow-hidden h-md-50 mb-5 mb-xl-10">
+                    <div class="col-4 ">
+                        <div class="card overflow-hidden h-auto mb-xl-10">
                             <!--begin::Card body-->
                             <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
                                 <!--begin::Statistics-->
@@ -99,7 +93,7 @@
                                     <!--begin::Info-->
                                     <div class="d-flex align-items-center mb-2">
                                         <!--begin::Value-->
-                                        <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?= number_format($countData['transaction'], 2); ?></span>
+                                        <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2"><?=number_format($countData['transaction'], 2);?></span>
                                         <!--end::Value-->
                                     </div>
                                     <!--end::Info-->
@@ -108,9 +102,6 @@
                                     <!--end::Description-->
                                 </div>
                                 <!--end::Statistics-->
-                                <!--begin::Chart-->
-                                <div class="min-h-auto" style="height: 125px"></div>
-                                <!--end::Chart-->
                             </div>
                             <!--end::Card body-->
                         </div>
@@ -119,7 +110,45 @@
                 </div>
                 <!--end::Row-->
 
+                <!--begin::Row-->
                 <div class="row gy-5 g-xl-10">
+                    <div class="col-xl-6 mb-xl-10">
+                        <div class="card card-flush h-lg-100 mb-lg-10">
+                            <div class="card-header pt-5">
+                                <div class="card-title d-flex flex-column">
+                                    <span class="text-gray-400 pt-1 fw-semibold fs-6">Monthly Rate(s) Count</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex align-items-end pt-0">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="d-flex me-7 me-xxl-10">
+                                        <div id="kt_card_widget_10_chart" class="min-h-auto" style="height: 78px; width: 78px" data-kt-size="78" data-kt-line="11"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 mb-xl-10">
+                        <div class="card card-flush h-lg-100 mb-lg-10">
+                            <div class="card-header pt-5">
+                                <div class="card-title d-flex flex-column">
+                                    <span class="text-gray-400 pt-1 fw-semibold fs-6">Monthly Rate(s) Amount</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex align-items-end pt-0">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="d-flex me-7 me-xxl-10">
+                                        <div id="kt_card_widget_10_chart" class="min-h-auto" style="height: 78px; width: 78px" data-kt-size="78" data-kt-line="11"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Row-->
+
+                <div class="row gy-2 g-xl-10">
                     <!--begin::Col-->
                     <div class="col-xl-12 mb-5 mb-xl-10">
                         <!--begin::Row-->
@@ -155,37 +184,37 @@
                                         <!--end::Table head-->
                                         <!--begin::Table body-->
                                         <tbody class="fw-bold text-gray-600">
-                                            <?php if($transactionContent): ?>
-                                                <?php foreach($transactionContent as $content): ?>
+                                            <?php if ($transactionContent): ?>
+                                                <?php foreach ($transactionContent as $content): ?>
                                             <tr>
                                                 <td>
-                                                    <a href="<?= base_url('vc/admin/invoice_action'); ?>" class="text-gray-800 text-hover-primary"><?= $content->invoice_no ?></a>
+                                                    <a href="<?=base_url('vc/admin/invoice_action');?>" class="text-gray-800 text-hover-primary"><?=$content->invoice_no?></a>
                                                 </td>
-                                                <td class="text-end"><?= $content->track_number ?></td>
-                                                <td class="text-end"><?= $content->date_created ?></td>
+                                                <td class="text-end"><?=$content->track_number?></td>
+                                                <td class="text-end"><?=$content->date_created?></td>
                                                 <td class="text-end">
-                                                    <a href="#" class="text-gray-600 text-hover-primary"><?= $content->bill_from_name ?></a>
+                                                    <a href="#" class="text-gray-600 text-hover-primary"><?=$content->bill_from_name?></a>
                                                 </td>
                                                 <td class="text-end">
-                                                    <span class="text-gray-800 fw-bolder">N<?= $content->invoice_total; ?></span>
+                                                    <span class="text-gray-800 fw-bolder">N<?=$content->invoice_total;?></span>
                                                 </td>
                                                 <td class="text-end">
 
-                                                    <?php if($content->invoice_status == \App\Enums\InvoiceStatusEnum::INTRANSIT->value): ?>
-                                                        <div class="badge py-3 px-4 fs-7 badge-light-primary"><?= ucfirst($content->invoice_status); ?></div>
-                                                    <?php elseif($content->invoice_status == \App\Enums\InvoiceStatusEnum::PROCESSING->value): ?>
-                                                        <div class="badge py-3 px-4 fs-7 badge-light-info"><?= ucfirst($content->invoice_status); ?></div>
-                                                    <?php elseif($content->invoice_status == \App\Enums\InvoiceStatusEnum::COMPLETED->value): ?>
-                                                        <div class="badge py-3 px-4 fs-7 badge-light-success"><?= ucfirst($content->invoice_status); ?></div>
-                                                    <?php elseif($content->invoice_status == \App\Enums\InvoiceStatusEnum::CANCELLED->value): ?>
-                                                        <div class="badge py-3 px-4 fs-7 badge-light-danger"><?= ucfirst($content->invoice_status); ?></div>
+                                                    <?php if ($content->invoice_status == \App\Enums\InvoiceStatusEnum::INTRANSIT->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-primary"><?=ucfirst($content->invoice_status);?></div>
+                                                    <?php elseif ($content->invoice_status == \App\Enums\InvoiceStatusEnum::PROCESSING->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-info"><?=ucfirst($content->invoice_status);?></div>
+                                                    <?php elseif ($content->invoice_status == \App\Enums\InvoiceStatusEnum::COMPLETED->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-success"><?=ucfirst($content->invoice_status);?></div>
+                                                    <?php elseif ($content->invoice_status == \App\Enums\InvoiceStatusEnum::CANCELLED->value): ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-danger"><?=ucfirst($content->invoice_status);?></div>
                                                     <?php else: ?>
-                                                        <div class="badge py-3 px-4 fs-7 badge-light-warning"><?= ucfirst($content->invoice_status); ?></div>
-                                                    <?php endif; ?>
+                                                        <div class="badge py-3 px-4 fs-7 badge-light-warning"><?=ucfirst($content->invoice_status);?></div>
+                                                    <?php endif;?>
                                                 </td>
                                             </tr>
-                                            <?php endforeach; ?>
-                                            <?php endif; ?>
+                                            <?php endforeach;?>
+                                            <?php endif;?>
                                         </tbody>
                                         <!--end::Table body-->
                                     </table>
@@ -198,20 +227,6 @@
                     </div>
                     <!--end::Col-->
                 </div>
-
-                <!--begin::Row-->
-                <div class="row gy-5 g-xl-10">
-                    <!--begin::Col-->
-                    <div class="col-xl-12">
-                        <!--begin::Chart widget 17-->
-                        <div class="card card-flush h-xl-100">
-
-                        </div>
-                        <!--end::Chart widget 17-->
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Row-->
             </div>
             <!--end::Content container-->
         </div>
@@ -221,4 +236,4 @@
 </div>
 <!--end:::Main-->
 
-<?php require APPPATH.'Views/template/footer.php'; ?>
+<?php require APPPATH . 'Views/template/footer.php';?>

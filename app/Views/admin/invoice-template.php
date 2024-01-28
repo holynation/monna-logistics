@@ -19,8 +19,7 @@
               <p dir="ltr" style="line-height:1.2;margin-left: 86.75pt;margin-top:0pt;margin-bottom:0pt;">
                 <span style="font-size:16pt;font-family:Lato,sans-serif;color:#bf520f;background-color:transparent;
                           font-weight:600;font-style:normal;font-variant:normal;text-decoration:none;
-                          vertical-align:baseline;white-space:pre;white-space:pre-wrap;">MONNAEXPRESS LOGISTICS
-                  LTD</span>
+                          vertical-align:baseline;white-space:pre;white-space:pre-wrap;">MONNAEXPRESS</span>
               </p>
               <p dir="ltr" style="line-height:1.2;margin-left: 86.75pt;margin-top:0pt;margin-bottom:0pt;">
                 <span style="font-size:10.499999999999998pt;font-family:Lato,sans-serif;color:#000000;
@@ -125,8 +124,7 @@
               style="border-left:solid #f78843b0 0.5pt;border-right:solid #f78843b0 0.5pt;border-bottom:solid #f78843b0 0.5pt;border-top:solid #f78843b0 0.5pt;vertical-align:top;background-color:#f78843b0;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;">
               <p dir="ltr" style="line-height:1.2;text-align: left;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
                 <span
-                  style="font-size:12.499999999999998pt;font-family:'Fira Sans',sans-serif;color:#ffffff;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">Item
-                  Description</span>
+                  style="font-size:12.499999999999998pt;font-family:'Fira Sans',sans-serif;color:#ffffff;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">Item Description</span>
               </p>
             </td>
             <td
@@ -134,7 +132,7 @@
               <p dir="ltr" style="line-height:1.2;text-align: left;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
                 <span
                   style="font-size:12.499999999999998pt;font-family:'Fira Sans',sans-serif;color:#ffffff;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">
-                  Quantity
+                  Weight
                 </span>
               </p>
             </td>
@@ -143,7 +141,7 @@
               <p dir="ltr" style="line-height:1.2;text-align: right;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
                 <span
                   style="font-size:12.499999999999998pt;font-family:'Fira Sans',sans-serif;color:#ffffff;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">
-                  AMOUNT
+                  Rate
                 </span>
               </p>
             </td>
@@ -179,7 +177,7 @@
                 <tr style="height:0pt;">
                   <td style="font-size:10pt;vertical-align:top;overflow:hidden;overflow-wrap:break-word;color:#7a7c82;">
                     <p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;padding:0pt;">
-                      Name: MONNAEXPRESS LOGISTICS LTD
+                      Name: MONAAEXPRES
                     </p>
                     <p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;padding:0pt;">
                       Account No: 0123986904
@@ -203,14 +201,14 @@
                     <p dir="ltr"
                       style="line-height:1.2;margin-left: 29.95pt;margin-top:0pt;margin-bottom:0pt;">
                       <span
-                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;padding-left:10px;">SUBTOTAL</span>
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">SUBTOTAL</span>
                     </p>
                   </td>
                   <td style="vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;padding:6pt;">
                     <p dir="ltr"
-                      style="line-height:1.2;margin-right: 34.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;">
+                      style="line-height:1.2;margin-right: 30.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;">
                       <span
-                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">{sub_total}</span>
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">{sub_total}</span>
                     </p>
                   </td>
                 </tr>
@@ -220,14 +218,48 @@
                     <p dir="ltr"
                       style="line-height:1.2;margin-left: 29.95pt;margin-top:0pt;margin-bottom:0pt;">
                       <span
-                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;padding-left:10px;">TAX</span>
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">TAX</span>
                     </p>
                   </td>
                   <td style="vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;padding:6pt;">
                     <p dir="ltr"
-                      style="line-height:1.2;margin-right: 34.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;">
+                      style="line-height:1.2;margin-right: 30.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;">
                       <span
-                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">{tax}</span>
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">{tax}</span>
+                    </p>
+                  </td>
+                </tr>
+                <tr style="height:0pt;">
+                  <td colspan="2"
+                    style="vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;padding:6pt;">
+                    <p dir="ltr"
+                      style="line-height:1.2;margin-left: 29.95pt;margin-top:0pt;margin-bottom:0pt;">
+                      <span
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">Package Fee</span>
+                    </p>
+                  </td>
+                  <td style="vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;padding:6pt;">
+                    <p dir="ltr"
+                      style="line-height:1.2;margin-right: 30.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;">
+                      <span
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">{package_fee}</span>
+                    </p>
+                  </td>
+                </tr>
+                <tr style="height:0pt;">
+                  <td colspan="2"
+                    style="vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;padding:6pt;">
+                    <p dir="ltr"
+                      style="line-height:1.2;margin-left: 29.95pt;margin-top:0pt;margin-bottom:0pt;">
+                      <span
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">Phytosanitary Certificate</span>
+                    </p>
+                  </td>
+                  <td style="vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;padding:6pt;">
+                    <p dir="ltr"
+                      style="line-height:1.2;margin-right: 30.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;">
+                      <span
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">{certificate_fee}</span>
                     </p>
                   </td>
                 </tr>
@@ -237,15 +269,15 @@
                     <p dir="ltr"
                       style="line-height:1.2;margin-left: 29.95pt;margin-top:0pt;margin-bottom:0pt;">
                       <span
-                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;padding-left:10px;">TOTAL</span>
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">TOTAL</span>
                     </p>
                   </td>
                   <td
                     style="border-bottom-style:dotted;border-bottom-color:#7a7c82;border-bottom-width: 2pt;vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;">
                     <p dir="ltr"
-                      style="line-height:1.2;margin-right: 34.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
+                      style="line-height:1.2;margin-right: 30.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
                       <span
-                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">{total}</span>
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">{total}</span>
                     </p>
                   </td>
                 </tr>
@@ -256,13 +288,12 @@
                     <p dir="ltr"
                       style="line-height:1.2;margin-left: 29.95pt;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
                       <span
-                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;padding-left:0px;">BALANCE
-                        DUE</span>
+                        style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#7a7c82;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">Grand Total</span>
                     </p>
                   </td>
                   <td style="vertical-align:top;padding:0pt 5.4pt 0pt 5.4pt;overflow:hidden;overflow-wrap:break-word;">
                     <p dir="ltr"
-                      style="line-height:1.2;margin-right: 34.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
+                      style="line-height:1.2;margin-right: 30.4pt;text-align: right;margin-top:0pt;margin-bottom:0pt;padding:6pt;">
                       <span
                         style="font-size:11pt;font-family:'Fira Sans',sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;">{total_amount}</span>
                     </p>
