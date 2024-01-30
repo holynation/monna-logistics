@@ -414,7 +414,7 @@ class Invoices extends Crud {
 	}
 
 	public function getMOnthlyInvoiceAmountData() {
-		$query = "SELECT date_format(a.date_created, '%a') as label, cast(sum(a.price) as decimal) as total from invoice_items a join rates b on b.id = a.rates_id where month(a.date_created) = month(now()) and year(b.date_created) = year(curdate()) group by label order by label asc ";
+		$query = "SELECT date_format(a.date_created, '%a-%d') as label, cast(sum(a.price) as decimal) as total, timestamp(a.date_created) as ord from invoice_items a join rates b on b.id = a.rates_id where month(a.date_created) = month(now()) and year(b.date_created) = year(curdate()) group by label order by ord asc ";
 		$result = $this->query($query);
 
 		return $result;
