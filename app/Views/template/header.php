@@ -13,23 +13,22 @@
         <meta property="og:url" content="" />
         <meta property="og:site_name" content="" />
 
-        <link rel="apple-touch-icon" sizes="72x72" href="<?= base_url('assets/media/favicon/apple-icon-72x72.png'); ?>">
-        <link rel="apple-touch-icon" sizes="114x114" href="<?= base_url('assets/media/favicon/apple-icon-114x114.png'); ?>">
-        <link rel="icon" type="image/png" sizes="192x192"  href="<?= base_url('assets/media/favicon/android-icon-192x192.png'); ?>">
-        <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/media/favicon/favicon-32x32.png'); ?>">
-        <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url('assets/media/favicon/favicon-96x96.png'); ?>">
-        <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/media/favicon/favicon-16x16.png'); ?>">
+        <link rel="apple-touch-icon" sizes="72x72" href="<?=base_url('assets/media/favicon/apple-icon-72x72.png');?>">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?=base_url('assets/media/favicon/apple-icon-114x114.png');?>">
+        <link rel="icon" type="image/png" sizes="192x192"  href="<?=base_url('assets/media/favicon/android-icon-192x192.png');?>">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?=base_url('assets/media/favicon/favicon-32x32.png');?>">
+        <link rel="icon" type="image/png" sizes="96x96" href="<?=base_url('assets/media/favicon/favicon-96x96.png');?>">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?=base_url('assets/media/favicon/favicon-16x16.png');?>">
 
         <!--begin::Fonts(mandatory for all pages)-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
         <!--end::Fonts-->
         <!--begin::Vendor Stylesheets(used for this page only)-->
-        <link href="<?= base_url('assets/plugins/custom/datatables/datatables.bundle.css'); ?>" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url('assets/plugins/custom/vis-timeline/vis-timeline.bundle.css'); ?> " rel="stylesheet" type="text/css" />
+        <link href="<?=base_url('assets/plugins/custom/datatables/datatables.bundle.css');?>" rel="stylesheet" type="text/css" />
         <!--end::Vendor Stylesheets-->
         <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-        <link href="<?= base_url('assets/plugins/global/plugins.bundle.css'); ?> " rel="stylesheet" type="text/css" />
-        <link href="<?= base_url('assets/css/style.bundle.css'); ?> " rel="stylesheet" type="text/css" />
+        <link href="<?=base_url('assets/plugins/global/plugins.bundle.css');?> " rel="stylesheet" type="text/css" />
+        <link href="<?=base_url('assets/css/style.bundle.css');?> " rel="stylesheet" type="text/css" />
         <!--end::Global Stylesheets Bundle-->
 
         <style type="text/css">
@@ -45,7 +44,7 @@
     <!--end::Head-->
 
 <?php
-    $userType = $webSessionManager->getCurrentUserProp('user_type');
+$userType = $webSessionManager->getCurrentUserProp('user_type');
 ?>
     <!--begin::Body-->
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
@@ -77,9 +76,9 @@
         <!--end::sidebar mobile toggle-->
         <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-            <a href="<?php base_url('vc/admin/dashboard'); ?>" class="d-lg-none">
-                <img alt="Logo" src="<?= base_url('assets/media/logo.jpg'); ?>" class="theme-light-show h-30px" />
-                <img alt="Logo" src="<?= base_url('assets/media/logo.jpg'); ?>" class="theme-dark-show h-30px" />
+            <a href="<?php base_url('vc/admin/dashboard');?>" class="d-lg-none">
+                <img alt="Logo" src="<?=base_url('assets/media/logo.jpg');?>" class="theme-light-show h-30px" />
+                <img alt="Logo" src="<?=base_url('assets/media/logo.jpg');?>" class="theme-dark-show h-30px" />
             </a>
         </div>
         <!--end::Mobile logo-->
@@ -195,7 +194,7 @@
                 <div class="app-navbar-item ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
                     <!--begin::Menu wrapper-->
                     <div class="cursor-pointer symbol symbol-35px symbol-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                        <img src="<?= base_url('assets/media/avatars/profile.png'); ?>" alt="user" />
+                        <img src="<?=base_url('assets/media/avatars/profile.png');?>" alt="user" />
                     </div>
                     <!--begin::User account menu-->
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -204,15 +203,15 @@
                             <div class="menu-content d-flex align-items-center px-3">
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
-                                    <img alt="Logo" src="<?= base_url('assets/media/avatars/profile.png'); ?>" />
+                                    <img alt="Logo" src="<?=base_url('assets/media/avatars/profile.png');?>" />
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
                                 <div class="d-flex flex-column">
-                                    <div class="fw-bold d-flex align-items-center fs-5"><?= ucfirst($webSessionManager->getCurrentUserProp('firstname')).' '.ucfirst($webSessionManager->getCurrentUserProp('lastname')); ?>
+                                    <div class="fw-bold d-flex align-items-center fs-5"><?=ucfirst($webSessionManager->getCurrentUserProp('firstname')) . ' ' . ucfirst($webSessionManager->getCurrentUserProp('lastname'));?>
                                     <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span></div>
                                     <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">
-                                        <?= $webSessionManager->getCurrentUserProp('email'); ?>
+                                        <?=$webSessionManager->getCurrentUserProp('email');?>
                                     </a>
                                 </div>
                                 <!--end::Username-->
@@ -222,7 +221,7 @@
 
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="<?= base_url('logout'); ?>" class="menu-link px-5">Sign Out</a>
+                            <a href="<?=base_url('logout');?>" class="menu-link px-5">Sign Out</a>
                         </div>
                         <!--end::Menu item-->
                     </div>
@@ -239,4 +238,4 @@
 </div>
 <!--end::Header-->
 
-<?php require APPPATH."Views/template/nav.php"; ?>
+<?php require APPPATH . "Views/template/nav.php";?>

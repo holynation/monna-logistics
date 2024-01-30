@@ -41,21 +41,15 @@
 <!--begin::Modals-->
 
 <!--begin::Javascript-->
-<script>var hostUrl = "<?= base_url('assets/'); ?> ";</script>
+<script>var hostUrl = "<?=base_url('assets/');?> ";</script>
 <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-<script src="<?= base_url('assets/plugins/global/plugins.bundle.js'); ?>"></script>
-<script src="<?= base_url('assets/js/scripts.bundle.js'); ?>"></script>
+<script src="<?=base_url('assets/plugins/global/plugins.bundle.js');?>"></script>
+<script src="<?=base_url('assets/js/scripts.bundle.js');?>"></script>
 <!--end::Global Javascript Bundle-->
 <!--begin::Vendors Javascript(used for this page only)-->
-<script src="<?= base_url('assets/plugins/custom/datatables/datatables.bundle.js'); ?>"></script>
-<script src="<?= base_url('assets/plugins/custom/vis-timeline/vis-timeline.bundle.js'); ?>"></script>
-<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+<script src="<?=base_url('assets/plugins/custom/datatables/datatables.bundle.js');?>"></script>
 <!--end::Vendors Javascript-->
 <!--begin::Custom Javascript(used for this page only)-->
-<script src="<?= base_url('assets/js/widgets.bundle.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/custom.js'); ?>"></script>
 <!--end::Custom Javascript-->
 <!--end::Javascript-->

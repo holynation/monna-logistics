@@ -32,7 +32,7 @@
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-xxl">
                 <!--begin::Row-->
-                <div class="row gy-5 g-xl-10">
+                <div class="row gy-5 g-xl-10 mb-4 mb-xl-10">
                     <!--begin::Col-->
                     <div class="col-4 ">
                         <div class="card overflow-hidden h-auto mb-xl-10">
@@ -110,6 +110,25 @@
                 </div>
                 <!--end::Row-->
 
+                <div class="row gy-5 g-xl-10 mb-4 mb-xl-10">
+                    <div class="col-xl-12 mb-xl-10">
+                        <div class="card card-flush h-lg-100 mb-lg-10">
+                            <div class="card-header pt-5">
+                                <div class="card-title d-flex flex-column">
+                                    <span class="text-gray-400 pt-1 fw-semibold fs-6">Monthly Rate(s) Amount</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex align-items-end pt-0">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="d-flex mx-auto">
+                                        <div id="kt_card_dashboard_12_chart" style="height: 400px;width: 700px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!--begin::Row-->
                 <div class="row gy-5 g-xl-10">
                     <div class="col-xl-6 mb-xl-10">
@@ -121,8 +140,8 @@
                             </div>
                             <div class="card-body d-flex align-items-end pt-0">
                                 <div class="d-flex align-items-center flex-wrap">
-                                    <div class="d-flex me-7 me-xxl-10">
-                                        <div id="kt_card_widget_10_chart" class="min-h-auto" style="height: 78px; width: 78px" data-kt-size="78" data-kt-line="11"></div>
+                                    <div class="d-flex mx-auto">
+                                        <div id="kt_card_dashboard_10_chart" style="height: 300px;width: 500px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -137,8 +156,8 @@
                             </div>
                             <div class="card-body d-flex align-items-end pt-0">
                                 <div class="d-flex align-items-center flex-wrap">
-                                    <div class="d-flex me-7 me-xxl-10">
-                                        <div id="kt_card_widget_10_chart" class="min-h-auto" style="height: 78px; width: 78px" data-kt-size="78" data-kt-line="11"></div>
+                                    <div class="d-flex me-10 me-xxl-10">
+                                        <div id="kt_card_dashboard_11_chart" style="height: 300px; width: 500px"></div>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +185,7 @@
                                 <!--begin::Card body-->
                                 <div class="card-body pt-2">
                                     <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-3" id="kt_table_widget_4_table">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-3">
                                         <!--begin::Table head-->
                                         <thead>
                                             <!--begin::Table row-->
@@ -237,3 +256,104 @@
 <!--end:::Main-->
 
 <?php require APPPATH . 'Views/template/footer.php';?>
+
+<script type="text/javascript">
+    var element = document.getElementById('kt_card_dashboard_10_chart');
+    var element2 = document.getElementById('kt_card_dashboard_11_chart');
+    var element3 = document.getElementById('kt_card_dashboard_12_chart');
+
+    var countData = JSON.parse('<?=$invoiceCountData?>');
+    var invoiceData = JSON.parse('<?=$invoiceAmountData?>');
+    var invoiceData2 = JSON.parse('<?=$invoiceAmountData2?>');
+
+    const countLabels = countData?.map((item) => item.label);
+    const countValue = countData?.map((item) => item.total);
+
+    const amountLabels = invoiceData?.map((item) => item.label);
+    const amountValue = invoiceData?.map((item) => item.total/100);
+
+    const amountLabels2 = invoiceData2?.map((item) => item.label);
+    const amountValue2 = invoiceData2?.map((item) => item.total);
+
+    var options = {
+        chart: {
+            width: 380,
+            type: 'pie'
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+              },
+            }
+          }
+        },
+        legend: {
+            position: 'bottom'
+        },
+        colors: ['#164B60', '#1B6B93', '#4FC0D0', '#A2FF86', '#072541'],
+        series: countValue,
+        labels: countLabels,
+    }
+
+    var options2 = {
+        series: amountValue,
+        chart: {
+            type: 'donut',
+            width: 380,
+        },
+        legend: {
+            position: 'bottom'
+        },
+        colors: ['#5F939A', '#D8AC9C', '#D8AC9C', '#EAC8AF', '#1B2021'],
+        labels: amountLabels,
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+    }
+
+    var options3 = {
+        series: [{
+            data: amountValue2
+        }],
+        chart: {
+          type: 'bar',
+          height: 350,
+          toolbar: {
+                show: false
+            }
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: false,
+            columnWidth: ['30%'],
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: amountLabels2,
+        },
+        colors: ['#0B60B0'],
+    }
+
+    var chart = new ApexCharts(element, options);
+    chart.render();
+
+    var chart2 = new ApexCharts(element2, options2);
+    chart2.render();
+
+    var chart3 = new ApexCharts(element3, options3);
+    chart3.render();
+</script>

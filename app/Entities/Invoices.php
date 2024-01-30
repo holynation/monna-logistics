@@ -399,6 +399,27 @@ class Invoices extends Crud {
 		return $result;
 	}
 
+	public function getInvoiceCountData() {
+		$query = "SELECT distinct b.name as label, count(*) as total from invoice_items a join rates b on b.id = a.rates_id where month(a.date_created) = month(now()) group by label";
+		$result = $this->query($query);
+
+		return $result;
+	}
+
+	public function getInvoiceAmountData() {
+		$query = "SELECT distinct b.name as label, sum(a.price) as total from invoice_items a join rates b on b.id = a.rates_id where month(a.date_created) = month(now()) group by a.rates_id ";
+		$result = $this->query($query);
+
+		return $result;
+	}
+
+	public function getMOnthlyInvoiceAmountData() {
+		$query = "SELECT date_format(a.date_created, '%a') as label, cast(sum(a.price) as decimal) as total from invoice_items a join rates b on b.id = a.rates_id where month(a.date_created) = month(now()) and year(b.date_created) = year(curdate()) group by label order by label asc ";
+		$result = $this->query($query);
+
+		return $result;
+	}
+
 }
 
 ?>
