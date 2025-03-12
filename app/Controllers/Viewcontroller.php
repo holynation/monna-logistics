@@ -117,10 +117,12 @@ class Viewcontroller extends BaseController {
 		if (!$role->canView($path)) {
 			echo show_access_denied();exit;
 		}
+
+		$userCanview = $this->webSessionManager->getCurrentUserProp('user_table_id') . "_canView";
 		// caching this role pages
-		if (!$canView = cache('canView')) {
+		if (!$canView = cache($userCanview)) {
 			$canView = $this->adminData->getCanViewPages($role);
-			cache()->save('canView', $canView, 900); // cache for 15mins
+			cache()->save($userCanview, $canView, 900); // cache for 15mins
 		}
 
 		// print_r($canView);exit;
